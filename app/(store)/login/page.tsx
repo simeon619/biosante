@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, Suspense } from 'react';
+import React, { useState, Suspense, useEffect } from 'react';
 import { useAuth } from '@/context/AuthContext';
 import { useRouter, useSearchParams } from 'next/navigation';
 import {
@@ -10,7 +10,9 @@ import {
     ArrowRight,
     Loader2,
     CheckCircle2,
-    AlertCircle
+    AlertCircle,
+    ShieldCheck,
+    Sparkles
 } from 'lucide-react';
 import Link from 'next/link';
 
@@ -24,7 +26,7 @@ function LoginForm() {
     });
     const [error, setError] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState(false);
-    const [isOtpSent, setIsOtpSent] = useState(false); // Track if OTP was sent for UI feedback
+    const [isOtpSent, setIsOtpSent] = useState(false);
 
     const { sendOtp, verifyOtp, register } = useAuth();
     const router = useRouter();
