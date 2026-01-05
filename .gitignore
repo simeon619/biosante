@@ -29,4 +29,8 @@ dist-ssr
 
 # System/Generated
 geo-services/nginx/cache
-external/httpsms
+
+# Geo Services Data
+geo-services/nominatim/*.pbf
+geo-services/osrm/*.osrm*
+geo-services/valhalla/custom_files/*

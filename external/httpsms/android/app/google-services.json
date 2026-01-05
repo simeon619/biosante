@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "725250095088",
+    "project_id": "skypark-71cb9",
+    "storage_bucket": "skypark-71cb9.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:725250095088:android:861fa156ece82eb0c8cf35",
+        "android_client_info": {
+          "package_name": "com.httpsms"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC1GbS9-FWBxwhJQQSiFsW2wV9idE0nafQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
