@@ -34,7 +34,7 @@ export default class extends BaseSchema {
 
   async down() {
     this.defer(async (db) => {
-      await db.table('settings')
+      await db.from('settings')
         .whereIn('key', ['fb_pixel_id', 'fb_access_token', 'fb_test_event_code'])
         .delete()
     })

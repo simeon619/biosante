@@ -9,7 +9,7 @@ export default class DeliveriesController {
      * Estimate delivery fees and time
      */
     public async estimate({ request, response }: HttpContext) {
-        const { address, cartTotal } = request.all()
+        const { address } = request.all()
 
         if (!address) {
             return response.badRequest({ message: "L'adresse est requise" })

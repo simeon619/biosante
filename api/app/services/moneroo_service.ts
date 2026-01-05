@@ -57,7 +57,7 @@ export class MonerooService {
     private readonly webhookSecret = env.get('MONEROO_WEBHOOK_SECRET')
 
     // Payment methods available for Côte d'Ivoire
-    private readonly ciPaymentMethods = ['wave_ci', 'mtn_ci', 'orange_ci', 'moov_ci']
+    // private readonly ciPaymentMethods = ['wave_ci', 'mtn_ci', 'orange_ci', 'moov_ci']
 
     /**
      * Initialize a payment with Moneroo

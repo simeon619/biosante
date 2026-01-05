@@ -38,7 +38,7 @@ export class IntechService {
     private readonly baseUrl: string
 
     constructor() {
-        this.apiKey = env.get('INTECH_API_KEY')
+        this.apiKey = env.get('INTECH_API_KEY') as string
         this.baseUrl = env.get('INTECH_BASE_URL', 'https://api.intech.sn')
     }
 
