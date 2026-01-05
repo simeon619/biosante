@@ -5,13 +5,13 @@ export default class extends BaseSchema {
   protected tableName = 'payments'
 
   async up() {
-    this.schema.alterTable(this.tableName, (table) => {
+    this.schema.alterTable(this.tableName, (_table) => {
       // table.string('moneroo_payment_id').nullable().alter()
     })
   }
 
   async down() {
-    this.schema.alterTable(this.tableName, (table) => {
+    this.schema.alterTable(this.tableName, (_table) => {
       // table.string('moneroo_payment_id').notNullable().alter()
     })
   }
