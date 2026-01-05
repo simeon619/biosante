@@ -82,6 +82,13 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = (props) => {
         }
     }, [user, addresses, deliveryMode]);
 
+    // Redirect if not authenticated (Auto-redirect)
+    useEffect(() => {
+        if (!authLoading && !user) {
+            router.push('/login?redirect=/panier&reason=checkout');
+        }
+    }, [authLoading, user, router]);
+
     useEffect(() => {
         const loadSettings = async () => {
             const data = await getPublicSettings();
@@ -225,12 +232,7 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = (props) => {
         );
     }
 
-    // Redirect if not authenticated
-    useEffect(() => {
-        if (!authLoading && !user) {
-            router.push('/login?redirect=/panier&reason=checkout');
-        }
-    }, [authLoading, user, router]);
+
 
     if (!user) {
         return null; // Don't render anything while redirecting
