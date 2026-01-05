@@ -13,8 +13,10 @@ export default class extends BaseSchema {
             table.timestamp('otp_expires_at').nullable()
 
             // Make email and password nullable (migrating to OTP)
-            table.string('email', 255).nullable().alter()
-            table.string('password', 255).nullable().alter()
+            // table.string('email', 255).nullable().alter()
+            // table.string('password', 255).nullable().alter()
+            this.schema.raw('ALTER TABLE "admin_users" ALTER COLUMN "email" DROP NOT NULL')
+            this.schema.raw('ALTER TABLE "admin_users" ALTER COLUMN "password" DROP NOT NULL')
         })
     }
 
