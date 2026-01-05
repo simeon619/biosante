@@ -72,11 +72,13 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+      args:
+        NEXT_PUBLIC_API_URL: https://api.biosante.sublymus.com
     container_name: sv-frontend
     restart: always
     environment:
-      - NEXT_PUBLIC_API_URL=https://api.sante-vitalite.com # Public URL for client-side fetching
-      - INTERNAL_API_URL=http://sv-backend:3333 # Internal URL for server-side fetching
+      - NEXT_PUBLIC_API_URL=https://api.biosante.sublymus.com
+      - INTERNAL_API_URL=http://sv-backend:3333
     depends_on:
       - api
     networks:
