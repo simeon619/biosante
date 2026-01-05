@@ -6,7 +6,9 @@ export default class extends BaseSchema {
     async up() {
         this.schema.alterTable(this.tableName, (table) => {
             // Make old fields nullable or rename them if necessary
-            table.string('moneroo_payment_id').nullable().alter()
+            // table.string('moneroo_payment_id').nullable().alter()
+            // Use raw SQL for CockroachDB compatibility (avoids "ALTER COLUMN TYPE" error)
+            this.schema.raw('ALTER TABLE "payments" ALTER COLUMN "moneroo_payment_id" DROP NOT NULL')
 
             // Add new required fields
             table.string('provider').nullable() // wave, orange, mtn, moov
