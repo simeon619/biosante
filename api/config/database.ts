@@ -6,14 +6,13 @@ const dbConfig = defineConfig({
   connections: {
     postgres: {
       client: 'pg',
+      version: '14.0', // Fix for Knex/CockroachDB version detection via Knex config
       connection: {
         host: env.get('DB_HOST'),
         port: env.get('DB_PORT'),
         user: env.get('DB_USER'),
         password: env.get('DB_PASSWORD'),
         database: env.get('DB_DATABASE'),
-        // @ts-ignore
-        version: '14.0', // Fix for Knex/CockroachDB version detection
       },
       migrations: {
         naturalSort: true,
