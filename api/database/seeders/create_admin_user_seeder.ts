@@ -14,7 +14,7 @@ export default class extends BaseSeeder {
                 name: 'Super Admin',
                 email: 'admin@biosante.store',
                 password: await hash.make('password'),
-                phone: '+2250102030405',
+                phone: '+2250507859953', // Numéro récupéré du contrôleur Auth
                 role: 'super_admin',
                 is_active: true,
                 created_at: DateTime.now().toSQL(),
