@@ -225,32 +225,15 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = (props) => {
         );
     }
 
+    // Redirect if not authenticated
+    useEffect(() => {
+        if (!authLoading && !user) {
+            router.push('/login?redirect=/panier&reason=checkout');
+        }
+    }, [authLoading, user, router]);
+
     if (!user) {
-        return (
-            <div className="min-h-screen bg-white flex flex-col items-center justify-center p-6 text-center">
-                <div className="w-20 h-20 bg-slate-50 rounded-full flex items-center justify-center mb-8 border border-slate-100">
-                    <Lock className="w-10 h-10 text-slate-900" />
-                </div>
-                <h2 className="text-3xl font-black text-slate-900 mb-3 tracking-tight">Connexion requise</h2>
-                <p className="text-slate-500 mb-8 max-w-sm font-medium">
-                    Pour valider votre commande et suivre sa livraison, vous devez être connecté à votre compte.
-                </p>
-                <div className="flex flex-col gap-4 w-full max-w-xs">
-                    <button
-                        onClick={() => router.push('/login?redirect=/panier')}
-                        className="w-full bg-slate-900 text-white px-8 py-4 rounded-xl font-bold hover:bg-slate-700 transition-all shadow-lg shadow-slate-900/20"
-                    >
-                        Se connecter ou s'inscrire
-                    </button>
-                    <button
-                        onClick={onBack}
-                        className="w-full bg-white text-slate-600 px-8 py-4 rounded-xl font-bold border border-slate-200 hover:bg-slate-50 transition-all"
-                    >
-                        Retour
-                    </button>
-                </div>
-            </div>
-        );
+        return null; // Don't render anything while redirecting
     }
 
     if (cart.length === 0 && !orderPlaced) {
