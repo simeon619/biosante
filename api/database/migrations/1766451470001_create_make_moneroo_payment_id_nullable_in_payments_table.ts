@@ -6,13 +6,13 @@ export default class extends BaseSchema {
 
   async up() {
     this.schema.alterTable(this.tableName, (table) => {
-      table.string('moneroo_payment_id').nullable().alter()
+      // table.string('moneroo_payment_id').nullable().alter()
     })
   }
 
   async down() {
     this.schema.alterTable(this.tableName, (table) => {
-      table.string('moneroo_payment_id').notNullable().alter()
+      // table.string('moneroo_payment_id').notNullable().alter()
     })
   }
 }
