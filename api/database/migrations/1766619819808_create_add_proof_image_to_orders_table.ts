@@ -5,7 +5,7 @@ export default class extends BaseSchema {
 
   async up() {
     this.schema.alterTable(this.tableName, (table) => {
-      table.string('proof_image').nullable()
+      table.text('proof_image').nullable()
     })
   }
 
