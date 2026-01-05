@@ -11,7 +11,9 @@ const dbConfig = defineConfig({
         port: env.get('DB_PORT'),
         user: env.get('DB_USER'),
         password: env.get('DB_PASSWORD'),
+        password: env.get('DB_PASSWORD'),
         database: env.get('DB_DATABASE'),
+        version: '14.0', // Fix for Knex/CockroachDB version detection
       },
       migrations: {
         naturalSort: true,
