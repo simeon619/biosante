@@ -10,7 +10,8 @@ import {
     ShieldCheck,
     Sparkles,
     User,
-    Mail
+    Mail,
+    Info
 } from 'lucide-react';
 import Link from 'next/link';
 
@@ -30,6 +31,7 @@ function LoginForm() {
     const router = useRouter();
     const searchParams = useSearchParams();
     const redirectTo = searchParams.get('redirect') || '/';
+    const reason = searchParams.get('reason');
 
     // Format phone number locally (01 02 03 04 05)
     const formatPhoneNumber = (value: string) => {
