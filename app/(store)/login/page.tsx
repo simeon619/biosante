@@ -55,12 +55,10 @@ function LoginForm() {
         setIsLoading(true);
 
         try {
-            const result = await verifyOtp(formData.phone, formData.otp);
-            if (result.success && !result.user_exists) {
-                // New user - go to profile creation
+            const result = await verifyOtp(getRawPhone(), formData.otp);
+            if (result.success && result.isNewUser) {
                 setStep('profile');
             } else {
-                // Existing user - login complete
                 router.push(redirectTo);
             }
         } catch (err: any) {
@@ -76,7 +74,13 @@ function LoginForm() {
         setIsLoading(true);
 
         try {
-            await register(formData.phone, formData.name, formData.email);
+            // Register with dummy password as we use OTP
+            await register({
+                phone: getRawPhone(),
+                name: formData.name,
+                email: formData.email,
+                password: 'otp_auto_generated_password'
+            });
             router.push(redirectTo);
         } catch (err: any) {
             setError(err.message || 'Erreur lors de l\'inscription');
