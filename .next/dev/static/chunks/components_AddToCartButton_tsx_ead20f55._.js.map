@@ -1,0 +1,6 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 4, "column": 0}, "map": {"version":3,"sources":["file:///home/aegonjs/Documents/sant%C3%A9-vitalit%C3%A9-store/components/AddToCartButton.tsx"],"sourcesContent":["'use client';\n\nimport { useCart } from '@/context/CartContext';\nimport { Product } from '@/types';\nimport { ArrowRight } from 'lucide-react';\n\ninterface AddToCartButtonProps {\n    product: Product;\n    className?: string; // e.g. \"bg-rose-600 hover:bg-rose-700\"\n}\n\nexport const AddToCartButton: React.FC<AddToCartButtonProps> = ({ product, className }) => {\n    const { addToCart } = useCart();\n\n    return (\n        <button\n            onClick={() => addToCart(product)}\n            className={`text-white px-8 py-4 rounded-xl font-bold transition-colors shadow-lg flex items-center ${className || 'bg-gray-900 hover:bg-gray-800'}`}\n        >\n            Commander <ArrowRight className=\"ml-2 w-5 h-5\" />\n        </button>\n    );\n};\n"],"names":[],"mappings":";;;;;AAEA;AAEA;;;AAJA;;;AAWO,MAAM,kBAAkD,CAAC,EAAE,OAAO,EAAE,SAAS,EAAE;;IAClF,MAAM,EAAE,SAAS,EAAE,GAAG,IAAA,qIAAO;IAE7B,qBACI,6LAAC;QACG,SAAS,IAAM,UAAU;QACzB,WAAW,CAAC,wFAAwF,EAAE,aAAa,iCAAiC;;YACvJ;0BACa,6LAAC,mOAAU;gBAAC,WAAU;;;;;;;;;;;;AAG5C;GAXa;;QACa,qIAAO;;;KADpB"}}]
+}

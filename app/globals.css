@@ -1,0 +1,97 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    /* White */
+    --foreground: 0 0% 0%;
+    /* Black */
+
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 0%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 0%;
+
+    --primary: 0 0% 0%;
+    /* Black */
+    --primary-foreground: 0 0% 100%;
+    /* White */
+
+    --secondary: 0 0% 96%;
+    /* Gray-100 */
+    --secondary-foreground: 0 0% 0%;
+
+    --muted: 0 0% 96%;
+    --muted-foreground: 0 0% 45%;
+
+    --accent: 0 0% 96%;
+    --accent-foreground: 0 0% 0%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 0 0% 90%;
+    --input: 0 0% 90%;
+    --ring: 0 0% 0%;
+
+    --radius: 0rem;
+  }
+
+  .dark {
+    --background: 0 0% 0%;
+    --foreground: 0 0% 100%;
+    /* Dark mode mirror */
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+@layer utilities {
+  .bg-grid-pattern {
+    background-image: linear-gradient(rgba(0, 0, 0, 0.02) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0, 0, 0, 0.02) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+
+  .animate-slow-spin {
+    animation: spin-global 60s linear infinite;
+  }
+
+  .animate-slow-spin-reverse {
+    animation: spin-global 40s linear infinite reverse;
+  }
+
+  /* Contextual Background Blooms */
+  .bg-bloom-red {
+    background: radial-gradient(circle at center, rgba(220, 38, 38, 0.08) 0%, transparent 70%);
+  }
+
+  .bg-bloom-green {
+    background: radial-gradient(circle at center, rgba(22, 163, 74, 0.08) 0%, transparent 70%);
+  }
+
+  .transition-bg-bloom {
+    transition: opacity 1.5s ease-in-out, transform 1.5s ease-in-out, background 1.5s ease-in-out;
+  }
+}
+
+@keyframes spin-global {
+  from {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}

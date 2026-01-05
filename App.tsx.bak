@@ -1,0 +1,537 @@
+import React, { useState, useEffect, useRef } from 'react';
+import { Header } from './components/Header';
+import { Footer } from './components/Footer';
+import { ProductCard } from './components/ProductCard';
+import { CartDrawer } from './components/CartDrawer';
+import { AIChat } from './components/AIChat';
+import { CheckoutPage } from './components/CheckoutPage';
+import { products as allProducts } from './data/products';
+import { CartItem, Product, ViewState, Category, AudioTestimonial } from './types';
+import { Filter, Star, ShieldCheck, Truck, Clock, CheckCircle, ArrowRight, Phone, Play, Pause, Volume2, MapPin } from 'lucide-react';
+
+// Floating Contact Button Component
+const FloatingContacts = ({ visible }: { visible: boolean }) => (
+  <div className={`fixed bottom-24 left-6 z-40 flex flex-col gap-3 transition-opacity duration-300 ${visible ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
+    <a
+      href="https://wa.me/2250143678397"
+      target="_blank"
+      rel="noopener noreferrer"
+      className="bg-[#25D366] text-white p-3 rounded-full shadow-lg hover:scale-110 transition-transform flex items-center justify-center"
+      aria-label="Contact WhatsApp"
+    >
+      <svg viewBox="0 0 24 24" className="w-6 h-6 fill-current">
+        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+      </svg>
+    </a>
+    <a
+      href="tel:+2250143678397"
+      className="bg-secondary-500 text-white p-3 rounded-full shadow-lg hover:scale-110 transition-transform flex items-center justify-center"
+      aria-label="Appeler"
+    >
+      <Phone className="w-6 h-6" />
+    </a>
+  </div>
+);
+
+// Custom Audio Player Component
+const AudioPlayer: React.FC<{ testimonial: AudioTestimonial, colorClass: string }> = ({ testimonial, colorClass }) => {
+  const [isPlaying, setIsPlaying] = useState(false);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+
+  const togglePlay = () => {
+    if (audioRef.current) {
+      if (isPlaying) {
+        audioRef.current.pause();
+      } else {
+        // Pause all other audios (simple implementation)
+        document.querySelectorAll('audio').forEach(el => {
+          if (el !== audioRef.current) {
+            el.pause();
+          }
+        });
+        audioRef.current.play();
+      }
+      setIsPlaying(!isPlaying);
+    }
+  };
+
+  return (
+    <div className="bg-white rounded-xl p-4 shadow-sm border border-gray-100 flex items-center gap-4">
+      <button
+        onClick={togglePlay}
+        className={`w-12 h-12 rounded-full ${isPlaying ? 'bg-gray-800' : colorClass} text-white flex items-center justify-center flex-shrink-0 transition-colors`}
+      >
+        {isPlaying ? <Pause size={20} /> : <Play size={20} ml-1 />}
+      </button>
+      <div className="flex-1">
+        <p className="font-bold text-gray-900 text-sm">{testimonial.author}</p>
+        <p className="text-xs text-gray-500 flex items-center gap-1">
+          <MapPin size={10} /> {testimonial.location}
+        </p>
+      </div>
+      <div className="flex items-center gap-2">
+        <div className="hidden sm:flex space-x-0.5 items-end h-4">
+          {[1, 2, 3, 4, 5].map(i => (
+            <div key={i} className={`w-1 bg-gray-300 rounded-t-sm ${isPlaying ? 'animate-pulse' : ''}`} style={{ height: `${Math.random() * 100}%` }}></div>
+          ))}
+        </div>
+        <span className="text-xs font-mono text-gray-500 bg-gray-100 px-2 py-1 rounded">{testimonial.duration}</span>
+      </div>
+      <audio
+        ref={audioRef}
+        src={testimonial.url}
+        onEnded={() => setIsPlaying(false)}
+        onPause={() => setIsPlaying(false)}
+        onPlay={() => setIsPlaying(true)}
+      />
+    </div>
+  );
+};
+
+const App: React.FC = () => {
+  const [currentView, setCurrentView] = useState<ViewState>('home');
+  const [cart, setCart] = useState<CartItem[]>([]);
+  const [isCartOpen, setIsCartOpen] = useState(false);
+
+  // Load cart from local storage on mount
+  useEffect(() => {
+    const savedCart = localStorage.getItem('cart');
+    if (savedCart) {
+      setCart(JSON.parse(savedCart));
+    }
+  }, []);
+
+  // Save cart to local storage whenever it changes
+  useEffect(() => {
+    localStorage.setItem('cart', JSON.stringify(cart));
+  }, [cart]);
+
+  // Scroll Detection for Floating Elements
+  const [showFloating, setShowFloating] = useState(true);
+  useEffect(() => {
+    const handleScroll = () => {
+      const footer = document.querySelector('footer');
+      if (!footer) return;
+
+      const footerRect = footer.getBoundingClientRect();
+      const isFooterVisible = footerRect.top < window.innerHeight;
+
+      // Hide if footer is visible
+      setShowFloating(!isFooterVisible);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const addToCart = (product: Product) => {
+    setCart(prev => {
+      const existing = prev.find(item => item.id === product.id);
+      if (existing) {
+        return prev.map(item =>
+          item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item
+        );
+      }
+      return [...prev, { ...product, quantity: 1 }];
+    });
+    setIsCartOpen(true);
+  };
+
+  const removeFromCart = (id: string) => {
+    setCart(prev => prev.filter(item => item.id !== id));
+  };
+
+  const updateQuantity = (id: string, delta: number) => {
+    setCart(prev => prev.map(item => {
+      if (item.id === id) {
+        return { ...item, quantity: Math.max(1, item.quantity + delta) };
+      }
+      return item;
+    }));
+  };
+
+  const handleCheckoutStart = () => {
+    setIsCartOpen(false);
+    setCurrentView('checkout');
+    // Scroll to top
+    window.scrollTo(0, 0);
+  };
+
+  const handleOrderComplete = () => {
+    setCart([]);
+    setCurrentView('home');
+  };
+
+  const cartCount = cart.reduce((acc, item) => acc + item.quantity, 0);
+
+  // --- Views ---
+
+  const renderHome = () => (
+    <div className="animate-fade-in flex flex-col gap-0">
+      {/* Hero Section */}
+      <section className="relative bg-gray-900 text-white py-24 px-4 sm:px-6 lg:px-8 overflow-hidden">
+        <div className="absolute inset-0 opacity-30 bg-[url('https://images.unsplash.com/photo-1544367563-12123d8965cd?q=80&w=2070&auto=format&fit=crop')] bg-cover bg-center"></div>
+        <div className="absolute inset-0 bg-gradient-to-b from-black/60 to-gray-900/90"></div>
+
+        <div className="relative max-w-4xl mx-auto text-center z-10 pt-10">
+          <span className="inline-block py-1 px-3 rounded-full bg-primary-600/30 border border-primary-500 text-primary-300 text-sm font-semibold mb-6">
+            Offre Spéciale Santé 🌿
+          </span>
+          <h1 className="text-4xl md:text-7xl font-extrabold tracking-tight mb-8 leading-tight">
+            BioActif & VitaMax
+          </h1>
+          <p className="text-xl md:text-2xl text-gray-300 mb-12 font-light max-w-2xl mx-auto">
+            Reprenez le contrôle de votre santé naturellement.
+            <br />
+            <span className="text-primary-400 font-bold block mt-4 text-lg md:text-xl border border-primary-500/50 bg-primary-900/50 p-4 rounded-xl">
+              2 Bouteilles achetées = Livraison Gratuite + 5% de Réduction !
+            </span>
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <button
+              onClick={() => {
+                const element = document.getElementById('showcase');
+                element?.scrollIntoView({ behavior: 'smooth' });
+              }}
+              className="bg-primary-600 text-white px-8 py-4 rounded-full font-bold hover:bg-primary-500 transition-all shadow-lg transform hover:-translate-y-1 flex items-center justify-center"
+            >
+              Découvrir nos Offres <ArrowRight className="ml-2 w-5 h-5" />
+            </button>
+          </div>
+        </div>
+      </section>
+
+      {/* Trust Indicators */}
+      <section className="bg-white py-10 border-b border-gray-100">
+        <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-8 text-center divide-y md:divide-y-0 md:divide-x divide-gray-100">
+          <div className="flex flex-col items-center p-4">
+            <ShieldCheck className="w-10 h-10 text-primary-600 mb-3" />
+            <h3 className="font-bold text-gray-900">100% Naturel</h3>
+            <p className="text-sm text-gray-500">Sans produits chimiques nocifs</p>
+          </div>
+          <div className="flex flex-col items-center p-4">
+            <Star className="w-10 h-10 text-yellow-500 mb-3" />
+            <h3 className="font-bold text-gray-900">Efficacité Prouvée</h3>
+            <p className="text-sm text-gray-500">Des milliers de clients satisfaits</p>
+          </div>
+          <div className="flex flex-col items-center p-4">
+            <Truck className="w-10 h-10 text-blue-600 mb-3" />
+            <h3 className="font-bold text-gray-900">Livraison</h3>
+            <p className="text-sm text-gray-500">1000F (Gratuite dès 2 articles)</p>
+          </div>
+        </div>
+      </section>
+
+      {/* Product Showcase: BioActif */}
+      <section id="showcase" className="py-20 bg-rose-50 overflow-hidden">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          {allProducts.filter(p => p.id === 'bioactif').map(product => (
+            <div key={product.id} className="flex flex-col lg:flex-row items-center gap-16">
+              <div className="lg:w-1/2 relative group">
+                <div className="absolute inset-0 bg-rose-200 rounded-[3rem] transform rotate-6 scale-90 transition-transform group-hover:rotate-3"></div>
+                <img
+                  src={product.image}
+                  alt={product.name}
+                  className="relative z-10 w-full rounded-3xl shadow-2xl transform transition-transform group-hover:-translate-y-2"
+                />
+              </div>
+              <div className="lg:w-1/2 space-y-8">
+                <div>
+                  <span className="text-rose-600 font-bold tracking-wider uppercase text-sm bg-rose-100 px-3 py-1 rounded-full">
+                    {product.tagline}
+                  </span>
+                  <h2 className="text-4xl md:text-5xl font-extrabold text-gray-900 mt-4 mb-6">
+                    {product.name}
+                  </h2>
+                  <p className="text-lg text-gray-600 leading-relaxed">
+                    {product.description}
+                  </p>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  {product.benefits.map((benefit, i) => (
+                    <div key={i} className="flex items-start">
+                      <div className="flex-shrink-0 bg-white p-1 rounded-full shadow-sm mt-1">
+                        <CheckCircle className="w-5 h-5 text-rose-500" />
+                      </div>
+                      <span className="ml-3 text-gray-700 font-medium">{benefit}</span>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Audio Testimonials */}
+                <div className="bg-rose-100/50 p-6 rounded-2xl border border-rose-100">
+                  <h4 className="text-rose-800 font-bold mb-4 flex items-center gap-2">
+                    <Volume2 className="w-5 h-5" /> Ils l'ont testé :
+                  </h4>
+                  <div className="space-y-3">
+                    {product.testimonials.map(testimonial => (
+                      <AudioPlayer key={testimonial.id} testimonial={testimonial} colorClass="bg-rose-500 hover:bg-rose-600" />
+                    ))}
+                  </div>
+                </div>
+
+                <div className="pt-6 border-t border-rose-200 flex items-center justify-between">
+                  <div>
+                    <p className="text-sm text-gray-500">Prix Unitaire</p>
+                    <p className="text-3xl font-bold text-gray-900">{product.price.toLocaleString()} FCFA</p>
+                  </div>
+                  <button
+                    onClick={() => addToCart(product)}
+                    className="bg-rose-600 text-white px-8 py-4 rounded-xl font-bold hover:bg-rose-700 transition-colors shadow-lg hover:shadow-rose-500/30 flex items-center"
+                  >
+                    Commander <ArrowRight className="ml-2 w-5 h-5" />
+                  </button>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Product Showcase: VitaMax */}
+      <section className="py-20 bg-emerald-50 overflow-hidden">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          {allProducts.filter(p => p.id === 'vitamax').map(product => (
+            <div key={product.id} className="flex flex-col lg:flex-row-reverse items-center gap-16">
+              <div className="lg:w-1/2 relative group">
+                <div className="absolute inset-0 bg-emerald-200 rounded-[3rem] transform -rotate-6 scale-90 transition-transform group-hover:-rotate-3"></div>
+                <img
+                  src={product.image}
+                  alt={product.name}
+                  className="relative z-10 w-full rounded-3xl shadow-2xl transform transition-transform group-hover:-translate-y-2"
+                />
+              </div>
+              <div className="lg:w-1/2 space-y-8">
+                <div>
+                  <span className="text-emerald-700 font-bold tracking-wider uppercase text-sm bg-emerald-100 px-3 py-1 rounded-full">
+                    {product.tagline}
+                  </span>
+                  <h2 className="text-4xl md:text-5xl font-extrabold text-gray-900 mt-4 mb-6">
+                    {product.name}
+                  </h2>
+                  <p className="text-lg text-gray-600 leading-relaxed">
+                    {product.description}
+                  </p>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  {product.benefits.map((benefit, i) => (
+                    <div key={i} className="flex items-start">
+                      <div className="flex-shrink-0 bg-white p-1 rounded-full shadow-sm mt-1">
+                        <CheckCircle className="w-5 h-5 text-emerald-600" />
+                      </div>
+                      <span className="ml-3 text-gray-700 font-medium">{benefit}</span>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Audio Testimonials */}
+                <div className="bg-emerald-100/50 p-6 rounded-2xl border border-emerald-100">
+                  <h4 className="text-emerald-800 font-bold mb-4 flex items-center gap-2">
+                    <Volume2 className="w-5 h-5" /> Ils l'ont testé :
+                  </h4>
+                  <div className="space-y-3">
+                    {product.testimonials.map(testimonial => (
+                      <AudioPlayer key={testimonial.id} testimonial={testimonial} colorClass="bg-emerald-600 hover:bg-emerald-700" />
+                    ))}
+                  </div>
+                </div>
+
+                <div className="pt-6 border-t border-emerald-200 flex items-center justify-between">
+                  <div>
+                    <p className="text-sm text-gray-500">Prix Unitaire</p>
+                    <p className="text-3xl font-bold text-gray-900">{product.price.toLocaleString()} FCFA</p>
+                  </div>
+                  <button
+                    onClick={() => addToCart(product)}
+                    className="bg-emerald-600 text-white px-8 py-4 rounded-xl font-bold hover:bg-emerald-700 transition-colors shadow-lg hover:shadow-emerald-500/30 flex items-center"
+                  >
+                    Commander <ArrowRight className="ml-2 w-5 h-5" />
+                  </button>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className="py-16 bg-white text-center">
+        <div className="max-w-3xl mx-auto px-4">
+          <h2 className="text-3xl font-bold text-gray-900 mb-6">Besoin d'aide pour choisir ?</h2>
+          <p className="text-gray-600 mb-8 text-lg">
+            Contactez-nous directement sur WhatsApp ou utilisez notre assistant virtuel intelligent.
+          </p>
+          <button
+            onClick={() => document.querySelector('button[aria-label="Assistant Santé"]')?.parentElement?.click()}
+            className="border-2 border-primary-600 text-primary-600 px-8 py-3 rounded-full font-bold hover:bg-primary-50 transition-colors"
+          >
+            Discuter avec l'Assistant
+          </button>
+        </div>
+      </section>
+    </div>
+  );
+
+  const renderProducts = () => (
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 animate-fade-in">
+      <div className="text-center mb-12">
+        <h2 className="text-3xl font-bold text-gray-900 mb-4">La Gamme Complète</h2>
+        <p className="text-gray-500 max-w-2xl mx-auto">
+          Découvrez nos deux formulations exclusives.
+        </p>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-12 max-w-5xl mx-auto">
+        {allProducts.map(product => (
+          <div key={product.id} className="bg-white rounded-3xl shadow-lg border border-gray-100 overflow-hidden hover:shadow-2xl transition-shadow duration-300">
+            <div className="aspect-w-16 aspect-h-12 bg-gray-100 relative h-72">
+              <img src={product.image} alt={product.name} className="w-full h-full object-cover" />
+              <div className="absolute top-4 left-4">
+                <span className={`${product.badgeColor} px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide`}>
+                  {product.category}
+                </span>
+              </div>
+            </div>
+            <div className="p-8">
+              <div className="flex justify-between items-start mb-4">
+                <div>
+                  <h3 className="text-2xl font-bold text-gray-900">{product.name}</h3>
+                  <p className="text-sm text-gray-500 mt-1">{product.tagline}</p>
+                </div>
+                <p className="text-xl font-bold text-primary-600">{product.price.toLocaleString()} F</p>
+              </div>
+              <p className="text-gray-600 mb-6">{product.description}</p>
+              <ul className="space-y-2 mb-8">
+                {product.benefits.slice(0, 3).map((b, i) => (
+                  <li key={i} className="flex items-center text-sm text-gray-700">
+                    <CheckCircle className="w-4 h-4 mr-2 text-primary-500" /> {b}
+                  </li>
+                ))}
+              </ul>
+              <button
+                onClick={() => addToCart(product)}
+                className="w-full bg-gray-900 text-white py-3 rounded-xl font-bold hover:bg-gray-800 transition-colors flex justify-center items-center"
+              >
+                Ajouter au panier <ArrowRight className="ml-2 w-4 h-4" />
+              </button>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+
+  const renderAbout = () => (
+    <div className="max-w-4xl mx-auto px-4 py-16 animate-fade-in">
+      <h1 className="text-4xl font-bold text-gray-900 mb-8 text-center">Notre Mission</h1>
+      <div className="prose prose-lg mx-auto text-gray-600 space-y-6">
+        <p>
+          Chez Santé Vitalité, nous avons fait le choix de la spécialisation. Plutôt que de proposer des centaines de références, nous avons concentré toute notre recherche et développement sur deux fléaux majeurs de notre époque : les troubles métaboliques (Hypertension/Diabète) et la santé masculine (Prostate).
+        </p>
+        <div className="bg-primary-50 border-l-4 border-primary-500 p-6 my-8 rounded-r-lg">
+          <h3 className="text-primary-800 font-bold text-xl mb-2">Pourquoi BioActif et VitaMax ?</h3>
+          <p className="text-primary-700">
+            Ces deux produits sont l'aboutissement de années de recherche en phytothérapie. Ils combinent la sagesse des plantes traditionnelles avec des procédés d'extraction modernes pour garantir une biodisponibilité maximale.
+          </p>
+        </div>
+        <p>
+          Nous ne vendons pas seulement des compléments, nous proposons un accompagnement vers une meilleure qualité de vie.
+        </p>
+      </div>
+    </div>
+  );
+
+  const renderContact = () => (
+    <div className="max-w-7xl mx-auto px-4 py-16 animate-fade-in">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+        <div>
+          <h2 className="text-3xl font-bold text-gray-900 mb-6">Contactez-nous</h2>
+          <p className="text-gray-600 mb-8">
+            Une question sur BioActif ou VitaMax ? Besoin de conseils d'utilisation ?
+            Appelez-nous directement ou remplissez le formulaire.
+          </p>
+
+          <div className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100">
+            <form className="space-y-6" onSubmit={(e) => e.preventDefault()}>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Nom complet</label>
+                <input type="text" className="w-full border-gray-300 rounded-lg shadow-sm focus:ring-primary-500 focus:border-primary-500 p-3 border" placeholder="Votre nom" />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                <input type="email" className="w-full border-gray-300 rounded-lg shadow-sm focus:ring-primary-500 focus:border-primary-500 p-3 border" placeholder="vous@exemple.com" />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Message</label>
+                <textarea rows={4} className="w-full border-gray-300 rounded-lg shadow-sm focus:ring-primary-500 focus:border-primary-500 p-3 border" placeholder="Comment pouvons-nous vous aider ?"></textarea>
+              </div>
+              <button className="w-full bg-primary-600 text-white py-3 px-6 rounded-lg font-bold hover:bg-primary-700 transition-colors">
+                Envoyer le message
+              </button>
+            </form>
+          </div>
+        </div>
+
+        <div className="relative h-96 md:h-auto rounded-2xl overflow-hidden shadow-lg">
+          <img
+            src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&q=80&w=800"
+            alt="Notre centre"
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex flex-col justify-end p-8 text-white">
+            <h3 className="text-xl font-bold mb-2">Service Client</h3>
+            <p>Disponible Lun-Sam : 8h - 18h</p>
+            <p className="text-2xl font-bold mt-2">+225 01 43 67 83 97</p>
+            <p className="text-sm opacity-80">Abidjan, Côte d'Ivoire</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+
+  return (
+    <div className="min-h-screen flex flex-col bg-gray-50 font-sans">
+      {/* Show Header only if not in checkout (optional, but requested "full page") */}
+      {currentView !== 'checkout' && (
+        <Header
+          currentView={currentView}
+          onChangeView={setCurrentView}
+          cartCount={cartCount}
+          onOpenCart={() => setIsCartOpen(true)}
+        />
+      )}
+
+      <main className="flex-grow">
+        {currentView === 'home' && renderHome()}
+        {currentView === 'products' && renderProducts()}
+        {currentView === 'about' && renderAbout()}
+        {currentView === 'contact' && renderContact()}
+        {currentView === 'checkout' && (
+          <CheckoutPage
+            cart={cart}
+            onBack={() => setCurrentView('home')}
+            onClearCart={handleOrderComplete}
+          />
+        )}
+      </main>
+
+      {currentView !== 'checkout' && <Footer />}
+
+      <CartDrawer
+        isOpen={isCartOpen}
+        onClose={() => setIsCartOpen(false)}
+        cart={cart}
+        onUpdateQuantity={updateQuantity}
+        onRemove={removeFromCart}
+        onCheckout={handleCheckoutStart}
+      />
+
+      <AIChat />
+      <FloatingContacts visible={showFloating} />
+    </div>
+  );
+};
+
+export default App;

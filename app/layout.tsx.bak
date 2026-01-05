@@ -1,0 +1,45 @@
+import type { Metadata } from "next";
+import { Inter } from "next/font/google"; // Using Inter as requested or standard
+import "./globals.css";
+import { Header } from "@/components/Header";
+import { Footer } from "@/components/Footer";
+import { CartDrawer } from "@/components/CartDrawer";
+// import { AIChat } from "@/components/AIChat";
+import { FloatingContacts } from "@/components/FloatingContacts";
+import { CartProvider } from "@/context/CartContext";
+
+const inter = Inter({ subsets: ["latin"] });
+
+export const metadata: Metadata = {
+    title: "Santé Vitalité Store - Solutions Naturelles",
+    description: "Boutique en ligne spécialisée dans les produits de santé naturels. BioActif et VitaMax pour votre bien-être.",
+};
+
+export default function RootLayout({
+    children,
+}: Readonly<{
+    children: React.ReactNode;
+}>) {
+    return (
+        <html lang="fr">
+            <head>
+                <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+                <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" defer></script>
+            </head>
+            <body className={inter.className}>
+                <CartProvider>
+                    <div className="min-h-screen flex flex-col bg-gray-50 font-sans">
+                        <Header />
+                        <main className="flex-grow">
+                            {children}
+                        </main>
+                        <Footer />
+                        <CartDrawer />
+                        {/* <AIChat /> */}
+                        <FloatingContacts />
+                    </div>
+                </CartProvider>
+            </body>
+        </html>
+    );
+}

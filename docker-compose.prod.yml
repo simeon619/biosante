@@ -1,0 +1,119 @@
+version: '3.8'
+
+services:
+  # --- Infrastructure ---
+  redis:
+    image: redis:7-alpine
+    container_name: sv-redis
+    volumes:
+      - redis_data:/data
+    restart: unless-stopped
+    networks:
+      - sv-network
+
+  garage:
+    image: dxflrs/garage:v1.0.1
+    container_name: sv-garage
+    volumes:
+      - garage_data:/var/lib/garage/data
+      - garage_meta:/var/lib/garage/meta
+      - ./garage.toml:/etc/garage.toml
+    environment:
+      - GARAGE_CONFIG_FILE=/etc/garage.toml
+    restart: unless-stopped
+    networks:
+      - sv-network
+
+  crdb:
+    image: cockroachdb/cockroach:v23.1.10
+    container_name: sv-crdb
+    command: start-single-node --insecure
+    volumes:
+      - crdb_data:/cockroach/cockroach-data
+    restart: unless-stopped
+    networks:
+      - sv-network
+
+  # --- Application ---
+  api:
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+    container_name: sv-backend
+    restart: always
+    environment:
+      - PORT=3333
+      - HOST=0.0.0.0
+      - NODE_ENV=production
+      - DB_HOST=sv-crdb
+      - DB_PORT=26257
+      - DB_USER=root
+      - DB_PASSWORD=root
+      - DB_DATABASE=defaultdb
+      - REDIS_HOST=sv-redis
+      - REDIS_PORT=6379
+      # S3 Configuration (Internal Network)
+      - S3_ENDPOINT=http://sv-garage:3900
+      - S3_REGION=garage
+      - S3_BUCKET=sante-vitalite-media
+    depends_on:
+      - crdb
+      - redis
+      - garage
+    networks:
+      - sv-network
+    # Expose ports only if needed strictly, otherwise use internal network for Nginx
+    ports:
+      - "3333:3333"
+
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: sv-frontend
+    restart: always
+    environment:
+      - NEXT_PUBLIC_API_URL=https://api.sante-vitalite.com # Public URL for client-side fetching
+      - INTERNAL_API_URL=http://sv-backend:3333 # Internal URL for server-side fetching
+    depends_on:
+      - api
+    networks:
+      - sv-network
+    ports:
+      - "3000:3000"
+
+  # --- 3rd Party Wrappers ---
+  httpsms-api:
+    build:
+      context: ./external/httpsms/api
+    container_name: sv-httpsms-api
+    env_file:
+      - .env.httpsms
+    depends_on:
+      - crdb
+      - redis
+    restart: unless-stopped
+    networks:
+      - sv-network
+
+  httpsms-web:
+    build:
+      context: ./external/httpsms/web
+    container_name: sv-httpsms-web
+    ports:
+      - "3003:3000"
+    environment:
+      - NUXT_PUBLIC_HTTPSMS_API_URL=https://sms-api.sante-vitalite.com
+    restart: unless-stopped
+    networks:
+      - sv-network
+
+networks:
+  sv-network:
+    driver: bridge
+
+volumes:
+  redis_data:
+  garage_data:
+  garage_meta:
+  crdb_data:

@@ -1,0 +1,3 @@
+module.exports=[81571,a=>{"use strict";var b=a.i(87924),c=a.i(20810),d=a.i(32860);a.s(["AddToCartButton",0,({product:a,className:e})=>{let{addToCart:f}=(0,c.useCart)();return(0,b.jsxs)("button",{onClick:()=>f(a),className:`text-white px-8 py-4 rounded-xl font-bold transition-colors shadow-lg flex items-center ${e||"bg-gray-900 hover:bg-gray-800"}`,children:["Commander ",(0,b.jsx)(d.ArrowRight,{className:"ml-2 w-5 h-5"})]})}])}];
+
+//# sourceMappingURL=components_AddToCartButton_tsx_4d32a38a._.js.map

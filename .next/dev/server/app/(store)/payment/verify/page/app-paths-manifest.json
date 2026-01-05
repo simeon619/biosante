@@ -1,0 +1,3 @@
+{
+  "/(store)/payment/verify/page": "app/(store)/payment/verify/page.js"
+}

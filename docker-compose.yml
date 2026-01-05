@@ -1,0 +1,66 @@
+version: '3.8'
+
+services:
+  redis:
+    image: redis:7-alpine
+    container_name: sante-vitalite-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    command: redis-server --appendonly yes
+    restart: unless-stopped
+
+  garage:
+    image: dxflrs/garage:v1.0.1
+    container_name: sante-vitalite-garage
+    ports:
+      - "3900:3900" # S3 API
+      - "3902:3902" # Admin API
+    volumes:
+      - garage_data:/var/lib/garage/data
+      - garage_meta:/var/lib/garage/meta
+      - ./garage.toml:/etc/garage.toml
+    environment:
+      - GARAGE_CONFIG_FILE=/etc/garage.toml
+    restart: unless-stopped
+
+  crdb:
+    image: cockroachdb/cockroach:v23.1.10
+    container_name: sante-vitalite-crdb
+    command: start-single-node --insecure
+    ports:
+      - "26257:26257"
+      - "8083:8080"
+    volumes:
+      - crdb_data:/cockroach/cockroach-data
+    restart: unless-stopped
+
+  httpsms-api:
+    build:
+      context: ./external/httpsms/api
+    container_name: sante-vitalite-httpsms-api
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env.httpsms
+    depends_on:
+      - crdb
+      - redis
+    restart: unless-stopped
+
+  httpsms-web:
+    build:
+      context: ./external/httpsms/web
+    container_name: sante-vitalite-httpsms-web
+    ports:
+      - "3003:3000" # Use 3003 to avoid conflict with Next.js (usually 3000)
+    environment:
+      - NUXT_PUBLIC_HTTPSMS_API_URL=https://undampened-superobjectionable-alethea.ngrok-free.dev
+    restart: unless-stopped
+
+volumes:
+  redis_data:
+  garage_data:
+  garage_meta:
+  crdb_data:

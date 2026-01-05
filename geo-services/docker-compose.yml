@@ -1,0 +1,107 @@
+version: '3.8'
+
+services:
+  postgres:
+    # IMPORTANT: Changed to PostgreSQL 14 to match Nominatim's requirement
+    image: postgis/postgis:14-3.4
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=admin
+      - POSTGRES_DB=delivery
+    ports:
+      - "5435:5432"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d delivery"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  nominatim:
+    image: mediagis/nominatim:4.4
+    ports:
+      - "8003:8080"
+    volumes:
+      - ./nominatim:/data
+      # REMOVED: Incorrect volume mount for external database setup
+      # - nominatim_pg_data:/var/lib/postgresql/14/main
+    shm_size: '1gb'
+    environment:
+      # --- CORRECTED ENVIRONMENT VARIABLES ---
+      - PBF_PATH=/data/ivory-coast-latest.osm.pbf
+      - NOMINATIM_THREADS=4
+      - REPLICATION_URL=https://download.geofabrik.de/africa/ivory-coast-updates/
+      - POSTGRES_HOST=postgres  # CORRECTED: Use service name, not localhost
+      - POSTGRES_DBNAME=delivery
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=admin
+      - IMPORT_WIKIPEDIA=false   # CORRECTED: YAML syntax fixed
+    depends_on:
+      postgres:
+        condition: service_healthy
+    # REMOVED: Let the image entrypoint handle the import and run lifecycle
+    # command: import 
+    restart: unless-stopped
+
+  valhalla:
+    image: ghcr.io/gis-ops/docker-valhalla/valhalla:latest
+    ports:
+      - "8002:8002"
+    volumes:
+      - ./valhalla/custom_files:/custom_files
+    environment:
+      - tile_urls=/custom_files/ivory-coast-latest.osm.pbf
+      # The following are now default and can be omitted, but leaving for clarity
+      - use_tiles_ignore_pbf=False
+      - force_rebuild=False # Set to True only for the very first run or to force a rebuild
+      - build_elevation=True
+      - build_admins=True
+      - build_time_zones=True
+    restart: unless-stopped
+
+  osrm:
+    image: osrm/osrm-backend:latest
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./osrm:/data
+    # CORRECTED: More efficient command that only processes data if it doesn't exist
+    command: >
+      /bin/bash -c "
+      if [ ! -f /data/ivory-coast-latest.osrm ]; then
+        osrm-extract -p /opt/car.lua /data/ivory-coast-latest.osm.pbf &&
+        osrm-partition /data/ivory-coast-latest.osrm &&
+        osrm-customize /data/ivory-coast-latest.osrm;
+      fi &&
+      osrm-routed --algorithm mld /data/ivory-coast-latest.osrm"
+    restart: unless-stopped
+
+  pgadmin:
+    image: dpage/pgadmin4
+    ports:
+      - "5050:80"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@example.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+    depends_on:
+      - postgres
+    restart: unless-stopped
+
+  nginx-tiles:
+    image: nginx:alpine
+    ports:
+      - "8081:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/cache:/var/cache/nginx/osm
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+  # REMOVED: This volume is not needed as Nominatim is not hosting its own DB
+  # nominatim_pg_data:
+  pgadmin_data:
