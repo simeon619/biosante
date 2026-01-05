@@ -173,6 +173,18 @@ function LoginForm() {
                             </div>
                         )}
 
+                        {reason === 'checkout' && step === 'phone' && (
+                            <div className="mb-6 p-4 bg-amber-50 text-amber-900 text-sm rounded-xl flex items-start gap-3 border border-amber-100 animate-in fade-in slide-in-from-top-2">
+                                <Info className="w-5 h-5 flex-shrink-0 mt-0.5 text-amber-600" />
+                                <div>
+                                    <p className="font-bold text-amber-800">Finalisez votre commande</p>
+                                    <p className="text-amber-700/90 leading-relaxed mt-0.5">
+                                        Connectez-vous pour valider votre panier et suivre la livraison de vos produits.
+                                    </p>
+                                </div>
+                            </div>
+                        )}
+
                         {error && (
                             <div className="mb-6 p-4 bg-red-50 text-red-600 text-sm rounded-lg flex items-start gap-3 animate-in fade-in zoom-in-95">
                                 <AlertCircle className="w-5 h-5 flex-shrink-0 mt-0.5" />
