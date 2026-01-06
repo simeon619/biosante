@@ -17,7 +17,14 @@ RUN pnpm run generate
 
 # production stage
 FROM nginx:stable-alpine as production
+
+# Clean default nginx pages
+RUN rm -rf /usr/share/nginx/html/*
+
 COPY --from=build /app/dist /usr/share/nginx/html
+
+# Ensure index.html exists (Nuxt generate might produce 200.html for SPAs)
+RUN if [ -f /usr/share/nginx/html/200.html ]; then cp /usr/share/nginx/html/200.html /usr/share/nginx/html/index.html; fi
 
 # Copy the nginx configuration file
 COPY ./nginx.conf /etc/nginx/conf.d/default.conf
