@@ -70,8 +70,8 @@ services:
       - sv-network
       - sublymus_net
     # Expose ports only if needed strictly, otherwise use internal network for Nginx
-    ports:
-      - "3334:3333"
+    # ports:
+    #   - "3334:3333"
 
   frontend:
     build:
@@ -89,10 +89,10 @@ services:
     networks:
       - sv-network
       - sublymus_net
-    ports:
-      - "3001:3000"
+    # ports:
+    #   - "3001:3000"
 
-  # --- 3rd Party Wrappers ---
+    # --- 3rd Party Wrappers ---
   httpsms-api:
     build:
       context: ./external/httpsms/api
@@ -110,8 +110,8 @@ services:
     build:
       context: ./external/httpsms/web
     container_name: sv-httpsms-web
-    ports:
-      - "3010:3000"
+    # ports:
+    #   - "3010:3000"
     environment:
       - NUXT_PUBLIC_HTTPSMS_API_URL=https://sms-api.sante-vitalite.com
     restart: unless-stopped
