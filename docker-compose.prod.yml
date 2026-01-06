@@ -4,7 +4,7 @@ services:
   # --- Infrastructure ---
   redis:
     image: redis:7-alpine
-    container_name: sv-redis
+    container_name: biosante-redis
     volumes:
       - redis_data:/data
     restart: unless-stopped
@@ -14,7 +14,7 @@ services:
 
   garage:
     image: dxflrs/garage:v1.0.1
-    container_name: sv-garage
+    container_name: biosante-garage
     volumes:
       - garage_data:/var/lib/garage/data
       - garage_meta:/var/lib/garage/meta
@@ -28,7 +28,7 @@ services:
 
   crdb:
     image: cockroachdb/cockroach:v23.1.10
-    container_name: sv-crdb
+    container_name: biosante-crdb
     command: start-single-node --insecure
     volumes:
       - crdb_data:/cockroach/cockroach-data
@@ -43,7 +43,7 @@ services:
     build:
       context: ./api
       dockerfile: Dockerfile
-    container_name: sv-backend
+    container_name: biosante-backend
     restart: always
     env_file:
       - ./api/.env
@@ -51,15 +51,15 @@ services:
       - PORT=3333
       - HOST=0.0.0.0
       - NODE_ENV=production
-      - DB_HOST=sv-crdb
+      - DB_HOST=biosante-crdb
       - DB_PORT=26257
       - DB_USER=root
       - DB_PASSWORD=root
       - DB_DATABASE=defaultdb
-      - REDIS_HOST=sv-redis
+      - REDIS_HOST=biosante-redis
       - REDIS_PORT=6379
       # S3 Configuration (Internal Network)
-      - S3_ENDPOINT=http://sv-garage:3900
+      - S3_ENDPOINT=http://biosante-garage:3900
       - S3_REGION=garage
       - S3_BUCKET=sante-vitalite-media
     depends_on:
@@ -79,11 +79,11 @@ services:
       dockerfile: Dockerfile
       args:
         NEXT_PUBLIC_API_URL: https://api.biosante.sublymus.com
-    container_name: sv-frontend
+    container_name: biosante-frontend
     restart: always
     environment:
       - NEXT_PUBLIC_API_URL=https://api.biosante.sublymus.com
-      - INTERNAL_API_URL=http://sv-backend:3333
+      - INTERNAL_API_URL=http://biosante-backend:3333
     depends_on:
       - api
     networks:
@@ -96,7 +96,7 @@ services:
   httpsms-api:
     build:
       context: ./external/httpsms/api
-    container_name: sv-httpsms-api
+    container_name: biosante-httpsms-api
     env_file:
       - .env.httpsms
     depends_on:
@@ -109,7 +109,7 @@ services:
   httpsms-web:
     build:
       context: ./external/httpsms/web
-    container_name: sv-httpsms-web
+    container_name: biosante-httpsms-web
     # ports:
     #   - "3010:3000"
     environment:
