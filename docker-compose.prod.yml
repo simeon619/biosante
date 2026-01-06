@@ -10,7 +10,6 @@ services:
     restart: unless-stopped
     networks:
       - sv-network
-      - sublymus_net
 
   garage:
     image: dxflrs/garage:v1.0.1
@@ -24,7 +23,8 @@ services:
     restart: unless-stopped
     networks:
       - sv-network
-      - sublymus_net
+    ports:
+      - "4900:3900"
 
   crdb:
     image: cockroachdb/cockroach:v23.1.10
@@ -68,10 +68,9 @@ services:
       - garage
     networks:
       - sv-network
-      - sublymus_net
     # Expose ports only if needed strictly, otherwise use internal network for Nginx
-    # ports:
-    #   - "3334:3333"
+    ports:
+      - "4334:3333"
 
   frontend:
     build:
@@ -88,10 +87,8 @@ services:
       - api
     networks:
       - sv-network
-      - sublymus_net
-    # ports:
-    #   - "3001:3000"
-
+    ports:
+      - "4001:3000"
     # --- 3rd Party Wrappers ---
   httpsms-api:
     build:
@@ -110,20 +107,17 @@ services:
     build:
       context: ./external/httpsms/web
     container_name: biosante-httpsms-web
-    # ports:
-    #   - "3010:3000"
+    ports:
+      - "4010:3000"
     environment:
       - NUXT_PUBLIC_HTTPSMS_API_URL=https://sms-api.sante-vitalite.com
     restart: unless-stopped
     networks:
       - sv-network
-      - sublymus_net
 
 networks:
   sv-network:
     driver: bridge
-  sublymus_net:
-    external: true
 
 volumes:
   redis_data:
