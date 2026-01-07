@@ -102,6 +102,8 @@ services:
     restart: unless-stopped
     networks:
       - sv-network
+    ports:
+      - "4011:8000"
 
   httpsms-web:
     build:
