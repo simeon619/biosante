@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { Search, Filter, Eye, ChevronLeft, ChevronRight } from 'lucide-react';
+import { API_URL } from '@/lib/utils';
 
 interface Order {
     id: string;
@@ -55,7 +56,7 @@ export default function AdminOrdersPage() {
     const fetchOrders = async () => {
         setIsLoading(true);
         try {
-            let url = `http://localhost:3333/api/admin/orders?page=${pagination.page}&limit=${pagination.limit}`;
+            let url = `${API_URL}/api/admin/orders?page=${pagination.page}&limit=${pagination.limit}`;
             if (statusFilter) url += `&status=${statusFilter}`;
 
             const response = await fetch(url);

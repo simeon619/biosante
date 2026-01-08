@@ -3,6 +3,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Play, Pause, MapPin } from 'lucide-react';
 import { AudioTestimonial } from '@/types';
+import { API_URL } from '@/lib/utils';
 
 interface AudioPlayerProps {
     testimonial: AudioTestimonial;
@@ -67,7 +68,7 @@ export const AudioPlayer: React.FC<AudioPlayerProps> = ({
             </div>
             <audio
                 ref={audioRef}
-                src={testimonial.url.startsWith('/uploads') ? `http://localhost:3333${testimonial.url}` : testimonial.url}
+                src={testimonial.url.startsWith('/uploads') ? `${API_URL}${testimonial.url}` : testimonial.url}
                 onEnded={() => setIsPlaying(false)}
                 onPause={() => setIsPlaying(false)}
                 onPlay={() => setIsPlaying(true)}

@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { Bell, Clock, Info, Package, CreditCard, AlertTriangle, CheckCircle } from 'lucide-react';
+import { API_URL } from '@/lib/utils';
 
 interface NotificationBatch {
     id: string;
@@ -27,7 +28,7 @@ export default function NotificationsPage() {
     const fetchNotifications = async () => {
         try {
             const token = localStorage.getItem('admin_token');
-            const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3333';
+            const baseUrl = API_URL;
             const response = await fetch(`${baseUrl}/api/admin/notifications`, {
                 headers: {
                     'Authorization': `Bearer ${token}`

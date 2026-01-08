@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { Plus, Truck, Edit, Trash2, Power, Search, Loader2, Save, MapPin } from 'lucide-react';
+import { API_URL } from '@/lib/utils';
 
 interface ShippingCompany {
     id: number;
@@ -34,7 +35,7 @@ export default function AdminShippingPage() {
     const fetchCompanies = async () => {
         setIsLoading(true);
         try {
-            const response = await fetch('http://localhost:3333/api/admin/shipping');
+            const response = await fetch(`${API_URL}/api/admin/shipping`);
             const data = await response.json();
             setCompanies(data.companies || []);
         } catch (error) {
@@ -46,7 +47,7 @@ export default function AdminShippingPage() {
 
     const handleToggle = async (id: number) => {
         try {
-            await fetch(`http://localhost:3333/api/admin/shipping/${id}/toggle`, {
+            await fetch(`${API_URL}/api/admin/shipping/${id}/toggle`, {
                 method: 'POST'
             });
             fetchCompanies();
@@ -58,7 +59,7 @@ export default function AdminShippingPage() {
     const handleDelete = async (id: number) => {
         if (!confirm('Êtes-vous sûr de vouloir supprimer cette compagnie ?')) return;
         try {
-            await fetch(`http://localhost:3333/api/admin/shipping/${id}`, {
+            await fetch(`${API_URL}/api/admin/shipping/${id}`, {
                 method: 'DELETE'
             });
             fetchCompanies();
@@ -78,8 +79,8 @@ export default function AdminShippingPage() {
         setIsSaving(true);
         try {
             const url = editingCompany
-                ? `http://localhost:3333/api/admin/shipping/${editingCompany.id}`
-                : 'http://localhost:3333/api/admin/shipping';
+                ? `${API_URL}/api/admin/shipping/${editingCompany.id}`
+                : `${API_URL}/api/admin/shipping`;
 
             const response = await fetch(url, {
                 method: editingCompany ? 'PATCH' : 'POST',

@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { ShoppingCart, DollarSign, Package, TrendingUp, Clock, CheckCircle, ChevronRight, AlertTriangle } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { API_URL } from '@/lib/utils';
 
 interface DashboardStats {
     orders: {
@@ -34,7 +35,7 @@ export default function AdminDashboardPage() {
     const fetchDashboard = async () => {
         try {
             const token = localStorage.getItem('admin_token');
-            const response = await fetch('http://localhost:3333/api/admin/dashboard', {
+            const response = await fetch(`${API_URL}/api/admin/dashboard`, {
                 headers: {
                     'Authorization': `Bearer ${token}`,
                     'X-Admin-Id': JSON.parse(localStorage.getItem('admin_data') || '{}').id

@@ -15,7 +15,7 @@ import {
     DollarSign
 } from 'lucide-react';
 import Link from 'next/link';
-import { cn } from '@/lib/utils';
+import { cn, API_URL } from '@/lib/utils';
 
 interface Payment {
     id: number;
@@ -47,7 +47,7 @@ export default function AdminPaymentsPage() {
         try {
             const token = localStorage.getItem('admin_token');
             const adminData = JSON.parse(localStorage.getItem('admin_data') || '{}');
-            const response = await fetch('http://localhost:3333/api/admin/payments', {
+            const response = await fetch(`${API_URL}/api/admin/payments`, {
                 headers: {
                     'Authorization': `Bearer ${token}`,
                     'X-Admin-Id': adminData.id
@@ -70,7 +70,7 @@ export default function AdminPaymentsPage() {
         try {
             const token = localStorage.getItem('admin_token');
             const adminData = JSON.parse(localStorage.getItem('admin_data') || '{}');
-            const response = await fetch(`http://localhost:3333/api/admin/payments/${paymentId}/confirm`, {
+            const response = await fetch(`${API_URL}/api/admin/payments/${paymentId}/confirm`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

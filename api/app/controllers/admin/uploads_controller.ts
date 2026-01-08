@@ -45,7 +45,7 @@ export default class AdminUploadsController {
             await this.storage.upload(key, fileBuffer, contentType)
 
             // Return the proxy URL (through our API, not directly from S3)
-            const baseUrl = process.env.API_URL || 'http://localhost:3333'
+            const baseUrl = process.env.API_URL || 'https://api.biosante.sublymus.com'
             const imageUrl = `${baseUrl}/api/media/${key}`
 
             return response.ok({

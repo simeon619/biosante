@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { Plus, Package, Edit, Trash2, Power, Search, Loader2 } from 'lucide-react';
+import { API_URL } from '@/lib/utils';
 
 interface Product {
     id: string;
@@ -28,7 +29,7 @@ export default function AdminProductsPage() {
     const fetchProducts = async () => {
         setIsLoading(true);
         try {
-            const response = await fetch('http://localhost:3333/api/admin/products', { cache: 'no-store' });
+            const response = await fetch(`${API_URL}/api/admin/products`, { cache: 'no-store' });
             const data = await response.json();
             setProducts(data.products || []);
         } catch (error) {
@@ -40,7 +41,7 @@ export default function AdminProductsPage() {
 
     const handleToggle = async (id: string) => {
         try {
-            await fetch(`http://localhost:3333/api/admin/products/${id}/toggle`, {
+            await fetch(`${API_URL}/api/admin/products/${id}/toggle`, {
                 method: 'POST'
             });
             fetchProducts();
@@ -52,7 +53,7 @@ export default function AdminProductsPage() {
     const handleDelete = async (id: string) => {
         if (!confirm('Êtes-vous sûr de vouloir supprimer ce produit ?')) return;
         try {
-            await fetch(`http://localhost:3333/api/admin/products/${id}`, {
+            await fetch(`${API_URL}/api/admin/products/${id}`, {
                 method: 'DELETE'
             });
             fetchProducts();

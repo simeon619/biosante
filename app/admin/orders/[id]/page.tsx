@@ -27,6 +27,7 @@ import {
     Printer,
     Download
 } from 'lucide-react';
+import { API_URL } from '@/lib/utils';
 
 interface OrderDetails {
     order: {
@@ -94,7 +95,7 @@ export default function OrderDetailsPage() {
     const fetchOrderDetails = async () => {
         try {
             const token = localStorage.getItem('admin_token');
-            const url = `http://localhost:3333/api/admin/orders/${params.id}`;
+            const url = `${API_URL}/api/admin/orders/${params.id}`;
             const response = await fetch(url, {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
@@ -128,7 +129,7 @@ export default function OrderDetailsPage() {
         setShowModal(false);
         try {
             const token = localStorage.getItem('admin_token');
-            const response = await fetch(`http://localhost:3333/api/admin/orders/${params.id}/status`, {
+            const response = await fetch(`${API_URL}/api/admin/orders/${params.id}/status`, {
                 method: 'PATCH',
                 headers: {
                     'Authorization': `Bearer ${token}`,
@@ -615,7 +616,7 @@ export default function OrderDetailsPage() {
                                             onClick={async () => {
                                                 setIsUpdating(true);
                                                 try {
-                                                    const res = await fetch(`http://localhost:3333/api/admin/orders/${order.id}/manual-status`, {
+                                                    const res = await fetch(`${API_URL}/api/admin/orders/${order.id}/manual-status`, {
                                                         method: 'PATCH',
                                                         headers: {
                                                             'Authorization': `Bearer ${localStorage.getItem('admin_token')}`,
@@ -635,7 +636,7 @@ export default function OrderDetailsPage() {
                                             onClick={async () => {
                                                 setIsUpdating(true);
                                                 try {
-                                                    const res = await fetch(`http://localhost:3333/api/admin/orders/${order.id}/manual-status`, {
+                                                    const res = await fetch(`${API_URL}/api/admin/orders/${order.id}/manual-status`, {
                                                         method: 'PATCH',
                                                         headers: {
                                                             'Authorization': `Bearer ${localStorage.getItem('admin_token')}`,
@@ -655,7 +656,7 @@ export default function OrderDetailsPage() {
                                             onClick={async () => {
                                                 setIsUpdating(true);
                                                 try {
-                                                    const res = await fetch(`http://localhost:3333/api/admin/orders/${order.id}/manual-status`, {
+                                                    const res = await fetch(`${API_URL}/api/admin/orders/${order.id}/manual-status`, {
                                                         method: 'PATCH',
                                                         headers: {
                                                             'Authorization': `Bearer ${localStorage.getItem('admin_token')}`,

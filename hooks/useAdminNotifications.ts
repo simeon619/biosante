@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useCallback } from 'react';
 import { Transmit } from '@adonisjs/transmit-client';
+import { API_URL } from '@/lib/utils';
 
 export interface AdminNotification {
     title: string;
@@ -29,7 +30,7 @@ export function useAdminNotifications() {
     }, []);
 
     useEffect(() => {
-        const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3333';
+        const baseUrl = API_URL;
 
         const transmit = new Transmit({
             baseUrl,

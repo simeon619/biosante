@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { Plus, Mic, Play, Pause, Edit, Trash2, GripVertical, Power, Loader2 } from 'lucide-react';
+import { API_URL } from '@/lib/utils';
 
 interface Testimonial {
     id: number;
@@ -39,8 +40,8 @@ export default function AdminAudioPage() {
     const fetchTestimonials = async () => {
         try {
             const url = selectedProduct === 'all'
-                ? 'http://localhost:3333/api/admin/testimonials'
-                : `http://localhost:3333/api/admin/testimonials?product_id=${selectedProduct}`;
+                ? `${API_URL}/api/admin/testimonials`
+                : `${API_URL}/api/admin/testimonials?product_id=${selectedProduct}`;
 
             const response = await fetch(url);
             const data = await response.json();
@@ -68,8 +69,8 @@ export default function AdminAudioPage() {
             }
 
             const url = editingTestimonial
-                ? `http://localhost:3333/api/admin/testimonials/${editingTestimonial.id}`
-                : 'http://localhost:3333/api/admin/testimonials';
+                ? `${API_URL}/api/admin/testimonials/${editingTestimonial.id}`
+                : `${API_URL}/api/admin/testimonials`;
 
             const response = await fetch(url, {
                 method: editingTestimonial ? 'PATCH' : 'POST',
@@ -92,7 +93,7 @@ export default function AdminAudioPage() {
 
     const handleToggle = async (id: number) => {
         try {
-            await fetch(`http://localhost:3333/api/admin/testimonials/${id}/toggle`, {
+            await fetch(`${API_URL}/api/admin/testimonials/${id}/toggle`, {
                 method: 'POST'
             });
             fetchTestimonials();
@@ -105,7 +106,7 @@ export default function AdminAudioPage() {
         if (!confirm('Êtes-vous sûr de vouloir supprimer ce témoignage ?')) return;
 
         try {
-            await fetch(`http://localhost:3333/api/admin/testimonials/${id}`, {
+            await fetch(`${API_URL}/api/admin/testimonials/${id}`, {
                 method: 'DELETE'
             });
             fetchTestimonials();
@@ -159,8 +160,8 @@ export default function AdminAudioPage() {
                         key={filter}
                         onClick={() => setSelectedProduct(filter)}
                         className={`px-4 py-2 rounded-lg font-medium transition-colors ${selectedProduct === filter
-                                ? 'bg-black text-white'
-                                : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                            ? 'bg-black text-white'
+                            : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
                             }`}
                     >
                         {filter === 'all' ? 'Tous' : filter.charAt(0).toUpperCase() + filter.slice(1)}
@@ -195,10 +196,10 @@ export default function AdminAudioPage() {
                                         <button
                                             onClick={() => setPlayingId(playingId === testimonial.id ? null : testimonial.id)}
                                             className={`w-10 h-10 rounded-full flex items-center justify-center transition-colors ${playingId === testimonial.id
-                                                    ? 'bg-gray-900 text-white'
-                                                    : productId === 'bioactif'
-                                                        ? 'bg-rose-500 text-white'
-                                                        : 'bg-emerald-500 text-white'
+                                                ? 'bg-gray-900 text-white'
+                                                : productId === 'bioactif'
+                                                    ? 'bg-rose-500 text-white'
+                                                    : 'bg-emerald-500 text-white'
                                                 }`}
                                         >
                                             {playingId === testimonial.id ? (
@@ -220,8 +221,8 @@ export default function AdminAudioPage() {
                                         <button
                                             onClick={() => handleToggle(testimonial.id)}
                                             className={`p-2 rounded-lg transition-colors ${testimonial.is_active
-                                                    ? 'bg-green-100 text-green-600'
-                                                    : 'bg-gray-100 text-gray-400'
+                                                ? 'bg-green-100 text-green-600'
+                                                : 'bg-gray-100 text-gray-400'
                                                 }`}
                                             title={testimonial.is_active ? 'Actif' : 'Inactif'}
                                         >

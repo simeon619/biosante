@@ -19,6 +19,7 @@ import {
     XCircle,
     Activity
 } from 'lucide-react';
+import { API_URL } from '@/lib/utils';
 
 interface StatsData {
     orders: {
@@ -125,9 +126,9 @@ export default function AdminStatsPage() {
 
             // Fetch dashboard overview
             const [dashboardRes, ordersRes, productsRes] = await Promise.all([
-                fetch('http://localhost:3333/api/admin/dashboard', { headers }),
-                fetch('http://localhost:3333/api/admin/orders?limit=1000', { headers }),
-                fetch('http://localhost:3333/api/admin/products', { headers })
+                fetch(`${API_URL}/api/admin/dashboard`, { headers }),
+                fetch(`${API_URL}/api/admin/orders?limit=1000`, { headers }),
+                fetch(`${API_URL}/api/admin/products`, { headers })
             ]);
 
             const dashboardData = await dashboardRes.json();

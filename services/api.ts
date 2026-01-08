@@ -2,7 +2,7 @@
 import axios from 'axios';
 import { CartItem, DeliveryEstimate } from '../types';
 
-const API_URL = 'http://localhost:3333/api';
+import { API_URL } from '@/lib/utils';
 
 /**
  * Payment initiation response

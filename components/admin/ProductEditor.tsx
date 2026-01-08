@@ -7,6 +7,7 @@ import {
     Image as ImageIcon, Info, Tag, DollarSign, Package, CheckCircle2,
     Layout
 } from 'lucide-react';
+import { API_URL } from '@/lib/utils';
 
 interface ProductEditorProps {
     productId?: string;
@@ -45,7 +46,7 @@ export default function ProductEditor({ productId, isNew }: ProductEditorProps) 
 
     const fetchProduct = async () => {
         try {
-            const response = await fetch(`http://localhost:3333/api/admin/products/${productId}`, { cache: 'no-store' });
+            const response = await fetch(`${API_URL}/api/admin/products/${productId}`, { cache: 'no-store' });
             const data = await response.json();
             console.log('[ProductEditor] Fetched product data:', data.product);
             if (data.product) {
@@ -76,7 +77,7 @@ export default function ProductEditor({ productId, isNew }: ProductEditorProps) 
         fd.append('image', file);
 
         try {
-            const response = await fetch('http://localhost:3333/api/admin/uploads/image', {
+            const response = await fetch(`${API_URL}/api/admin/uploads/image`, {
                 method: 'POST',
                 body: fd,
             });
@@ -116,8 +117,8 @@ export default function ProductEditor({ productId, isNew }: ProductEditorProps) 
         setIsSaving(true);
         try {
             const url = isNew
-                ? 'http://localhost:3333/api/admin/products'
-                : `http://localhost:3333/api/admin/products/${productId}`;
+                ? `${API_URL}/api/admin/products`
+                : `${API_URL}/api/admin/products/${productId}`;
 
             const payload = {
                 ...formData,
