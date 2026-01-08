@@ -62,6 +62,8 @@ services:
       - S3_ENDPOINT=http://biosante-garage:3900
       - S3_REGION=garage
       - S3_BUCKET=sante-vitalite-media
+      # Internal Service Communication
+      - HTTPSMS_API_URL=http://biosante-httpsms-api:8000
     depends_on:
       - crdb
       - redis
