@@ -41,7 +41,7 @@ services:
       context: ./external/httpsms/api
     container_name: sante-vitalite-httpsms-api
     ports:
-      - "8000:8000"
+      - "4011:8000"
     env_file:
       - .env.httpsms
     depends_on:

@@ -7,7 +7,7 @@ export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
     titleTemplate: '%s',
-    title: 'Convert your android phone into an SMS gateway - httpSMS',
+    title: 'Sublymus SMS Dashboard',
     htmlAttrs: {
       lang: 'en',
     },
@@ -48,7 +48,7 @@ export default {
       {
         hid: 'og:title',
         name: 'og:title',
-        content: 'Convert your android phone into an SMS gateway - httpSMS',
+        content: 'Sublymus SMS Dashboard',
       },
       {
         hid: 'og:description',

@@ -25,4 +25,4 @@ export function formatIvorianPhone(phone: string) {
     return `${digits.slice(0, 2)} ${digits.slice(2, 4)} ${digits.slice(4, 6)} ${digits.slice(6, 8)} ${digits.slice(8)}`;
 }
 
-export const  API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://api.biosante.sublymus.com';
+export const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://api-biosante.sublymus.com';
