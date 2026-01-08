@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { Phone, Loader2, ArrowLeft, Shield } from 'lucide-react';
+import { API_URL } from '@/lib/utils';
 
 export default function AdminLoginPage() {
     const router = useRouter();
@@ -38,7 +39,7 @@ export default function AdminLoginPage() {
         setIsLoading(true);
 
         try {
-            const response = await fetch('http://localhost:3333/api/admin/auth/send-otp', {
+            const response = await fetch(`${API_URL}/api/admin/auth/send-otp`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ phone })
@@ -109,7 +110,7 @@ export default function AdminLoginPage() {
         const otpCode = code || otp.join('');
 
         try {
-            const response = await fetch('http://localhost:3333/api/admin/auth/verify-otp', {
+            const response = await fetch(`${API_URL}/api/admin/auth/verify-otp`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ phone, otp: otpCode })
@@ -142,7 +143,7 @@ export default function AdminLoginPage() {
         setIsLoading(true);
 
         try {
-            const response = await fetch('http://localhost:3333/api/admin/auth/send-otp', {
+            const response = await fetch(`${API_URL}/api/admin/auth/send-otp`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ phone })

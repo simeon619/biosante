@@ -26,7 +26,7 @@ var _s = __turbopack_context__.k.signature();
 ;
 ;
 ;
-function LoginPage() {
+function LoginForm() {
     _s();
     const [step, setStep] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])('phone');
     const [formData, setFormData] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])({
@@ -47,13 +47,11 @@ function LoginPage() {
         setError(null);
         setIsLoading(true);
         try {
-            const res = await sendOtp(formData.phone);
-            if (res.success) {
-                setIsOtpSent(true);
-                setStep('otp');
-            }
+            await sendOtp(formData.phone);
+            setStep('otp');
+            setIsOtpSent(true);
         } catch (err) {
-            setError(err.response?.data?.message || err.message || 'Erreur lors de l\'envoi du code');
+            setError(err.message || 'Erreur lors de l\'envoi du code');
         } finally{
             setIsLoading(false);
         }
@@ -63,16 +61,14 @@ function LoginPage() {
         setError(null);
         setIsLoading(true);
         try {
-            const res = await verifyOtp(formData.phone, formData.otp);
-            if (res.success) {
-                if (res.isNewUser) {
-                    setStep('profile');
-                } else {
-                    router.push(redirectTo);
-                }
+            const result = await verifyOtp(getRawPhone(), formData.otp);
+            if (result.success && result.isNewUser) {
+                setStep('profile');
+            } else {
+                router.push(redirectTo);
             }
         } catch (err) {
-            setError(err.response?.data?.message || 'Code invalide ou expiré');
+            setError(err.message || 'Code invalide');
         } finally{
             setIsLoading(false);
         }
@@ -82,18 +78,16 @@ function LoginPage() {
         setError(null);
         setIsLoading(true);
         try {
-            // Since OTP is already verified, we just need to create the user with name
-            // We use the same register method but with a dummy password since the backend currently requires it
-            // TODO: Update backend register to not require password if OTP is verified
+            // Register with dummy password as we use OTP
             await register({
-                phone: formData.phone,
-                password: Math.random().toString(36),
+                phone: getRawPhone(),
                 name: formData.name,
-                email: formData.email
+                email: formData.email,
+                password: 'otp_auto_generated_password'
             });
             router.push(redirectTo);
         } catch (err) {
-            setError(err.response?.data?.message || 'Erreur lors de la création du profil');
+            setError(err.message || 'Erreur lors de l\'inscription');
         } finally{
             setIsLoading(false);
         }
@@ -101,451 +95,494 @@ function LoginPage() {
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
         className: "min-h-screen bg-[#F4F4F0] flex items-center justify-center p-4",
         children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-            className: "max-w-md w-full",
+            className: "max-w-md w-full bg-white rounded-2xl shadow-xl overflow-hidden",
             children: [
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                    className: "text-center mb-8",
+                    className: "bg-indigo-600 p-8 text-center",
                     children: [
-                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
-                            href: "/",
-                            className: "inline-block mb-6",
-                            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                className: "text-2xl font-black tracking-tighter text-indigo-600 bg-white px-4 py-2 rounded-2xl shadow-sm",
-                                children: [
-                                    "SV",
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                        className: "text-slate-900",
-                                        children: ".STORE"
-                                    }, void 0, false, {
-                                        fileName: "[project]/app/(store)/login/page.tsx",
-                                        lineNumber: 106,
-                                        columnNumber: 31
-                                    }, this)
-                                ]
-                            }, void 0, true, {
-                                fileName: "[project]/app/(store)/login/page.tsx",
-                                lineNumber: 105,
-                                columnNumber: 25
-                            }, this)
+                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h1", {
+                            className: "text-3xl font-bold text-white mb-2",
+                            children: "Bienvenue"
                         }, void 0, false, {
                             fileName: "[project]/app/(store)/login/page.tsx",
-                            lineNumber: 104,
+                            lineNumber: 96,
                             columnNumber: 21
                         }, this),
-                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h1", {
-                            className: "text-3xl font-black text-slate-900 tracking-tight",
+                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                            className: "text-indigo-100",
+                            children: "Connectez-vous à votre espace personnel"
+                        }, void 0, false, {
+                            fileName: "[project]/app/(store)/login/page.tsx",
+                            lineNumber: 97,
+                            columnNumber: 21
+                        }, this)
+                    ]
+                }, void 0, true, {
+                    fileName: "[project]/app/(store)/login/page.tsx",
+                    lineNumber: 95,
+                    columnNumber: 17
+                }, this),
+                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                    className: "p-8",
+                    children: [
+                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                            className: "flex justify-center mb-8",
                             children: [
-                                step === 'phone' && 'Connexion Rapide',
-                                step === 'otp' && 'Vérification',
-                                step === 'profile' && 'Presque fini !'
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                    className: `w-3 h-3 rounded-full mx-1 ${step === 'phone' ? 'bg-indigo-600' : 'bg-gray-300'}`
+                                }, void 0, false, {
+                                    fileName: "[project]/app/(store)/login/page.tsx",
+                                    lineNumber: 103,
+                                    columnNumber: 25
+                                }, this),
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                    className: `w-3 h-3 rounded-full mx-1 ${step === 'otp' ? 'bg-indigo-600' : 'bg-gray-300'}`
+                                }, void 0, false, {
+                                    fileName: "[project]/app/(store)/login/page.tsx",
+                                    lineNumber: 104,
+                                    columnNumber: 25
+                                }, this),
+                                step === 'profile' && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                    className: "w-3 h-3 rounded-full mx-1 bg-indigo-600"
+                                }, void 0, false, {
+                                    fileName: "[project]/app/(store)/login/page.tsx",
+                                    lineNumber: 105,
+                                    columnNumber: 48
+                                }, this)
+                            ]
+                        }, void 0, true, {
+                            fileName: "[project]/app/(store)/login/page.tsx",
+                            lineNumber: 102,
+                            columnNumber: 21
+                        }, this),
+                        error && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                            className: "mb-6 p-4 bg-red-50 border-l-4 border-red-500 flex items-start",
+                            children: [
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$circle$2d$alert$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__AlertCircle$3e$__["AlertCircle"], {
+                                    className: "w-5 h-5 text-red-500 mr-2 flex-shrink-0 mt-0.5"
+                                }, void 0, false, {
+                                    fileName: "[project]/app/(store)/login/page.tsx",
+                                    lineNumber: 110,
+                                    columnNumber: 29
+                                }, this),
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                    className: "text-sm text-red-700",
+                                    children: error
+                                }, void 0, false, {
+                                    fileName: "[project]/app/(store)/login/page.tsx",
+                                    lineNumber: 111,
+                                    columnNumber: 29
+                                }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/(store)/login/page.tsx",
                             lineNumber: 109,
-                            columnNumber: 21
+                            columnNumber: 25
                         }, this),
-                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                            className: "text-slate-500 mt-2 font-medium",
+                        isOtpSent && step === 'otp' && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                            className: "mb-6 p-4 bg-green-50 border-l-4 border-green-500 flex items-start",
                             children: [
-                                step === 'phone' && 'Entrez votre numéro pour recevoir un code',
-                                step === 'otp' && `Entrez le code envoyé au ${formData.phone}`,
-                                step === 'profile' && 'Parlez-nous un peu de vous'
-                            ]
-                        }, void 0, true, {
-                            fileName: "[project]/app/(store)/login/page.tsx",
-                            lineNumber: 114,
-                            columnNumber: 21
-                        }, this)
-                    ]
-                }, void 0, true, {
-                    fileName: "[project]/app/(store)/login/page.tsx",
-                    lineNumber: 103,
-                    columnNumber: 17
-                }, this),
-                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                    className: "bg-white rounded-[2.5rem] p-8 shadow-xl shadow-slate-200/50 border border-slate-100",
-                    children: [
-                        error && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                            className: "mb-6 p-4 bg-red-50 border border-red-100 rounded-2xl flex items-center gap-3 text-red-600 animate-in shake duration-300",
-                            children: [
-                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$circle$2d$alert$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__AlertCircle$3e$__["AlertCircle"], {
-                                    className: "w-5 h-5 flex-shrink-0"
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$circle$2d$check$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__CheckCircle2$3e$__["CheckCircle2"], {
+                                    className: "w-5 h-5 text-green-500 mr-2 flex-shrink-0 mt-0.5"
                                 }, void 0, false, {
                                     fileName: "[project]/app/(store)/login/page.tsx",
-                                    lineNumber: 126,
+                                    lineNumber: 117,
                                     columnNumber: 29
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                    className: "text-sm font-bold",
-                                    children: error
+                                    className: "text-sm text-green-700",
+                                    children: "Code envoyé avec succès !"
                                 }, void 0, false, {
                                     fileName: "[project]/app/(store)/login/page.tsx",
-                                    lineNumber: 127,
+                                    lineNumber: 118,
                                     columnNumber: 29
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/(store)/login/page.tsx",
-                            lineNumber: 125,
+                            lineNumber: 116,
                             columnNumber: 25
                         }, this),
                         step === 'phone' && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("form", {
                             onSubmit: handleSendOtp,
-                            className: "space-y-5 animate-in fade-in slide-in-from-bottom-4 duration-500",
+                            className: "space-y-6",
                             children: [
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                    className: "space-y-2",
                                     children: [
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("label", {
-                                            className: "text-[10px] font-black uppercase tracking-widest text-slate-400 ml-2",
-                                            children: "Numéro Téléphone"
+                                            className: "block text-sm font-medium text-gray-700 mb-2",
+                                            children: "Numéro de téléphone"
                                         }, void 0, false, {
                                             fileName: "[project]/app/(store)/login/page.tsx",
-                                            lineNumber: 134,
+                                            lineNumber: 125,
                                             columnNumber: 33
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                             className: "relative",
                                             children: [
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$phone$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Phone$3e$__["Phone"], {
-                                                    className: "absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400"
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                    className: "absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none",
+                                                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$phone$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Phone$3e$__["Phone"], {
+                                                        className: "h-5 w-5 text-gray-400"
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/app/(store)/login/page.tsx",
+                                                        lineNumber: 128,
+                                                        columnNumber: 41
+                                                    }, this)
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/(store)/login/page.tsx",
-                                                    lineNumber: 136,
+                                                    lineNumber: 127,
                                                     columnNumber: 37
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
                                                     type: "tel",
-                                                    placeholder: "01 02 03 04 05",
+                                                    placeholder: "0102030405",
                                                     required: true,
+                                                    className: "block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 transition-colors",
                                                     value: formData.phone,
                                                     onChange: (e)=>setFormData({
                                                             ...formData,
                                                             phone: e.target.value
-                                                        }),
-                                                    className: "w-full bg-slate-50 border border-slate-100 rounded-2xl py-4 pl-12 pr-4 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all font-medium text-slate-900"
+                                                        })
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/(store)/login/page.tsx",
-                                                    lineNumber: 137,
+                                                    lineNumber: 130,
                                                     columnNumber: 37
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/(store)/login/page.tsx",
-                                            lineNumber: 135,
+                                            lineNumber: 126,
                                             columnNumber: 33
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/(store)/login/page.tsx",
-                                    lineNumber: 133,
+                                    lineNumber: 124,
                                     columnNumber: 29
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
                                     type: "submit",
                                     disabled: isLoading,
-                                    className: "w-full bg-indigo-600 text-white font-black py-5 rounded-2xl hover:bg-indigo-700 hover:scale-[1.02] active:scale-[0.98] transition-all disabled:opacity-50 flex items-center justify-center gap-2 shadow-lg shadow-indigo-600/20 mt-4 group",
+                                    className: "w-full flex items-center justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed transition-all",
                                     children: isLoading ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$loader$2d$circle$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Loader2$3e$__["Loader2"], {
                                         className: "w-5 h-5 animate-spin"
                                     }, void 0, false, {
                                         fileName: "[project]/app/(store)/login/page.tsx",
-                                        lineNumber: 154,
-                                        columnNumber: 37
+                                        lineNumber: 145,
+                                        columnNumber: 46
                                     }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Fragment"], {
                                         children: [
-                                            "Recevoir le code",
+                                            "Recevoir le code ",
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$arrow$2d$right$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__ArrowRight$3e$__["ArrowRight"], {
-                                                className: "w-5 h-5 group-hover:translate-x-1 transition-transform"
+                                                className: "ml-2 w-4 h-4"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/(store)/login/page.tsx",
-                                                lineNumber: 158,
-                                                columnNumber: 41
+                                                lineNumber: 145,
+                                                columnNumber: 112
                                             }, this)
                                         ]
                                     }, void 0, true)
                                 }, void 0, false, {
                                     fileName: "[project]/app/(store)/login/page.tsx",
-                                    lineNumber: 148,
+                                    lineNumber: 140,
                                     columnNumber: 29
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/(store)/login/page.tsx",
-                            lineNumber: 132,
+                            lineNumber: 123,
                             columnNumber: 25
                         }, this),
                         step === 'otp' && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("form", {
                             onSubmit: handleVerifyOtp,
-                            className: "space-y-5 animate-in fade-in slide-in-from-bottom-4 duration-500",
+                            className: "space-y-6",
                             children: [
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                    className: "space-y-2",
                                     children: [
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("label", {
-                                            className: "text-[10px] font-black uppercase tracking-widest text-slate-400 ml-2",
+                                            className: "block text-sm font-medium text-gray-700 mb-2",
                                             children: "Code de vérification"
                                         }, void 0, false, {
                                             fileName: "[project]/app/(store)/login/page.tsx",
-                                            lineNumber: 168,
+                                            lineNumber: 153,
+                                            columnNumber: 33
+                                        }, this),
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
+                                            type: "text",
+                                            placeholder: "123456",
+                                            required: true,
+                                            className: "block w-full px-4 py-3 text-center text-2xl tracking-widest border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 transition-colors",
+                                            value: formData.otp,
+                                            onChange: (e)=>setFormData({
+                                                    ...formData,
+                                                    otp: e.target.value
+                                                }),
+                                            maxLength: 6
+                                        }, void 0, false, {
+                                            fileName: "[project]/app/(store)/login/page.tsx",
+                                            lineNumber: 154,
                                             columnNumber: 33
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                            className: "relative",
-                                            children: [
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$circle$2d$check$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__CheckCircle2$3e$__["CheckCircle2"], {
-                                                    className: "absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400"
-                                                }, void 0, false, {
-                                                    fileName: "[project]/app/(store)/login/page.tsx",
-                                                    lineNumber: 170,
-                                                    columnNumber: 37
-                                                }, this),
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
-                                                    type: "text",
-                                                    placeholder: "123456",
-                                                    required: true,
-                                                    maxLength: 6,
-                                                    value: formData.otp,
-                                                    onChange: (e)=>setFormData({
-                                                            ...formData,
-                                                            otp: e.target.value
-                                                        }),
-                                                    className: "w-full bg-slate-50 border border-slate-100 rounded-2xl py-4 pl-12 pr-4 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all font-medium text-slate-900 tracking-[0.5em] text-center text-2xl"
-                                                }, void 0, false, {
-                                                    fileName: "[project]/app/(store)/login/page.tsx",
-                                                    lineNumber: 171,
-                                                    columnNumber: 37
-                                                }, this)
-                                            ]
-                                        }, void 0, true, {
+                                            className: "mt-2 text-center",
+                                            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                                                type: "button",
+                                                onClick: ()=>setStep('phone'),
+                                                className: "text-sm text-indigo-600 hover:text-indigo-500",
+                                                children: "Modifier le numéro"
+                                            }, void 0, false, {
+                                                fileName: "[project]/app/(store)/login/page.tsx",
+                                                lineNumber: 164,
+                                                columnNumber: 37
+                                            }, this)
+                                        }, void 0, false, {
                                             fileName: "[project]/app/(store)/login/page.tsx",
-                                            lineNumber: 169,
+                                            lineNumber: 163,
                                             columnNumber: 33
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/(store)/login/page.tsx",
-                                    lineNumber: 167,
+                                    lineNumber: 152,
                                     columnNumber: 29
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
                                     type: "submit",
                                     disabled: isLoading,
-                                    className: "w-full bg-indigo-600 text-white font-black py-5 rounded-2xl hover:bg-indigo-700 hover:scale-[1.02] active:scale-[0.98] transition-all disabled:opacity-50 flex items-center justify-center gap-2 shadow-lg shadow-indigo-600/20 mt-4 group",
+                                    className: "w-full flex items-center justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed transition-all",
                                     children: isLoading ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$loader$2d$circle$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Loader2$3e$__["Loader2"], {
                                         className: "w-5 h-5 animate-spin"
                                     }, void 0, false, {
                                         fileName: "[project]/app/(store)/login/page.tsx",
-                                        lineNumber: 189,
-                                        columnNumber: 37
-                                    }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Fragment"], {
-                                        children: [
-                                            "Vérifier et continuer",
-                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$arrow$2d$right$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__ArrowRight$3e$__["ArrowRight"], {
-                                                className: "w-5 h-5 group-hover:translate-x-1 transition-transform"
-                                            }, void 0, false, {
-                                                fileName: "[project]/app/(store)/login/page.tsx",
-                                                lineNumber: 193,
-                                                columnNumber: 41
-                                            }, this)
-                                        ]
-                                    }, void 0, true)
+                                        lineNumber: 178,
+                                        columnNumber: 46
+                                    }, this) : 'Vérifier'
                                 }, void 0, false, {
                                     fileName: "[project]/app/(store)/login/page.tsx",
-                                    lineNumber: 183,
-                                    columnNumber: 29
-                                }, this),
-                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-                                    type: "button",
-                                    onClick: ()=>setStep('phone'),
-                                    className: "w-full text-slate-400 font-bold text-xs uppercase tracking-widest mt-2 hover:text-slate-600 transition-colors",
-                                    children: "Modifier le numéro"
-                                }, void 0, false, {
-                                    fileName: "[project]/app/(store)/login/page.tsx",
-                                    lineNumber: 198,
+                                    lineNumber: 173,
                                     columnNumber: 29
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/(store)/login/page.tsx",
-                            lineNumber: 166,
+                            lineNumber: 151,
                             columnNumber: 25
                         }, this),
                         step === 'profile' && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("form", {
                             onSubmit: handleFinishProfile,
-                            className: "space-y-5 animate-in fade-in slide-in-from-bottom-4 duration-500",
+                            className: "space-y-6",
                             children: [
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                    className: "space-y-2",
                                     children: [
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("label", {
-                                            className: "text-[10px] font-black uppercase tracking-widest text-slate-400 ml-2",
-                                            children: "Votre Nom"
+                                            className: "block text-sm font-medium text-gray-700 mb-2",
+                                            children: "Nom complet"
                                         }, void 0, false, {
                                             fileName: "[project]/app/(store)/login/page.tsx",
-                                            lineNumber: 211,
+                                            lineNumber: 186,
                                             columnNumber: 33
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                             className: "relative",
                                             children: [
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$user$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__User$3e$__["User"], {
-                                                    className: "absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400"
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                    className: "absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none",
+                                                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$user$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__User$3e$__["User"], {
+                                                        className: "h-5 w-5 text-gray-400"
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/app/(store)/login/page.tsx",
+                                                        lineNumber: 189,
+                                                        columnNumber: 41
+                                                    }, this)
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/(store)/login/page.tsx",
-                                                    lineNumber: 213,
+                                                    lineNumber: 188,
                                                     columnNumber: 37
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
                                                     type: "text",
-                                                    placeholder: "Ali Traoré",
                                                     required: true,
+                                                    className: "block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 transition-colors",
                                                     value: formData.name,
                                                     onChange: (e)=>setFormData({
                                                             ...formData,
                                                             name: e.target.value
-                                                        }),
-                                                    className: "w-full bg-slate-50 border border-slate-100 rounded-2xl py-4 pl-12 pr-4 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all font-medium text-slate-900"
+                                                        })
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/(store)/login/page.tsx",
-                                                    lineNumber: 214,
+                                                    lineNumber: 191,
                                                     columnNumber: 37
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/(store)/login/page.tsx",
-                                            lineNumber: 212,
+                                            lineNumber: 187,
                                             columnNumber: 33
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/(store)/login/page.tsx",
-                                    lineNumber: 210,
+                                    lineNumber: 185,
                                     columnNumber: 29
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                    className: "space-y-2",
                                     children: [
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("label", {
-                                            className: "text-[10px] font-black uppercase tracking-widest text-slate-400 ml-2",
-                                            children: "Email (Facultatif)"
+                                            className: "block text-sm font-medium text-gray-700 mb-2",
+                                            children: "Email (optionnel)"
                                         }, void 0, false, {
                                             fileName: "[project]/app/(store)/login/page.tsx",
-                                            lineNumber: 226,
+                                            lineNumber: 201,
                                             columnNumber: 33
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                             className: "relative",
                                             children: [
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$mail$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Mail$3e$__["Mail"], {
-                                                    className: "absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400"
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                    className: "absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none",
+                                                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$mail$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Mail$3e$__["Mail"], {
+                                                        className: "h-5 w-5 text-gray-400"
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/app/(store)/login/page.tsx",
+                                                        lineNumber: 204,
+                                                        columnNumber: 41
+                                                    }, this)
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/(store)/login/page.tsx",
-                                                    lineNumber: 228,
+                                                    lineNumber: 203,
                                                     columnNumber: 37
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
                                                     type: "email",
-                                                    placeholder: "ali@exemple.com",
+                                                    className: "block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 transition-colors",
                                                     value: formData.email,
                                                     onChange: (e)=>setFormData({
                                                             ...formData,
                                                             email: e.target.value
-                                                        }),
-                                                    className: "w-full bg-slate-50 border border-slate-100 rounded-2xl py-4 pl-12 pr-4 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all font-medium text-slate-900"
+                                                        })
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/(store)/login/page.tsx",
-                                                    lineNumber: 229,
+                                                    lineNumber: 206,
                                                     columnNumber: 37
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/(store)/login/page.tsx",
-                                            lineNumber: 227,
+                                            lineNumber: 202,
                                             columnNumber: 33
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/(store)/login/page.tsx",
-                                    lineNumber: 225,
+                                    lineNumber: 200,
                                     columnNumber: 29
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
                                     type: "submit",
                                     disabled: isLoading,
-                                    className: "w-full bg-indigo-600 text-white font-black py-5 rounded-2xl hover:bg-indigo-700 hover:scale-[1.02] active:scale-[0.98] transition-all disabled:opacity-50 flex items-center justify-center gap-2 shadow-lg shadow-indigo-600/20 mt-4 group",
+                                    className: "w-full flex items-center justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed transition-all",
                                     children: isLoading ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$loader$2d$circle$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Loader2$3e$__["Loader2"], {
                                         className: "w-5 h-5 animate-spin"
                                     }, void 0, false, {
                                         fileName: "[project]/app/(store)/login/page.tsx",
-                                        lineNumber: 245,
-                                        columnNumber: 37
-                                    }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Fragment"], {
-                                        children: [
-                                            "Terminer l'inscription",
-                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$arrow$2d$right$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__ArrowRight$3e$__["ArrowRight"], {
-                                                className: "w-5 h-5 group-hover:translate-x-1 transition-transform"
-                                            }, void 0, false, {
-                                                fileName: "[project]/app/(store)/login/page.tsx",
-                                                lineNumber: 249,
-                                                columnNumber: 41
-                                            }, this)
-                                        ]
-                                    }, void 0, true)
+                                        lineNumber: 219,
+                                        columnNumber: 46
+                                    }, this) : 'Terminer l\'inscription'
                                 }, void 0, false, {
                                     fileName: "[project]/app/(store)/login/page.tsx",
-                                    lineNumber: 239,
+                                    lineNumber: 214,
                                     columnNumber: 29
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/(store)/login/page.tsx",
-                            lineNumber: 209,
+                            lineNumber: 184,
                             columnNumber: 25
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/app/(store)/login/page.tsx",
-                    lineNumber: 122,
+                    lineNumber: 100,
                     columnNumber: 17
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                    className: "text-center mt-8",
-                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
-                        href: "/",
-                        className: "text-slate-400 font-bold text-sm hover:text-slate-600 transition-colors uppercase tracking-widest",
-                        children: "Retour à l'accueil"
-                    }, void 0, false, {
+                    className: "bg-gray-50 p-4 text-center border-t border-gray-100",
+                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                        className: "text-sm text-gray-500",
+                        children: [
+                            "Besoin d'aide ? ",
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
+                                href: "/contact",
+                                className: "text-indigo-600 hover:text-indigo-500 font-medium",
+                                children: "Contactez-nous"
+                            }, void 0, false, {
+                                fileName: "[project]/app/(store)/login/page.tsx",
+                                lineNumber: 227,
+                                columnNumber: 41
+                            }, this)
+                        ]
+                    }, void 0, true, {
                         fileName: "[project]/app/(store)/login/page.tsx",
-                        lineNumber: 258,
+                        lineNumber: 226,
                         columnNumber: 21
                     }, this)
                 }, void 0, false, {
                     fileName: "[project]/app/(store)/login/page.tsx",
-                    lineNumber: 257,
+                    lineNumber: 225,
                     columnNumber: 17
                 }, this)
             ]
         }, void 0, true, {
             fileName: "[project]/app/(store)/login/page.tsx",
-            lineNumber: 101,
+            lineNumber: 94,
             columnNumber: 13
         }, this)
     }, void 0, false, {
         fileName: "[project]/app/(store)/login/page.tsx",
-        lineNumber: 100,
+        lineNumber: 93,
         columnNumber: 9
     }, this);
 }
-_s(LoginPage, "vfSWcKqxeSML4y165huTHKH/nk0=", false, function() {
+_s(LoginForm, "vfSWcKqxeSML4y165huTHKH/nk0=", false, function() {
     return [
         __TURBOPACK__imported__module__$5b$project$5d2f$context$2f$AuthContext$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useAuth"],
         __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRouter"],
         __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useSearchParams"]
     ];
 });
-_c = LoginPage;
-var _c;
-__turbopack_context__.k.register(_c, "LoginPage");
+_c = LoginForm;
+function LoginPage() {
+    return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Suspense"], {
+        fallback: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+            className: "min-h-screen bg-[#F4F4F0] flex items-center justify-center p-4",
+            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$loader$2d$circle$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Loader2$3e$__["Loader2"], {
+                className: "w-8 h-8 text-indigo-600 animate-spin"
+            }, void 0, false, {
+                fileName: "[project]/app/(store)/login/page.tsx",
+                lineNumber: 239,
+                columnNumber: 17
+            }, void 0)
+        }, void 0, false, {
+            fileName: "[project]/app/(store)/login/page.tsx",
+            lineNumber: 238,
+            columnNumber: 13
+        }, void 0),
+        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(LoginForm, {}, void 0, false, {
+            fileName: "[project]/app/(store)/login/page.tsx",
+            lineNumber: 242,
+            columnNumber: 13
+        }, this)
+    }, void 0, false, {
+        fileName: "[project]/app/(store)/login/page.tsx",
+        lineNumber: 237,
+        columnNumber: 9
+    }, this);
+}
+_c1 = LoginPage;
+var _c, _c1;
+__turbopack_context__.k.register(_c, "LoginForm");
+__turbopack_context__.k.register(_c1, "LoginPage");
 if (typeof globalThis.$RefreshHelpers$ === 'object' && globalThis.$RefreshHelpers !== null) {
     __turbopack_context__.k.registerExports(__turbopack_context__.m, globalThis.$RefreshHelpers$);
 }

@@ -169,7 +169,7 @@ function LoginForm() {
                         {/* Stepper */}
                         {step !== 'phone' && (
                             <div className="flex gap-2 mb-8">
-                                <div className={`h-1 flex-1 rounded-full transition-all duration-300 ${step === 'phone' || step === 'otp' || step === 'profile' ? 'bg-[#1A4731]' : 'bg-gray-200'}`} />
+                                <div className={`h-1 flex-1 rounded-full transition-all duration-300 ${step === 'otp' || step === 'profile' ? 'bg-[#1A4731]' : 'bg-gray-200'}`} />
                                 <div className={`h-1 flex-1 rounded-full transition-all duration-300 ${step === 'otp' || step === 'profile' ? 'bg-[#1A4731]' : 'bg-gray-200'}`} />
                                 <div className={`h-1 flex-1 rounded-full transition-all duration-300 ${step === 'profile' ? 'bg-[#1A4731]' : 'bg-gray-200'}`} />
                             </div>
