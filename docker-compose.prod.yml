@@ -68,6 +68,7 @@ services:
       - crdb
       - redis
       - garage
+      - httpsms-api
     networks:
       - sv-network
     # Expose ports only if needed strictly, otherwise use internal network for Nginx
