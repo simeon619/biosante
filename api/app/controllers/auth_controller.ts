@@ -239,22 +239,34 @@ export default class CustomerAuthController {
         const { phone } = request.only(['phone'])
         if (!phone) return response.badRequest({ message: 'Numéro de téléphone requis' })
 
-        // Generate 6-digit OTP
-        const otp = Math.floor(100000 + Math.random() * 900000).toString()
+        try {
+            // Generate 6-digit OTP
+            const otp = Math.floor(100000 + Math.random() * 900000).toString()
 
-        // Store in Redis
-        await redisService.storeOtp(phone, otp)
+            console.log(`[Auth] Generating OTP for ${phone}`)
 
-        // Send SMS
-        const sent = await httpsmsService.sendSms(phone, `Votre code de vérification BIO SANTÉ est : ${otp}. Valable 5 minutes.`)
+            // Store in Redis
+            await redisService.storeOtp(phone, otp)
+            console.log(`[Auth] OTP stored in Redis for ${phone}`)
 
-        if (!sent) {
-            // For development/test, we might want to log it or return it if httpSMS is not ready
-            console.log(`[OTP DEBUG] Phone: ${phone}, OTP: ${otp}`)
-            return response.internalServerError({ message: 'Erreur lors de l\'envoi du SMS. Veuillez réessayer.' })
+            // Send SMS
+            console.log(`[Auth] Sending SMS via httpSMS to ${phone}...`)
+            const sent = await httpsmsService.sendSms(phone, `Votre code de vérification BIO SANTÉ est : ${otp}. Valable 5 minutes.`)
+
+            if (!sent) {
+                console.error(`[Auth] SMS sending failed for ${phone}`)
+                return response.internalServerError({ message: 'Erreur lors de l\'envoi du SMS. Veuillez réessayer.' })
+            }
+
+            console.log(`[Auth] OTP sequence complete for ${phone}`)
+            return response.ok({ success: true, message: 'Code envoyé' })
+        } catch (error) {
+            console.error('[Auth] sendOtp critical error:', error)
+            return response.internalServerError({
+                message: 'Erreur technique lors de l\'envoi du code.',
+                debug_error: error instanceof Error ? error.message : String(error)
+            })
         }
-
-        return response.ok({ success: true, message: 'Code envoyé' })
     }
 
     /**
