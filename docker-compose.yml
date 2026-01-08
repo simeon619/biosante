@@ -54,9 +54,9 @@ services:
       context: ./external/httpsms/web
     container_name: sante-vitalite-httpsms-web
     ports:
-      - "3003:3000" # Use 3003 to avoid conflict with Next.js (usually 3000)
+      - "4010:3000" # Use 4010 to match Nginx proxy
     environment:
-      - NUXT_PUBLIC_HTTPSMS_API_URL=https://undampened-superobjectionable-alethea.ngrok-free.dev
+      - NUXT_PUBLIC_HTTPSMS_API_URL=https://sms-biosante.sublymus.com/api
     restart: unless-stopped
 
 volumes:

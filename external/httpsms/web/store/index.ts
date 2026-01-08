@@ -334,7 +334,7 @@ export const actions = {
     }
 
     const response = await axios.get('/v1/phones', { params: { limit: 100 } })
-    context.commit('setPhones', response.data.data)
+    context.commit('setPhones', Array.isArray(response.data?.data) ? response.data.data : [])
 
     if (context.state.user && context.state.user.active_phone_id) {
       const phone = response.data.data.find(
