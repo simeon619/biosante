@@ -20,7 +20,7 @@ export default class extends BaseSchema {
                 // Payment Settings
                 {
                     key: 'payment_wave_number',
-                    value: '+2250507859953',
+                    value: '+2250759091098',
                     label: 'Numéro Wave (paiement)',
                     type: 'phone',
                     category: 'payment',
@@ -36,7 +36,7 @@ export default class extends BaseSchema {
                 },
                 {
                     key: 'payment_mtn_number',
-                    value: '+2250507859953',
+                    value: '+2250759091098',
                     label: 'Numéro MTN Money',
                     type: 'phone',
                     category: 'payment',
@@ -44,7 +44,7 @@ export default class extends BaseSchema {
                 },
                 {
                     key: 'payment_moov_number',
-                    value: '+2250507859953',
+                    value: '+2250759091098',
                     label: 'Numéro Moov Money',
                     type: 'phone',
                     category: 'payment',
@@ -53,7 +53,7 @@ export default class extends BaseSchema {
                 // Contact Settings
                 {
                     key: 'contact_customer_service',
-                    value: '+2250507859953',
+                    value: '+2250759091098',
                     label: 'Service client',
                     type: 'phone',
                     category: 'contact',
@@ -61,7 +61,7 @@ export default class extends BaseSchema {
                 },
                 {
                     key: 'contact_whatsapp',
-                    value: '+2250507859953',
+                    value: '+2250759091098',
                     label: 'WhatsApp',
                     type: 'phone',
                     category: 'contact',
@@ -86,7 +86,7 @@ export default class extends BaseSchema {
                 },
                 {
                     key: 'sms_admin_otp_number',
-                    value: '+2250507859953',
+                    value: '+2250759091098',
                     label: 'N° OTP Admin',
                     type: 'phone',
                     category: 'sms',

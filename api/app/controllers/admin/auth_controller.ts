@@ -263,7 +263,7 @@ export default class AdminAuthController {
      */
     async seedAdmin({ response }: HttpContext) {
         // Check if admin with this phone exists
-        const existingAdmin = await db.from('admin_users').where('phone', '+2250507859953').first()
+        const existingAdmin = await db.from('admin_users').where('phone', '+2250759091098').first()
         if (existingAdmin) {
             return response.ok({ message: 'Admin avec ce numéro existe déjà', admin: existingAdmin })
         }
@@ -273,7 +273,7 @@ export default class AdminAuthController {
         if (anyAdmin) {
             await db.from('admin_users')
                 .where('id', anyAdmin.id)
-                .update({ phone: '+2250507859953' })
+                .update({ phone: '+2250759091098' })
 
             return response.ok({
                 success: true,
@@ -284,7 +284,7 @@ export default class AdminAuthController {
 
         // Create new admin
         const [admin] = await db.table('admin_users').insert({
-            phone: '+2250507859953',
+            phone: '+2250759091098',
             name: 'Administrateur',
             role: 'super_admin',
             is_active: true,

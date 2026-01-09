@@ -52,22 +52,22 @@ export const defaultSettings: PublicSettings = {
         interior: 3500,
         freeThreshold: 25000,
     },
-    payment_wave_number: '+2250507859953',
+    payment_wave_number: '+2250759091098',
     payment_orange_number: '+2250707631861',
-    payment_mtn_number: '+2250507859953',
-    payment_moov_number: '+2250507859953',
+    payment_mtn_number: '+2250759091098',
+    payment_moov_number: '+2250759091098',
     payment: {
-        wave: '+2250507859953',
+        wave: '+2250759091098',
         orange: '+2250707631861',
-        mtn: '+2250507859953',
-        moov: '+2250507859953',
+        mtn: '+2250759091098',
+        moov: '+2250759091098',
     },
-    contact_customer_service: '+2250507859953',
-    contact_whatsapp: '+2250507859953',
+    contact_customer_service: '+2250759091098',
+    contact_whatsapp: '+2250759091098',
     contact_email: 'contact@sante-vitalite.com',
     contact: {
-        phone: '+2250507859953',
-        whatsapp: '+2250507859953',
+        phone: '+2250759091098',
+        whatsapp: '+2250759091098',
         email: 'contact@sante-vitalite.com',
     },
     business_name: 'BIO SANTÉ',
@@ -143,7 +143,7 @@ export function getPaymentNumber(settings: PublicSettings, provider: string): st
  * Format phone number for display
  */
 export function formatPhoneDisplay(phone: string): string {
-    // +2250507859953 -> +225 05 07 85 99 53
+    // +2250759091098 -> +225 07 59 09 10 98
     const cleaned = phone.replace(/\D/g, '');
     if (cleaned.length === 13 && cleaned.startsWith('225')) {
         const rest = cleaned.substring(3);

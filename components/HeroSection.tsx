@@ -50,10 +50,24 @@ export const HeroSection = ({ dynamicProducts }: HeroSectionProps) => {
     const prevSlide = () => setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
 
     const slide = slides[currentSlide];
-    const product = dynamicProducts?.find(p => p.id === slide.productId) || {
+    const product = dynamicProducts?.find(p => p.id === slide.productId);
+
+    // Merge slide data with product data from DB if available
+    const displaySlide = {
+        ...slide,
+        title: product?.name || slide.title, // Use product name
+        // Use product tagline as label (short text above title)
+        label: product?.tagline || slide.label,
+        // Use product description as subtitle
+        subtitle: product?.description || slide.subtitle,
+        image: product?.image || slide.imageIndex === 0 ? '/images/bioactif/bioactif-ingredients.jpg' : '/images/vitamax/vitamax-ingredients.jpg'
+    };
+
+    // Fallback object for image display logic
+    const displayProduct = product || {
         id: slide.productId,
-        name: slide.title,
-        image: '/images/bioactif/bioactif-ingredients.jpg' // Fallback image
+        name: displaySlide.title,
+        image: displaySlide.image,
     };
 
     return (
@@ -65,13 +79,13 @@ export const HeroSection = ({ dynamicProducts }: HeroSectionProps) => {
                 <div className="lg:col-span-7 pt-8 lg:pt-0 text-center lg:text-left z-20">
                     <div key={currentSlide} className="animate-in fade-in slide-in-from-bottom-4 duration-700">
                         <div className={`inline-block mb-3 border ${slide.borderColor} rounded-full px-4 py-1.5`}>
-                            <span className={`text-xs font-mono uppercase tracking-[0.2em] ${slide.accentColor}`}>{slide.label}</span>
+                            <span className={`text-xs font-mono uppercase tracking-[0.2em] ${slide.accentColor}`}>{displaySlide.label}</span>
                         </div>
                         <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tighter mb-2 md:mb-4 leading-[0.9] font-heading">
-                            <span className={slide.accentColor}>{slide.title}</span><span className="text-2xl align-top text-black">®</span>
+                            <span className={slide.accentColor}>{displaySlide.title}</span><span className="text-2xl align-top text-black">®</span>
                         </h1>
                         <p className="text-base md:text-lg text-black/70 mb-6 font-light max-w-xl mx-auto lg:mx-0 leading-relaxed tracking-wide">
-                            {slide.subtitle}
+                            {displaySlide.subtitle}
                         </p>
                         <div className="flex flex-col sm:flex-row gap-5 justify-center lg:justify-start">
                             <Link href={`/produits/${slide.productId}`}>
@@ -101,8 +115,8 @@ export const HeroSection = ({ dynamicProducts }: HeroSectionProps) => {
                                 {/* Floating Wrapper */}
                                 <div className="relative w-full h-full animate-[float_6s_ease-in-out_infinite] drop-shadow-[0_35px_35px_rgba(0,0,0,0.15)]">
                                     <Image
-                                        src={product.image}
-                                        alt={`${slide.title} - Solution naturelle pour la santé en Côte d'Ivoire`}
+                                        src={displayProduct.image}
+                                        alt={`${displaySlide.title} - Solution naturelle pour la santé en Côte d'Ivoire`}
                                         fill
                                         sizes="(max-width: 768px) 100vw, 50vw"
                                         className="object-contain mix-blend-multiply"

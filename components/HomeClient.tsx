@@ -200,13 +200,13 @@ export function HomeClient() {
                                 <div className="lg:col-span-6 order-1 lg:order-2 space-y-4">
                                     <div className="space-y-4">
                                         <div className="inline-block border border-red-600 px-3 py-1 rounded-full">
-                                            <span className="text-xs font-bold uppercase tracking-widest text-red-600">Hypertension</span>
+                                            <span className="text-xs font-bold uppercase tracking-widest text-red-600">{product.tagline}</span>
                                         </div>
                                         <h2 className="text-5xl md:text-6xl font-bold tracking-tighter text-red-600">
-                                            BioActif<span className="align-super text-lg text-black">®</span>
+                                            {product.name}<span className="align-super text-lg text-black">®</span>
                                         </h2>
                                         <p className="text-xl text-black/70 leading-relaxed font-light">
-                                            Une formulation synergique conçue pour réguler naturellement la pression artérielle et améliorer la circulation sanguine.
+                                            {product.description}
                                         </p>
                                     </div>
 
@@ -306,13 +306,13 @@ export function HomeClient() {
                                 <div className="lg:col-span-6 space-y-4">
                                     <div className="space-y-4">
                                         <div className="inline-block border border-green-600 px-3 py-1 rounded-full">
-                                            <span className="text-xs font-bold uppercase tracking-widest text-green-600">Santé Masculine</span>
+                                            <span className="text-xs font-bold uppercase tracking-widest text-green-600">{product.tagline}</span>
                                         </div>
                                         <h2 className="text-5xl md:text-6xl font-bold tracking-tighter text-green-600">
-                                            VitaMax<span className="align-super text-lg text-black">®</span>
+                                            {product.name}<span className="align-super text-lg text-black">®</span>
                                         </h2>
                                         <p className="text-xl text-black/70 leading-relaxed font-light">
-                                            Rétablit le confort urinaire et booste la vitalité masculine grâce à une concentration unique d'actifs végétaux.
+                                            {product.description}
                                         </p>
                                     </div>
 

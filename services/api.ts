@@ -38,7 +38,7 @@ export const api = {
      */
     estimateDelivery: async (address: string, cartTotal: number): Promise<DeliveryEstimate | null> => {
         try {
-            const response = await axios.post(`${API_URL}/deliveries/estimate`, {
+            const response = await axios.post(`${API_URL}/api/deliveries/estimate`, {
                 address,
                 cartTotal
             });
@@ -54,7 +54,7 @@ export const api = {
      */
     searchPlaces: async (query: string) => {
         try {
-            const response = await axios.get(`${API_URL}/deliveries/search`, {
+            const response = await axios.get(`${API_URL}/api/deliveries/search`, {
                 params: { query }
             });
             return response.data;
@@ -79,7 +79,7 @@ export const api = {
         shippingCity?: string;
     }) => {
         try {
-            const response = await axios.post(`${API_URL}/deliveries/create`, data);
+            const response = await axios.post(`${API_URL}/api/deliveries/create`, data);
             return response.data;
         } catch (error) {
             console.error('Error creating delivery:', error);
@@ -112,7 +112,7 @@ export const api = {
         serviceCode?: string;
     }): Promise<PaymentInitResponse> => {
         const userId = typeof window !== 'undefined' ? localStorage.getItem('user_id') : null;
-        const response = await axios.post(`${API_URL}/payments/initiate`, data, {
+        const response = await axios.post(`${API_URL}/api/payments/initiate`, data, {
             headers: userId ? { 'X-User-Id': userId } : {}
         });
         return response.data;
@@ -128,8 +128,8 @@ export const api = {
         if (orderId) params.orderId = orderId;
 
         const url = paymentId
-            ? `${API_URL}/payments/verify/${paymentId}`
-            : `${API_URL}/payments/verify`;
+            ? `${API_URL}/api/payments/verify/${paymentId}`
+            : `${API_URL}/api/payments/verify`;
 
         const response = await axios.get(url, { params });
         return response.data;
@@ -143,7 +143,7 @@ export const api = {
         formData.append('orderId', orderId);
         formData.append('image', file);
 
-        const response = await axios.post(`${API_URL}/payments/proof`, formData, {
+        const response = await axios.post(`${API_URL}/api/payments/proof`, formData, {
             headers: {
                 'Content-Type': 'multipart/form-data',
             },
@@ -157,76 +157,76 @@ export const api = {
         reference: string;
         amount: number;
     }) {
-        const response = await axios.post(`${API_URL}/payments/submit-reference`, data);
+        const response = await axios.post(`${API_URL}/api/payments/submit-reference`, data);
         return response.data;
     },
 
     // --- Authentication & Account ---
 
     async register(data: any) {
-        const response = await axios.post(`${API_URL}/auth/register`, data);
+        const response = await axios.post(`${API_URL}/api/auth/register`, data);
         return response.data;
     },
 
     async login(data: any) {
-        const response = await axios.post(`${API_URL}/auth/login`, data);
+        const response = await axios.post(`${API_URL}/api/auth/login`, data);
         return response.data;
     },
 
     async sendOtp(phone: string) {
-        const response = await axios.post(`${API_URL}/auth/send-otp`, { phone });
+        const response = await axios.post(`${API_URL}/api/auth/send-otp`, { phone });
         return response.data;
     },
 
     async verifyOtp(phone: string, otp: string) {
-        const response = await axios.post(`${API_URL}/auth/verify-otp`, { phone, otp });
+        const response = await axios.post(`${API_URL}/api/auth/verify-otp`, { phone, otp });
         return response.data;
     },
 
     async getMe(userId: string) {
-        const response = await axios.get(`${API_URL}/auth/me`, {
+        const response = await axios.get(`${API_URL}/api/auth/me`, {
             headers: { 'X-User-Id': userId }
         });
         return response.data;
     },
 
     async getOrders(userId: string) {
-        const response = await axios.get(`${API_URL}/auth/orders`, {
+        const response = await axios.get(`${API_URL}/api/auth/orders`, {
             headers: { 'X-User-Id': userId }
         });
         return response.data;
     },
 
     async updateProfile(userId: string, data: any) {
-        const response = await axios.patch(`${API_URL}/auth/profile`, data, {
+        const response = await axios.patch(`${API_URL}/api/auth/profile`, data, {
             headers: { 'X-User-Id': userId }
         });
         return response.data;
     },
 
     async addAddress(userId: string, data: any) {
-        const response = await axios.post(`${API_URL}/auth/addresses`, data, {
+        const response = await axios.post(`${API_URL}/api/auth/addresses`, data, {
             headers: { 'X-User-Id': userId }
         });
         return response.data;
     },
 
     async updateAddress(userId: string, addressId: string, data: any) {
-        const response = await axios.patch(`${API_URL}/auth/addresses/${addressId}`, data, {
+        const response = await axios.patch(`${API_URL}/api/auth/addresses/${addressId}`, data, {
             headers: { 'X-User-Id': userId }
         });
         return response.data;
     },
 
     async deleteAddress(userId: string, addressId: string) {
-        const response = await axios.delete(`${API_URL}/auth/addresses/${addressId}`, {
+        const response = await axios.delete(`${API_URL}/api/auth/addresses/${addressId}`, {
             headers: { 'X-User-Id': userId }
         });
         return response.data;
     },
 
     async setDefaultAddress(userId: string, addressId: string) {
-        const response = await axios.patch(`${API_URL}/auth/addresses/${addressId}/default`, {}, {
+        const response = await axios.patch(`${API_URL}/api/auth/addresses/${addressId}/default`, {}, {
             headers: { 'X-User-Id': userId }
         });
         return response.data;
@@ -235,7 +235,7 @@ export const api = {
     // --- OTP Phone Change ---
 
     async requestPhoneChangeOtp(userId: string, newPhone: string) {
-        const response = await axios.post(`${API_URL}/otp/request-phone-change`, {
+        const response = await axios.post(`${API_URL}/api/otp/request-phone-change`, {
             userId,
             newPhone
         });
@@ -243,7 +243,7 @@ export const api = {
     },
 
     async verifyPhoneChangeOtp(userId: string, otp: string, newPhone: string) {
-        const response = await axios.post(`${API_URL}/otp/verify-phone-change`, {
+        const response = await axios.post(`${API_URL}/api/otp/verify-phone-change`, {
             userId,
             otp,
             newPhone
