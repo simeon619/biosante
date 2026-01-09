@@ -51,19 +51,19 @@ services:
       - PORT=3333
       - HOST=0.0.0.0
       - NODE_ENV=production
-      - DB_HOST=sante-vitalite-crdb
+      - DB_HOST=crdb
       - DB_PORT=26257
       - DB_USER=root
       - DB_PASSWORD=root
       - DB_DATABASE=defaultdb
-      - REDIS_HOST=sante-vitalite-redis
+      - REDIS_HOST=redis
       - REDIS_PORT=6379
       # S3 Configuration (Internal Network)
-      - S3_ENDPOINT=http://sante-vitalite-garage:3900
+      - S3_ENDPOINT=http://garage:3900
       - S3_REGION=garage
       - S3_BUCKET=sante-vitalite-media
       # Internal Service Communication
-      - HTTPSMS_API_URL=http://sante-vitalite-httpsms-api:8000
+      - HTTPSMS_API_URL=http://httpsms-api:8000
       - HTTPSMS_API_KEY=uk_0NVdmst_6lGjIiOwa3B4GAqVMIkVrQemmFU1rdFP-klpbam79uVKTi6fFZMi6_IH
     depends_on:
       - crdb
@@ -86,7 +86,7 @@ services:
     restart: always
     environment:
       - NEXT_PUBLIC_API_URL=https://api.biosante.sublymus.com
-      - INTERNAL_API_URL=http://biosante-backend:3333
+      - INTERNAL_API_URL=http://api:3333
     depends_on:
       - api
     networks:
