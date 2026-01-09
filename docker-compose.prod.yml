@@ -81,11 +81,11 @@ services:
       context: .
       dockerfile: Dockerfile
       args:
-        NEXT_PUBLIC_API_URL: https://api.biosante.sublymus.com
+        NEXT_PUBLIC_API_URL: https://api-biosante.sublymus.com
     container_name: biosante-frontend
     restart: always
     environment:
-      - NEXT_PUBLIC_API_URL=https://api.biosante.sublymus.com
+      - NEXT_PUBLIC_API_URL=https://api-biosante.sublymus.com
       - INTERNAL_API_URL=http://api:3333
     depends_on:
       - api
