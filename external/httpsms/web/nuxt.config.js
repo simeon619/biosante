@@ -4,6 +4,16 @@ export default {
   // Target: https://go.nuxtjs.dev/config-target
   target: 'static',
 
+  env: {
+    APP_URL: process.env.APP_URL,
+    APP_NAME: process.env.APP_NAME,
+    APP_ENV: process.env.APP_ENV,
+    APP_DOWNLOAD_URL: process.env.APP_DOWNLOAD_URL,
+    APP_DOCUMENTATION_URL: process.env.APP_DOCUMENTATION_URL,
+    APP_GITHUB_URL: process.env.APP_GITHUB_URL,
+    API_BASE_URL: process.env.API_BASE_URL,
+  },
+
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
     titleTemplate: '%s',
