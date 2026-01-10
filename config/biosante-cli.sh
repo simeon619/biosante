@@ -115,9 +115,21 @@ while read -r oldrev newrev refname; do
       BUILD_ARGS=""
       if [[ "\${SERVICE_NAME}" == "${SERVICE_FRONTEND}" ]]; then
         BUILD_ARGS="--build-arg NEXT_PUBLIC_API_URL=https://api-biosante.sublymus.com"
+      elif [[ "\${SERVICE_NAME}" == "biosante_httpsms_web" ]]; then
+        ENV_BUILD_FILE="/srv/biosante/env/httpsms-web.build.env"
+        if [[ -f "\${ENV_BUILD_FILE}" ]]; then
+          echo ">> Chargement des build-args depuis \${ENV_BUILD_FILE}"
+          while IFS='=' read -r key value || [[ -n "\$key" ]]; do
+            if [[ ! "\$key" =~ ^# && -n "\$key" ]]; then
+              BUILD_ARGS="\${BUILD_ARGS} --build-arg \${key}=\${value}"
+            fi
+          done < "\${ENV_BUILD_FILE}"
+        else
+          echo ">> WARN: Fichier de build \${ENV_BUILD_FILE} manquant"
+        fi
       fi
 
-      IMAGE_TAG="\$(date +%Y%m%d%H%M%S)"
+      IMAGE_TAG="$(date +%Y%m%d%H%M%S)"
       \${DOCKER_CMD} build \${BUILD_ARGS} -t "\${IMAGE_NAME}:\${IMAGE_TAG}" .
       \${DOCKER_CMD} tag "\${IMAGE_NAME}:\${IMAGE_TAG}" "\${IMAGE_NAME}:latest"
       echo ">> Build terminé: \${IMAGE_NAME}:latest"
