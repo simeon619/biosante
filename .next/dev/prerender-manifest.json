@@ -1,1 +1,11 @@
-{"version":4,"routes":{"/produits/bioactif":{},"/produits/vitamax":{}},"dynamicRoutes":{"/produits/[slug]":{"dataRoute":null,"dataRouteRegex":null,"fallback":null,"fallbackRevalidate":false,"fallbackSourceRoute":"/produits/[slug]","routeRegex":"^\\/produits\\/([^/]+?)(?:\\/)?$","allowHeader":[]}},"notFoundRoutes":[],"preview":{"previewModeId":"9f574fade702ba3981ae5363b8bd1b0e","previewModeSigningKey":"03412f111dd319e72d79c3fa6b04706cbd6f6d7ea31b99dfebf606c3b77209e5","previewModeEncryptionKey":"d407a7ad40200a7b0881e4ff3ed71b5a392fc21113d716c3e2241b0cf6fd1ae1"}}
+{
+  "version": 4,
+  "routes": {},
+  "dynamicRoutes": {},
+  "notFoundRoutes": [],
+  "preview": {
+    "previewModeId": "ae364e6639ac903394651cae7b0e2520",
+    "previewModeSigningKey": "a5c8cd774b51844cb790add4762d02175971cf390fcc01b8f287f2b198e41da4",
+    "previewModeEncryptionKey": "ccb954d414824b8a14d7cf7c536143caebb12e64824c40d4fc12110dd38a8afe"
+  }
+}

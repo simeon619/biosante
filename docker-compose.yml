@@ -3,7 +3,7 @@ version: '3.8'
 services:
   redis:
     image: redis:7-alpine
-    container_name: sante-vitalite-redis
+    container_name: redis
     ports:
       - "6379:6379"
     volumes:
@@ -27,7 +27,7 @@ services:
 
   crdb:
     image: cockroachdb/cockroach:v23.1.10
-    container_name: sante-vitalite-crdb
+    container_name: crdb
     command: start-single-node --insecure
     ports:
       - "26257:26257"

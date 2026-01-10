@@ -1,12 +1,1 @@
-{
-  "/(store)/account/page": "app/(store)/account/page.js",
-  "/(store)/login/page": "app/(store)/login/page.js",
-  "/(store)/page": "app/(store)/page.js",
-  "/(store)/panier/page": "app/(store)/panier/page.js",
-  "/(store)/produits/[slug]/page": "app/(store)/produits/[slug]/page.js",
-  "/(store)/produits/page": "app/(store)/produits/page.js",
-  "/_not-found/page": "app/_not-found/page.js",
-  "/admin/login/page": "app/admin/login/page.js",
-  "/admin/page": "app/admin/page.js",
-  "/admin/stats/page": "app/admin/stats/page.js"
-}
+{}

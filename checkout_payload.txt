@@ -1,3 +1,4 @@
+cat << 'EOSshPayload' > /var/www/biosante/components/CheckoutPage.tsx
 'use client';
 
 import React, { useEffect, useRef, useState } from 'react';
@@ -14,7 +15,7 @@ import { getPublicSettings, PublicSettings, defaultSettings, formatPhoneDisplay 
 declare const L: any;
 import { cn, formatCurrency, isValidIvorianPhone, formatIvorianPhone } from '@/lib/utils';
 import * as fpixel from '@/lib/fpixel';
-import { useSettings } from '@/context/SettingsContext';
+// import { useSettings } from '@/context/SettingsContext'; // Removed to avoid potential SSR crash if unused
 
 interface CheckoutPageProps {
     cart: CartItem[];
@@ -446,6 +447,7 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = (props) => {
         }
     };
 
+
     const handleWhatsApp = () => {
         const message = `Bonjour BIO SANTÉ, je souhaite passer une commande : \n\n${cart.map(item => `- ${item.name} x${item.quantity}`).join('\n')}\n\nTotal: ${formatCurrency(total)}`;
         const whatsappNumber = settings.contact_whatsapp.replace(/\+/g, '');
@@ -875,6 +877,7 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = (props) => {
                                 Informations de Contact
                             </h3>
 
+
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div className="space-y-2">
                                     <label className="text-[10px] font-bold uppercase tracking-widest text-slate-900 ml-1">Nom complet *</label>
@@ -1229,3 +1232,4 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = (props) => {
         </div>
     );
 };
+EOSshPayload

@@ -1,29 +1,43 @@
-FROM node:20-alpine AS base
-
-# All deps stage
-FROM base AS deps
+# ---- Stage 1: Dependencies ----
+FROM node:20-alpine AS deps
 WORKDIR /app
-ADD package.json package-lock.json ./
+COPY package.json package-lock.json ./
 RUN npm ci
 
-# Production only deps stage
-FROM base AS production-deps
+# ---- Stage 2: Builder ----
+FROM node:20-alpine AS builder
 WORKDIR /app
-ADD package.json package-lock.json ./
-RUN npm ci --omit=dev
-
-# Build stage
-FROM base AS build
-WORKDIR /app
-COPY --from=deps /app/node_modules /app/node_modules
-ADD . .
+COPY --from=deps /app/node_modules ./node_modules
+COPY . .
 RUN node ace build
 
-# Production stage
-FROM base
-ENV NODE_ENV=production
+# ---- Stage 3: Runtime ----
+FROM node:20-alpine AS runtime
 WORKDIR /app
-COPY --from=production-deps /app/node_modules /app/node_modules
-COPY --from=build /app/build /app
-EXPOSE 3333
+
+RUN apk add --no-cache postgresql-client shadow
+
+# Créer un utilisateur non-root
+RUN addgroup -S appgroup && adduser -S appuser -G appgroup
+
+# Copier les fichiers nécessaires
+COPY --from=builder /app/build .
+COPY --from=builder /app/package.json ./package.json
+COPY --from=builder /app/package-lock.json ./package-lock.json
+COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
+
+RUN npm ci --omit=dev && \
+    chmod +x /usr/local/bin/docker-entrypoint.sh && \
+    chown -R appuser:appgroup /app
+
+USER appuser
+
+ENV PORT=3333
+ENV HOST=0.0.0.0
+ENV NODE_ENV=production
+
+HEALTHCHECK --interval=10s --timeout=5s --start-period=30s --retries=3 \
+    CMD wget --quiet --spider http://0.0.0.0:3333/health || exit 1
+
+ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
 CMD ["node", "./bin/server.js"]

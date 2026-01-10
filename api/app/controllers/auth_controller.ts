@@ -24,6 +24,7 @@ export default class CustomerAuthController {
         }
 
         const hashedPassword = await hash.make(password)
+        const apiKey = await hash.make(`${phone}:${Date.now()}`) // Simple unique key generation, or use crypto
 
         try {
             const [user] = await db.table('users').insert({
@@ -31,6 +32,7 @@ export default class CustomerAuthController {
                 email: email || null,
                 password: hashedPassword,
                 name,
+                api_key: apiKey,
                 created_at: DateTime.now().toSQL(),
                 updated_at: DateTime.now().toSQL()
             }).returning(['id', 'phone', 'name', 'email'])
@@ -50,7 +52,10 @@ export default class CustomerAuthController {
             })
         } catch (error) {
             console.error('Registration error:', error)
-            return response.internalServerError({ message: 'Erreur lors de la création du compte' })
+            return response.internalServerError({
+                message: 'Erreur lors de la création du compte',
+                error: process.env.NODE_ENV === 'development' ? error.message : undefined
+            })
         }
     }
 

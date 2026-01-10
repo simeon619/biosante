@@ -35,4 +35,8 @@ def run_ssh(command):
             os.waitpid(pid, 0)
 
 if __name__ == "__main__":
-    run_ssh(sys.argv[1])
+    cmd = sys.argv[1]
+    if cmd.startswith("@"):
+        with open(cmd[1:], "r") as f:
+            cmd = f.read()
+    run_ssh(cmd)
