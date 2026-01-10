@@ -37,7 +37,7 @@ ENV HOST=0.0.0.0
 ENV NODE_ENV=production
 
 HEALTHCHECK --interval=10s --timeout=5s --start-period=30s --retries=3 \
-    CMD wget --quiet --spider http://0.0.0.0:3333/health || exit 1
+    CMD wget --quiet --spider http://0.0.0.0:3333/ || exit 1
 
 ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
 CMD ["node", "./bin/server.js"]
