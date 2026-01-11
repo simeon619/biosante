@@ -26,40 +26,19 @@ function LoginForm() {
     const [error, setError] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState(false);
     const [isOtpSent, setIsOtpSent] = useState(false);
-    const [expiresAt, setExpiresAt] = useState<number | null>(null);
-    const [timeLeft, setTimeLeft] = useState(0);
+    const [countdown, setCountdown] = useState(0);
 
     // Countdown timer
     useEffect(() => {
-        if (!expiresAt) {
-            setTimeLeft(0);
-            return;
+        if (countdown > 0) {
+            const timer = setTimeout(() => setCountdown(countdown - 1), 1000);
+            return () => clearTimeout(timer);
         }
-
-        const interval = setInterval(() => {
-            const now = Date.now();
-            const diff = Math.ceil((expiresAt - now) / 1000);
-
-            if (diff <= 0) {
-                setTimeLeft(0);
-                setExpiresAt(null);
-                clearInterval(interval);
-            } else {
-                setTimeLeft(diff);
-            }
-        }, 1000);
-
-        // Initial set
-        const now = Date.now();
-        const diff = Math.ceil((expiresAt - now) / 1000);
-        setTimeLeft(diff > 0 ? diff : 0);
-
-        return () => clearInterval(interval);
-    }, [expiresAt]);
+    }, [countdown]);
 
     const formatCountdown = () => {
-        const minutes = Math.floor(timeLeft / 60);
-        const seconds = timeLeft % 60;
+        const minutes = Math.floor(countdown / 60);
+        const seconds = countdown % 60;
         return `${minutes}:${seconds.toString().padStart(2, '0')}`;
     };
 
@@ -110,7 +89,7 @@ function LoginForm() {
             await sendOtp(rawPhone);
             setStep('otp');
             setIsOtpSent(true);
-            setExpiresAt(Date.now() + 5 * 60 * 1000);
+            setCountdown(300); // 5 minutes
         } catch (err: any) {
             setError(err.message || 'Erreur lors de l\'envoi du code');
         } finally {
@@ -162,9 +141,6 @@ function LoginForm() {
 
     return (
         <div className="min-h-screen grid lg:grid-cols-2 bg-[#F4F4F0]">
-            <div className="fixed top-0 left-0 bg-red-600 text-white z-[9999] px-4 py-2 font-bold pointer-events-none">
-                DEBUG: V2 - COUNTDOWN UPDATE
-            </div>
             {/* Left Side - Visual */}
             <div className="hidden lg:flex flex-col justify-between bg-[#1A4731] p-12 text-white relative overflow-hidden">
                 <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1544367563-12123d8965cd?q=80&w=2070&auto=format&fit=crop')] opacity-20 bg-cover bg-center mix-blend-overlay"></div>
@@ -285,7 +261,7 @@ function LoginForm() {
                                             Numéro incorrect ?
                                         </button>
                                         <span className="text-xs text-gray-400">
-                                            {timeLeft > 0 ? (
+                                            {countdown > 0 ? (
                                                 <>Expire dans <span className="font-bold text-[#1A4731]">{formatCountdown()}</span></>
                                             ) : (
                                                 <span className="text-red-500">Expiré</span>
