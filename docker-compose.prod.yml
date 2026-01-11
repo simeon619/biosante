@@ -93,7 +93,7 @@ services:
     networks:
       - sv-network
     ports:
-      - "4001:3000"
+      - "3000:3000"
     # --- 3rd Party Wrappers ---
   httpsms-api:
     build:
