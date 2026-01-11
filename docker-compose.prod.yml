@@ -87,6 +87,7 @@ services:
     environment:
       - NEXT_PUBLIC_API_URL=https://api-biosante.sublymus.com
       - INTERNAL_API_URL=http://api:3333
+      - DEPLOY_ID=202601111140
     depends_on:
       - api
     networks:
