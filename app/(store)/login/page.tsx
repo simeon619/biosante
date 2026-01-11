@@ -162,6 +162,9 @@ function LoginForm() {
 
     return (
         <div className="min-h-screen grid lg:grid-cols-2 bg-[#F4F4F0]">
+            <div className="fixed top-0 left-0 bg-red-600 text-white z-[9999] px-4 py-2 font-bold pointer-events-none">
+                DEBUG: V2 - COUNTDOWN UPDATE
+            </div>
             {/* Left Side - Visual */}
             <div className="hidden lg:flex flex-col justify-between bg-[#1A4731] p-12 text-white relative overflow-hidden">
                 <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1544367563-12123d8965cd?q=80&w=2070&auto=format&fit=crop')] opacity-20 bg-cover bg-center mix-blend-overlay"></div>
