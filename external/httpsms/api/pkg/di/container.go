@@ -495,10 +495,28 @@ func (container *Container) FirebaseMessagingClient() (client *messaging.Client)
 }
 
 // FirebaseCredentials returns firebase credentials as bytes.
+// If GOOGLE_APPLICATION_CREDENTIALS env var is set, reads from that file path.
+// Otherwise, falls back to reading from FIREBASE_CREDENTIALS env var as JSON string.
 func (container *Container) FirebaseCredentials() []byte {
 	container.logger.Debug("creating firebase credentials")
+	
+	// First, try to read from file if GOOGLE_APPLICATION_CREDENTIALS is set
+	credentialsFile := os.Getenv("GOOGLE_APPLICATION_CREDENTIALS")
+	if credentialsFile != "" {
+		container.logger.Debug(fmt.Sprintf("reading firebase credentials from file: %s", credentialsFile))
+		data, err := os.ReadFile(credentialsFile)
+		if err != nil {
+			container.logger.Error(stacktrace.Propagate(err, fmt.Sprintf("cannot read firebase credentials file: %s", credentialsFile)))
+			// Fall back to env var
+		} else {
+			return data
+		}
+	}
+	
+	// Fall back to FIREBASE_CREDENTIALS env var
 	return []byte(os.Getenv("FIREBASE_CREDENTIALS"))
 }
+
 
 // Tracer creates a new instance of telemetry.Tracer
 func (container *Container) Tracer() (t telemetry.Tracer) {

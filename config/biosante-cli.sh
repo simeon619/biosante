@@ -111,26 +111,26 @@ while read -r oldrev newrev refname; do
       git --work-tree="\${PROJECT_DIR}" --git-dir="\${PWD}" checkout -f "\$newrev"
       cd "\${PROJECT_DIR}"
       
-      # Si c'est le frontend, on a besoin de passer l'API URL au build
-      BUILD_ARGS=""
+      # Configuration des arguments de build
+      declare -a DOCKER_BUILD_ARGS=()
       if [[ "\${SERVICE_NAME}" == "${SERVICE_FRONTEND}" ]]; then
-        BUILD_ARGS="--build-arg NEXT_PUBLIC_API_URL=https://api-biosante.sublymus.com"
+        DOCKER_BUILD_ARGS+=(--build-arg "NEXT_PUBLIC_API_URL=https://api-biosante.sublymus.com")
       elif [[ "\${SERVICE_NAME}" == "biosante_httpsms_web" ]]; then
         ENV_BUILD_FILE="/srv/biosante/env/httpsms-web.build.env"
         if [[ -f "\${ENV_BUILD_FILE}" ]]; then
           echo ">> Chargement des build-args depuis \${ENV_BUILD_FILE}"
           while IFS='=' read -r key value || [[ -n "\$key" ]]; do
             if [[ ! "\$key" =~ ^# && -n "\$key" ]]; then
-              BUILD_ARGS="\${BUILD_ARGS} --build-arg \${key}=\${value}"
+              # Supprimer les éventuels retours chariot (\r)
+              value=\$(echo "\$value" | tr -d '\r')
+              DOCKER_BUILD_ARGS+=(--build-arg "\${key}=\${value}")
             fi
           done < "\${ENV_BUILD_FILE}"
-        else
-          echo ">> WARN: Fichier de build \${ENV_BUILD_FILE} manquant"
         fi
       fi
 
-      IMAGE_TAG="$(date +%Y%m%d%H%M%S)"
-      \${DOCKER_CMD} build \${BUILD_ARGS} -t "\${IMAGE_NAME}:\${IMAGE_TAG}" .
+      IMAGE_TAG="\$(date +%Y%m%d%H%M%S)"
+      \${DOCKER_CMD} build "\${DOCKER_BUILD_ARGS[@]}" -t "\${IMAGE_NAME}:\${IMAGE_TAG}" .
       \${DOCKER_CMD} tag "\${IMAGE_NAME}:\${IMAGE_TAG}" "\${IMAGE_NAME}:latest"
       echo ">> Build terminé: \${IMAGE_NAME}:latest"
     ) 200>"\${LOCK_FILE}"
@@ -245,12 +245,17 @@ services:
     image: ${IMAGE_HTTPSMS_API}:latest
     env_file:
       - ${BIOSANTE_ENV_BASE_PATH}/httpsms.env
+    environment:
+      - GOOGLE_APPLICATION_CREDENTIALS=/config/firebase-credentials.json
+    volumes:
+      - ${BIOSANTE_ENV_BASE_PATH}/firebase-credentials.json:/config/firebase-credentials.json:ro
     networks:
       - ${SUBLYMUS_NETWORK}
     deploy:
       replicas: 1
       restart_policy:
         condition: on-failure
+
 
   httpsms-web:
     image: ${IMAGE_HTTPSMS_WEB}:latest
