@@ -10,6 +10,7 @@ RUN npm ci
 FROM base AS builder
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
+ENV CACHE_BUST=202601111125
 COPY . .
 
 # Pass build args to env
