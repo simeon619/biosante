@@ -13,6 +13,7 @@ import (
 	"github.com/google/uuid"
 	"github.com/palantir/stacktrace"
 	"gorm.io/gorm"
+	"time"
 )
 
 // gormMessageRepository is responsible for persisting entities.Message
@@ -240,6 +241,7 @@ func (repository *gormMessageRepository) GetOutstanding(ctx context.Context, use
 			}
 
 			return query.Where(repository.db.Where("status = ?", entities.MessageStatusScheduled).Or("status = ?", entities.MessageStatusPending).Or("status = ?", entities.MessageStatusExpired)).
+				Where("created_at > ?", time.Now().UTC().Add(-5*time.Minute)).
 				Update("status", entities.MessageStatusSending).Error
 		},
 	)

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, Suspense } from 'react';
+import React, { useState, Suspense, useEffect, useRef } from 'react';
 import { useAuth } from '@/context/AuthContext';
 import { useRouter, useSearchParams } from 'next/navigation';
 import {
@@ -26,6 +26,42 @@ function LoginForm() {
     const [error, setError] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState(false);
     const [isOtpSent, setIsOtpSent] = useState(false);
+    const [expiresAt, setExpiresAt] = useState<number | null>(null);
+    const [timeLeft, setTimeLeft] = useState(0);
+
+    // Countdown timer
+    useEffect(() => {
+        if (!expiresAt) {
+            setTimeLeft(0);
+            return;
+        }
+
+        const interval = setInterval(() => {
+            const now = Date.now();
+            const diff = Math.ceil((expiresAt - now) / 1000);
+
+            if (diff <= 0) {
+                setTimeLeft(0);
+                setExpiresAt(null);
+                clearInterval(interval);
+            } else {
+                setTimeLeft(diff);
+            }
+        }, 1000);
+
+        // Initial set
+        const now = Date.now();
+        const diff = Math.ceil((expiresAt - now) / 1000);
+        setTimeLeft(diff > 0 ? diff : 0);
+
+        return () => clearInterval(interval);
+    }, [expiresAt]);
+
+    const formatCountdown = () => {
+        const minutes = Math.floor(timeLeft / 60);
+        const seconds = timeLeft % 60;
+        return `${minutes}:${seconds.toString().padStart(2, '0')}`;
+    };
 
     const { sendOtp, verifyOtp, register } = useAuth();
     const router = useRouter();
@@ -74,6 +110,7 @@ function LoginForm() {
             await sendOtp(rawPhone);
             setStep('otp');
             setIsOtpSent(true);
+            setExpiresAt(Date.now() + 5 * 60 * 1000);
         } catch (err: any) {
             setError(err.message || 'Erreur lors de l\'envoi du code');
         } finally {
@@ -244,7 +281,13 @@ function LoginForm() {
                                         >
                                             Numéro incorrect ?
                                         </button>
-                                        <span className="text-xs text-gray-400">Expire dans 5 min</span>
+                                        <span className="text-xs text-gray-400">
+                                            {timeLeft > 0 ? (
+                                                <>Expire dans <span className="font-bold text-[#1A4731]">{formatCountdown()}</span></>
+                                            ) : (
+                                                <span className="text-red-500">Expiré</span>
+                                            )}
+                                        </span>
                                     </div>
                                 </div>
                                 <button

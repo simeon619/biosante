@@ -12,7 +12,8 @@ export default function AdminLoginPage() {
     const [otp, setOtp] = useState(['', '', '', '', '', '']);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState('');
-    const [countdown, setCountdown] = useState(0);
+    const [expiresAt, setExpiresAt] = useState<number | null>(null);
+    const [timeLeft, setTimeLeft] = useState(0);
     const otpRefs = useRef<(HTMLInputElement | null)[]>([]);
 
     // Format phone for display
@@ -27,11 +28,31 @@ export default function AdminLoginPage() {
 
     // Countdown timer
     useEffect(() => {
-        if (countdown > 0) {
-            const timer = setTimeout(() => setCountdown(countdown - 1), 1000);
-            return () => clearTimeout(timer);
+        if (!expiresAt) {
+            setTimeLeft(0);
+            return;
         }
-    }, [countdown]);
+
+        const interval = setInterval(() => {
+            const now = Date.now();
+            const diff = Math.ceil((expiresAt - now) / 1000);
+
+            if (diff <= 0) {
+                setTimeLeft(0);
+                setExpiresAt(null);
+                clearInterval(interval);
+            } else {
+                setTimeLeft(diff);
+            }
+        }, 1000);
+
+        // Initial set
+        const now = Date.now();
+        const diff = Math.ceil((expiresAt - now) / 1000);
+        setTimeLeft(diff > 0 ? diff : 0);
+
+        return () => clearInterval(interval);
+    }, [expiresAt]);
 
     const handlePhoneSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -52,7 +73,7 @@ export default function AdminLoginPage() {
             }
 
             setStep('otp');
-            setCountdown(300); // 5 minutes
+            setExpiresAt(Date.now() + 5 * 60 * 1000); // 5 minutes from now
             setOtp(['', '', '', '', '', '']);
             setTimeout(() => otpRefs.current[0]?.focus(), 100);
         } catch (err: any) {
@@ -138,7 +159,7 @@ export default function AdminLoginPage() {
     };
 
     const handleResendOtp = async () => {
-        if (countdown > 0) return;
+        if (timeLeft > 0) return;
         setError('');
         setIsLoading(true);
 
@@ -154,7 +175,7 @@ export default function AdminLoginPage() {
                 throw new Error(data.error || 'Erreur');
             }
 
-            setCountdown(300);
+            setExpiresAt(Date.now() + 5 * 60 * 1000);
             setOtp(['', '', '', '', '', '']);
         } catch (err: any) {
             setError(err.message);
@@ -164,8 +185,8 @@ export default function AdminLoginPage() {
     };
 
     const formatCountdown = () => {
-        const minutes = Math.floor(countdown / 60);
-        const seconds = countdown % 60;
+        const minutes = Math.floor(timeLeft / 60);
+        const seconds = timeLeft % 60;
         return `${minutes}:${seconds.toString().padStart(2, '0')}`;
     };
 
@@ -270,7 +291,7 @@ export default function AdminLoginPage() {
                             </div>
 
                             <div className="text-center mb-6">
-                                {countdown > 0 ? (
+                                {timeLeft > 0 ? (
                                     <p className="text-gray-500 text-sm">
                                         Code expire dans <span className="font-bold text-black">{formatCountdown()}</span>
                                     </p>
