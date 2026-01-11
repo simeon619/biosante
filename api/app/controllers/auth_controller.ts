@@ -24,7 +24,15 @@ export default class CustomerAuthController {
         }
 
         const hashedPassword = await hash.make(password)
-        const apiKey = await hash.make(`${phone}:${Date.now()}`) // Simple unique key generation, or use crypto
+
+
+        // Check if email already exists if provided
+        if (email) {
+            const existingEmail = await db.from('users').where('email', email).first()
+            if (existingEmail) {
+                return response.conflict({ message: 'Cet adresse email est déjà utilisée' })
+            }
+        }
 
         try {
             const [user] = await db.table('users').insert({
@@ -32,7 +40,6 @@ export default class CustomerAuthController {
                 email: email || null,
                 password: hashedPassword,
                 name,
-                api_key: apiKey,
                 created_at: DateTime.now().toSQL(),
                 updated_at: DateTime.now().toSQL()
             }).returning(['id', 'phone', 'name', 'email'])
