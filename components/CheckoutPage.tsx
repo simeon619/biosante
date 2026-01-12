@@ -37,6 +37,7 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = (props) => {
     const phoneInputRef = useRef<HTMLInputElement>(null);
     const cityInputRef = useRef<HTMLInputElement>(null);
     const searchTimeoutRef = useRef<any>(null);
+    const errorRef = useRef<HTMLDivElement>(null);
 
     // 2. All State
     const [deliveryMode, setDeliveryMode] = useState<'local' | 'shipping'>('local');
@@ -347,38 +348,48 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = (props) => {
         e.preventDefault();
         setPaymentError(null);
         setValidationError(null);
+
+        // Helper to show error and scroll to it
+        const showValidationError = (message: string, inputRef?: React.RefObject<HTMLInputElement | null>) => {
+            setValidationError(message);
+            // Scroll to error message after a short delay to ensure it's rendered
+            setTimeout(() => {
+                errorRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }, 100);
+            inputRef?.current?.focus();
+        };
+
         if (!formData.name.trim()) {
-            setValidationError("Veuillez entrer votre nom complet.");
-            nameInputRef.current?.focus();
+            showValidationError("Veuillez entrer votre nom complet.", nameInputRef);
             return;
         }
         if (!formData.phone.trim()) {
-            setValidationError("Le numéro de téléphone est obligatoire.");
-            phoneInputRef.current?.focus();
+            showValidationError("Le numéro de téléphone est obligatoire.", phoneInputRef);
             return;
         }
-        if (!isValidIvorianPhone(formData.phone)) {
-            setValidationError("Veuillez entrer un numéro ivoirien valide (10 chiffres commençant par 01, 05 ou 07).");
-            phoneInputRef.current?.focus();
+
+        // Normalize phone number: remove +225 prefix and spaces
+        const normalizedPhone = formData.phone.replace(/^\+?225\s*/, '').replace(/\s/g, '');
+        if (!isValidIvorianPhone(normalizedPhone)) {
+            showValidationError("Veuillez entrer un numéro ivoirien valide (10 chiffres commençant par 01, 05 ou 07).", phoneInputRef);
             return;
         }
         if (deliveryMode === 'local') {
             if (!formData.address.trim() || !location) {
-                setValidationError("Veuillez sélectionner votre lieu de livraison sur la carte.");
-                addressInputRef.current?.focus();
+                showValidationError("Veuillez sélectionner votre lieu de livraison sur la carte.", addressInputRef);
                 return;
             }
         } else {
             if (!selectedCity) {
-                setValidationError("Veuillez sélectionner une ville de destination.");
+                showValidationError("Veuillez sélectionner une ville de destination.");
                 return;
             }
             if (availableCompanies.length > 0 && !selectedCompany && !manualCompany.trim()) {
-                setValidationError("Veuillez sélectionner une compagnie de transport.");
+                showValidationError("Veuillez sélectionner une compagnie de transport.");
                 return;
             }
             if (availableCompanies.length === 0 && !manualCompany.trim()) {
-                setValidationError("Veuillez préciser la compagnie de transport souhaitée.");
+                showValidationError("Veuillez préciser la compagnie de transport souhaitée.");
                 return;
             }
         }
@@ -388,7 +399,7 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = (props) => {
                 cart,
                 customer: {
                     name: formData.name,
-                    phone: formData.phone,
+                    phone: normalizedPhone, // Use normalized phone without +225 prefix
                     email: formData.email
                 },
                 delivery: {
@@ -1094,9 +1105,9 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = (props) => {
                             )}
 
                             {validationError && (
-                                <div className="p-4 bg-slate-50 border border-slate-100 rounded-2xl text-slate-900 text-sm font-bold flex items-center gap-3 animate-in fade-in slide-in-from-top-2 duration-300">
-                                    <div className="bg-white p-1.5 rounded-lg border border-slate-100">
-                                        <Info className="w-4 h-4 text-slate-400 font-bold" />
+                                <div ref={errorRef} className="p-4 bg-red-50 border-2 border-red-200 rounded-2xl text-red-800 text-sm font-bold flex items-center gap-3 animate-in fade-in slide-in-from-top-2 duration-300 shadow-lg">
+                                    <div className="bg-red-100 p-1.5 rounded-lg border border-red-200">
+                                        <Info className="w-4 h-4 text-red-600 font-bold" />
                                     </div>
                                     {validationError}
                                 </div>
