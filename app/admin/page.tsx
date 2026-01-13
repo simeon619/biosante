@@ -1,9 +1,10 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { ShoppingCart, DollarSign, Package, TrendingUp, Clock, CheckCircle, ChevronRight, AlertTriangle } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { useQuery } from '@tanstack/react-query';
 import { API_URL } from '@/lib/utils';
 
 interface DashboardStats {
@@ -24,31 +25,23 @@ interface DashboardStats {
 }
 
 export default function AdminDashboardPage() {
-    const [stats, setStats] = useState<DashboardStats | null>(null);
-    const [isLoading, setIsLoading] = useState(true);
     const router = useRouter();
 
-    useEffect(() => {
-        fetchDashboard();
-    }, []);
-
-    const fetchDashboard = async () => {
-        try {
+    const { data: stats, isLoading } = useQuery<DashboardStats>({
+        queryKey: ['admin', 'dashboard'],
+        queryFn: async () => {
             const token = localStorage.getItem('admin_token');
+            const adminData = JSON.parse(localStorage.getItem('admin_data') || '{}');
             const response = await fetch(`${API_URL}/api/admin/dashboard`, {
                 headers: {
                     'Authorization': `Bearer ${token}`,
-                    'X-Admin-Id': JSON.parse(localStorage.getItem('admin_data') || '{}').id
+                    'X-Admin-Id': adminData.id
                 }
             });
-            const data = await response.json();
-            setStats(data);
-        } catch (error) {
-            console.error('Failed to fetch dashboard:', error);
-        } finally {
-            setIsLoading(false);
+            if (!response.ok) throw new Error('Failed to fetch dashboard');
+            return response.json();
         }
-    };
+    });
 
     if (isLoading) {
         return (

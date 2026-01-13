@@ -27,6 +27,7 @@ import {
     Printer,
     Download
 } from 'lucide-react';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { API_URL } from '@/lib/utils';
 
 interface OrderDetails {
@@ -75,47 +76,85 @@ const STATUS_CONFIG: Record<string, { label: string; color: string; bg: string; 
 };
 
 export default function OrderDetailsPage() {
-    const params = useParams();
+    const params = useParams() as { id: string };
     const router = useRouter();
-    const [data, setData] = useState<OrderDetails | null>(null);
-    const [errorData, setErrorData] = useState<any>(null);
-    const [isLoading, setIsLoading] = useState(true);
-    const [isUpdating, setIsUpdating] = useState(false);
+    const queryClient = useQueryClient();
 
-    // Modal State
-    const [showModal, setShowModal] = useState(false);
-    const [pendingStatus, setPendingStatus] = useState<string | null>(null);
-
-    useEffect(() => {
-        if (params && params.id) {
-            fetchOrderDetails();
-        }
-    }, [params]);
-
-    const fetchOrderDetails = async () => {
-        try {
+    // Query for order details
+    const { data, isLoading, error: queryError } = useQuery<OrderDetails>({
+        queryKey: ['admin', 'orders', params.id],
+        queryFn: async () => {
             const token = localStorage.getItem('admin_token');
             const url = `${API_URL}/api/admin/orders/${params.id}`;
             const response = await fetch(url, {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
 
-            if (response.ok) {
-                const result = await response.json();
-                setData(result);
-                setErrorData(null);
-            } else {
+            if (!response.ok) {
                 const err = await response.json();
-                setErrorData(err);
-                setData(null);
+                throw err;
             }
-        } catch (error) {
-            console.error('Network error:', error);
-            setData(null);
-        } finally {
-            setIsLoading(false);
+            return response.json();
+        },
+        enabled: !!params?.id
+    });
+
+    // Mutation for status updates
+    const statusMutation = useMutation({
+        mutationFn: async (status: string) => {
+            const token = localStorage.getItem('admin_token');
+            const response = await fetch(`${API_URL}/api/admin/orders/${params.id}/status`, {
+                method: 'PATCH',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ status })
+            });
+            if (!response.ok) {
+                const err = await response.json();
+                throw new Error(err.error || 'Impossible de mettre à jour le statut');
+            }
+            return response.json();
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['admin', 'orders', params.id] });
+            queryClient.invalidateQueries({ queryKey: ['admin', 'orders'] });
+        },
+        onError: (error) => {
+            alert(`Erreur: ${error.message}`);
         }
-    };
+    });
+
+    // Mutation for manual status updates
+    const manualStatusMutation = useMutation({
+        mutationFn: async (status: string) => {
+            const response = await fetch(`${API_URL}/api/admin/orders/${params.id}/manual-status`, {
+                method: 'PATCH',
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('admin_token')}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ status })
+            });
+            if (!response.ok) {
+                const err = await response.json();
+                throw new Error(err.error || 'Impossible de mettre à jour le statut manuel');
+            }
+            return response.json();
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['admin', 'orders', params.id] });
+        },
+        onError: (error) => {
+            alert(`Erreur: ${error.message}`);
+        }
+    });
+
+    const [isUpdating, setIsUpdating] = useState(false);
+    // Modal State
+    const [showModal, setShowModal] = useState(false);
+    const [pendingStatus, setPendingStatus] = useState<string | null>(null);
 
     const handleUpdateClick = (status: string) => {
         setPendingStatus(status);
@@ -124,32 +163,8 @@ export default function OrderDetailsPage() {
 
     const confirmStatusUpdate = async () => {
         if (!pendingStatus) return;
-
-        setIsUpdating(true);
         setShowModal(false);
-        try {
-            const token = localStorage.getItem('admin_token');
-            const response = await fetch(`${API_URL}/api/admin/orders/${params.id}/status`, {
-                method: 'PATCH',
-                headers: {
-                    'Authorization': `Bearer ${token}`,
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ status: pendingStatus })
-            });
-            if (response.ok) {
-                await fetchOrderDetails();
-            } else {
-                const error = await response.json();
-                alert(`Erreur: ${error.error || 'Impossible de mettre à jour le statut'}`);
-            }
-        } catch (error) {
-            console.error('Failed to update status:', error);
-            alert('Erreur réseau');
-        } finally {
-            setIsUpdating(false);
-            setPendingStatus(null);
-        }
+        statusMutation.mutate(pendingStatus);
     };
 
     if (isLoading) {
@@ -176,11 +191,11 @@ export default function OrderDetailsPage() {
                         <p className="text-gray-500 mt-2">L'identifiant spécifié n'existe pas ou a été archivé.</p>
                     </div>
 
-                    {errorData && (
+                    {queryError && (
                         <div className="bg-gray-50 rounded-2xl p-4 text-left text-xs font-mono text-gray-400 overflow-hidden">
                             <p className="font-bold mb-1">Diagnostic :</p>
                             <p>ID: {params.id}</p>
-                            <p>DB Count: {errorData.dbStats?.count}</p>
+                            <p>Error: {(queryError as any).error || queryError.message}</p>
                         </div>
                     )}
 
@@ -612,61 +627,22 @@ export default function OrderDetailsPage() {
                                     {/* Action Buttons for Manual/Wave Payment */}
                                     <div className="grid grid-cols-2 gap-2">
                                         <button
-                                            disabled={isUpdating}
-                                            onClick={async () => {
-                                                setIsUpdating(true);
-                                                try {
-                                                    const res = await fetch(`${API_URL}/api/admin/orders/${order.id}/manual-status`, {
-                                                        method: 'PATCH',
-                                                        headers: {
-                                                            'Authorization': `Bearer ${localStorage.getItem('admin_token')}`,
-                                                            'Content-Type': 'application/json'
-                                                        },
-                                                        body: JSON.stringify({ status: 'verifying' })
-                                                    });
-                                                    if (res.ok) fetchOrderDetails();
-                                                } finally { setIsUpdating(false); }
-                                            }}
+                                            disabled={manualStatusMutation.isPending}
+                                            onClick={() => manualStatusMutation.mutate('verifying')}
                                             className="py-3 bg-indigo-50 text-indigo-700 rounded-xl font-bold text-xs hover:bg-indigo-100 transition-colors"
                                         >
                                             Vérifier
                                         </button>
                                         <button
-                                            disabled={isUpdating}
-                                            onClick={async () => {
-                                                setIsUpdating(true);
-                                                try {
-                                                    const res = await fetch(`${API_URL}/api/admin/orders/${order.id}/manual-status`, {
-                                                        method: 'PATCH',
-                                                        headers: {
-                                                            'Authorization': `Bearer ${localStorage.getItem('admin_token')}`,
-                                                            'Content-Type': 'application/json'
-                                                        },
-                                                        body: JSON.stringify({ status: 'success' })
-                                                    });
-                                                    if (res.ok) fetchOrderDetails();
-                                                } finally { setIsUpdating(false); }
-                                            }}
+                                            disabled={manualStatusMutation.isPending}
+                                            onClick={() => manualStatusMutation.mutate('success')}
                                             className="py-3 bg-green-50 text-green-700 rounded-xl font-bold text-xs hover:bg-green-100 transition-colors"
                                         >
                                             Valider
                                         </button>
                                         <button
-                                            disabled={isUpdating}
-                                            onClick={async () => {
-                                                setIsUpdating(true);
-                                                try {
-                                                    const res = await fetch(`${API_URL}/api/admin/orders/${order.id}/manual-status`, {
-                                                        method: 'PATCH',
-                                                        headers: {
-                                                            'Authorization': `Bearer ${localStorage.getItem('admin_token')}`,
-                                                            'Content-Type': 'application/json'
-                                                        },
-                                                        body: JSON.stringify({ status: 'failed' })
-                                                    });
-                                                    if (res.ok) fetchOrderDetails();
-                                                } finally { setIsUpdating(false); }
-                                            }}
+                                            disabled={manualStatusMutation.isPending}
+                                            onClick={() => manualStatusMutation.mutate('failed')}
                                             className="py-3 bg-red-50 text-red-700 rounded-xl font-bold text-xs hover:bg-red-100 transition-colors col-span-2"
                                         >
                                             Rejeter le paiement

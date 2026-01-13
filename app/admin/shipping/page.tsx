@@ -1,7 +1,8 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
-import { Plus, Truck, Edit, Trash2, Power, Search, Loader2, Save, MapPin, X, Info, Globe, Building2, Phone } from 'lucide-react';
+import React, { useState } from 'react';
+import { Truck, Plus, Trash2, Edit, CheckCircle, XCircle, Loader2, DollarSign, Building, Search, Power, Globe, Building2, Phone, MapPin, X, Info, Save } from 'lucide-react';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { API_URL } from '@/lib/utils';
 
 interface ShippingCompany {
@@ -17,14 +18,13 @@ interface ShippingCompany {
 }
 
 export default function AdminShippingPage() {
-    const [companies, setCompanies] = useState<ShippingCompany[]>([]);
-    const [isLoading, setIsLoading] = useState(true);
+    const queryClient = useQueryClient();
+    const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+    const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+    const [selectedCompany, setSelectedCompany] = useState<ShippingCompany | null>(null);
     const [searchQuery, setSearchQuery] = useState('');
-    const [showModal, setShowModal] = useState(false);
-    const [editingCompany, setEditingCompany] = useState<ShippingCompany | null>(null);
-    const [isSaving, setIsSaving] = useState(false);
 
-    // Form state
+    // Form state for adding/editing
     const [formData, setFormData] = useState({
         slug: '',
         name: '',
@@ -39,427 +39,468 @@ export default function AdminShippingPage() {
     const [newRegion, setNewRegion] = useState('');
     const [newDestination, setNewDestination] = useState('');
 
-    useEffect(() => {
-        fetchCompanies();
-    }, []);
-
-    const fetchCompanies = async () => {
-        setIsLoading(true);
-        try {
-            const response = await fetch(`${API_URL}/api/admin/shipping`);
+    const { data: companies = [], isLoading } = useQuery<ShippingCompany[]>({
+        queryKey: ['admin', 'shipping'],
+        queryFn: async () => {
+            const token = localStorage.getItem('admin_token');
+            const response = await fetch(`${API_URL}/api/admin/shipping`, {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            if (!response.ok) throw new Error('Failed to fetch shipping data');
             const data = await response.json();
-            setCompanies(data.companies || []);
-        } catch (error) {
-            console.error('Failed to fetch companies:', error);
-        } finally {
-            setIsLoading(false);
+            return data.companies || [];
+        }
+    });
+
+    const addMutation = useMutation({
+        mutationFn: async (companyData: typeof formData) => {
+            const token = localStorage.getItem('admin_token');
+            const response = await fetch(`${API_URL}/api/admin/shipping`, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(companyData)
+            });
+            if (!response.ok) throw new Error('Failed to add company');
+            return response.json();
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['admin', 'shipping'] });
+            setIsAddModalOpen(false);
+            setFormData({
+                slug: '',
+                name: '',
+                type: 'National',
+                contact: '',
+                hub_principal: '',
+                regions_desservies: [],
+                destinations: [],
+                is_active: true
+            });
+        }
+    });
+
+    const updateMutation = useMutation({
+        mutationFn: async (companyData: ShippingCompany) => {
+            const token = localStorage.getItem('admin_token');
+            const response = await fetch(`${API_URL}/api/admin/shipping/${companyData.id}`, {
+                method: 'PATCH',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(companyData)
+            });
+            if (!response.ok) throw new Error('Failed to update company');
+            return response.json();
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['admin', 'shipping'] });
+            setIsEditModalOpen(false);
+            setSelectedCompany(null);
+        }
+    });
+
+    const toggleMutation = useMutation({
+        mutationFn: async (id: number) => {
+            const token = localStorage.getItem('admin_token');
+            const response = await fetch(`${API_URL}/api/admin/shipping/${id}/toggle`, {
+                method: 'PATCH',
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            if (!response.ok) throw new Error('Failed to toggle status');
+            return response.json();
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['admin', 'shipping'] });
+        }
+    });
+
+    const deleteMutation = useMutation({
+        mutationFn: async (id: number) => {
+            const token = localStorage.getItem('admin_token');
+            const response = await fetch(`${API_URL}/api/admin/shipping/${id}`, {
+                method: 'DELETE',
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            if (!response.ok) throw new Error('Failed to delete company');
+            return response.json();
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['admin', 'shipping'] });
+        }
+    });
+
+    const handleToggle = (id: number) => {
+        toggleMutation.mutate(id);
+    };
+
+    const handleDelete = (id: number) => {
+        if (confirm('Êtes-vous sûr de vouloir supprimer cette compagnie ?')) {
+            deleteMutation.mutate(id);
         }
     };
 
-    const handleToggle = async (id: number) => {
-        try {
-            await fetch(`${API_URL}/api/admin/shipping/${id}/toggle`, {
-                method: 'POST'
-            });
-            fetchCompanies();
-        } catch (error) {
-            console.error('Failed to toggle company:', error);
-        }
-    };
-
-    const handleDelete = async (id: number) => {
-        if (!confirm('Êtes-vous sûr de vouloir supprimer cette compagnie ?')) return;
-        try {
-            await fetch(`${API_URL}/api/admin/shipping/${id}`, {
-                method: 'DELETE'
-            });
-            fetchCompanies();
-        } catch (error) {
-            console.error('Failed to delete company:', error);
-        }
+    const openAddModal = () => {
+        setSelectedCompany(null);
+        setFormData({
+            slug: '',
+            name: '',
+            type: 'National',
+            contact: '',
+            hub_principal: '',
+            regions_desservies: [],
+            destinations: [],
+            is_active: true
+        });
+        setIsAddModalOpen(true);
     };
 
     const openEditModal = (company: ShippingCompany) => {
-        setEditingCompany(company);
+        setSelectedCompany(company);
         setFormData({
             slug: company.slug || '',
             name: company.name,
             type: company.type,
-            contact: company.contact || '',
-            hub_principal: company.hub_principal || '',
+            contact: company.contact,
+            hub_principal: company.hub_principal,
             regions_desservies: company.regions_desservies || [],
             destinations: company.destinations || [],
             is_active: company.is_active
         });
-        setShowModal(true);
+        setIsEditModalOpen(true);
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        setIsSaving(true);
-        try {
-            const url = editingCompany
-                ? `${API_URL}/api/admin/shipping/${editingCompany.id}`
-                : `${API_URL}/api/admin/shipping`;
-
-            const response = await fetch(url, {
-                method: editingCompany ? 'PATCH' : 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(formData)
-            });
-
-            if (response.ok) {
-                setShowModal(false);
-                fetchCompanies();
-            }
-        } catch (error) {
-            console.error('Failed to save company:', error);
-        } finally {
-            setIsSaving(false);
+        if (selectedCompany) {
+            updateMutation.mutate({ ...formData, id: selectedCompany.id });
+        } else {
+            addMutation.mutate(formData);
         }
     };
 
-    const addRegion = () => {
-        if (newRegion.trim() && !formData.regions_desservies.includes(newRegion.trim())) {
-            setFormData({
-                ...formData,
-                regions_desservies: [...formData.regions_desservies, newRegion.trim()]
-            });
-            setNewRegion('');
-        }
-    };
-
-    const removeRegion = (region: string) => {
-        setFormData({
-            ...formData,
-            regions_desservies: formData.regions_desservies.filter(r => r !== region)
-        });
-    };
-
-    const addDestination = () => {
-        if (newDestination.trim() && !formData.destinations.includes(newDestination.trim())) {
-            setFormData({
-                ...formData,
-                destinations: [...formData.destinations, newDestination.trim()]
-            });
-            setNewDestination('');
-        }
-    };
-
-    const removeDestination = (dest: string) => {
-        setFormData({
-            ...formData,
-            destinations: formData.destinations.filter(d => d !== dest)
-        });
-    };
-
-    const filteredCompanies = companies.filter(c =>
-        c.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        c.type.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        (c.destinations && c.destinations.some(d => d.toLowerCase().includes(searchQuery.toLowerCase())))
+    const filteredCompanies = companies.filter(company =>
+        company.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        company.type.toLowerCase().includes(searchQuery.toLowerCase())
     );
 
     return (
         <div className="space-y-6">
-            <div className="flex items-center justify-between">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div>
                     <h1 className="text-2xl font-bold text-gray-900">Expédition</h1>
-                    <p className="text-gray-500">Gérez les compagnies de transport et livreurs</p>
+                    <p className="text-gray-500">Gérez vos compagnies et zones de livraison</p>
                 </div>
-                <div className="flex gap-3">
-                    <button
-                        onClick={() => {
-                            if (confirm('Voulez-vous réinitialiser les données à partir du fichier JSON par défaut ? Cela écrasera les modifications non sauvegardées.')) {
-                                fetch(`${API_URL}/api/admin/shipping/seed`, {
-                                    method: 'POST',
-                                    headers: { 'Content-Type': 'application/json' },
-                                    body: JSON.stringify({ force: true })
-                                }).then(() => fetchCompanies());
-                            }
-                        }}
-                        className="flex items-center gap-2 px-4 py-2 border border-gray-200 rounded-xl hover:bg-gray-50 transition-colors text-sm font-medium"
-                    >
-                        Réinitialiser (JSON)
-                    </button>
-                    <button
-                        onClick={() => {
-                            setEditingCompany(null);
-                            setFormData({
-                                slug: '',
-                                name: '',
-                                type: 'National',
-                                contact: '',
-                                hub_principal: '',
-                                regions_desservies: [],
-                                destinations: [],
-                                is_active: true
-                            });
-                            setShowModal(true);
-                        }}
-                        className="flex items-center gap-2 bg-black text-white px-4 py-2 rounded-xl hover:bg-gray-800 transition-colors"
-                    >
-                        <Plus className="w-5 h-5" />
-                        Ajouter une compagnie
-                    </button>
-                </div>
+                <button
+                    onClick={openAddModal}
+                    className="flex items-center justify-center gap-2 bg-black text-white px-6 py-2.5 rounded-xl font-bold hover:bg-gray-800 transition-all shadow-lg shadow-black/10"
+                >
+                    <Plus className="w-5 h-5" />
+                    Ajouter une compagnie
+                </button>
             </div>
 
-            <div className="relative max-w-md">
+            <div className="relative">
                 <input
                     type="text"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    placeholder="Rechercher par nom, ville ou type..."
-                    className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-black focus:border-transparent outline-none"
+                    placeholder="Rechercher une compagnie..."
+                    className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-black focus:border-transparent outline-none bg-white"
                 />
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
             </div>
 
             {isLoading ? (
-                <div className="flex items-center justify-center h-64">
-                    <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-black"></div>
+                <div className="flex flex-center justify-center h-64">
+                    <Loader2 className="w-12 h-12 animate-spin text-black" />
+                </div>
+            ) : filteredCompanies.length === 0 ? (
+                <div className="bg-white rounded-2xl p-12 text-center border border-gray-100">
+                    <div className="w-16 h-16 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <Truck className="w-8 h-8 text-gray-400" />
+                    </div>
+                    <h3 className="text-lg font-bold text-gray-900">Aucune compagnie</h3>
+                    <p className="text-gray-500">Commencez par ajouter votre premier partenaire de livraison.</p>
                 </div>
             ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {filteredCompanies.map((company) => (
-                        <div key={company.id} className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden hover:shadow-md transition-shadow flex flex-col">
-                            <div className="p-6 flex-1">
+                        <div key={company.id} className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden flex flex-col">
+                            <div className="p-6">
                                 <div className="flex items-start justify-between mb-4">
-                                    <div className={`${company.type === 'Local' ? 'bg-blue-100 text-blue-600' : 'bg-amber-100 text-amber-600'} p-3 rounded-xl`}>
+                                    <div className="w-12 h-12 bg-black text-white rounded-xl flex items-center justify-center">
                                         <Truck className="w-6 h-6" />
                                     </div>
                                     <div className="flex gap-1">
                                         <button
                                             onClick={() => handleToggle(company.id)}
-                                            className={`p-2 rounded-lg ${company.is_active ? 'text-green-600 bg-green-50 focus:ring-2 focus:ring-green-400' : 'text-gray-400 bg-gray-50'}`}
+                                            className={`p-2 rounded-lg transition-colors ${company.is_active ? 'text-green-600 hover:bg-green-50' : 'text-gray-400 hover:bg-gray-50'}`}
                                             title={company.is_active ? 'Désactiver' : 'Activer'}
                                         >
-                                            <Power className="w-4 h-4" />
+                                            <XCircle className="w-5 h-5" />
                                         </button>
                                         <button
                                             onClick={() => openEditModal(company)}
-                                            className="p-2 rounded-lg text-blue-600 bg-blue-50 focus:ring-2 focus:ring-blue-400"
+                                            className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
                                             title="Modifier"
                                         >
-                                            <Edit className="w-4 h-4" />
+                                            <Edit className="w-5 h-5" />
                                         </button>
                                         <button
                                             onClick={() => handleDelete(company.id)}
-                                            className="p-2 rounded-lg text-red-600 bg-red-50 focus:ring-2 focus:ring-red-400"
+                                            className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
                                             title="Supprimer"
                                         >
-                                            <Trash2 className="w-4 h-4" />
+                                            <Trash2 className="w-5 h-5" />
                                         </button>
                                     </div>
                                 </div>
 
                                 <div className="space-y-1 mb-4">
-                                    <h3 className="font-bold text-lg text-gray-900 leading-tight">{company.name}</h3>
-                                    <div className="flex items-center gap-1.5 text-xs font-bold text-gray-400 uppercase tracking-wider">
-                                        <Globe className="w-3 h-3" />
-                                        {company.type}
-                                        {company.slug && <span className="ml-2 text-gray-300">#{company.slug}</span>}
+                                    <h3 className="text-lg font-bold text-gray-900">{company.name}</h3>
+                                    <div className="flex items-center gap-2 text-sm text-gray-500">
+                                        <Globe className="w-4 h-4" />
+                                        <span>{company.type}</span>
                                     </div>
                                 </div>
 
-                                <div className="space-y-3">
-                                    {company.hub_principal && (
-                                        <div className="flex items-start gap-2 text-sm">
-                                            <Building2 className="w-4 h-4 text-gray-400 mt-0.5 flex-shrink-0" />
-                                            <span className="text-gray-600 line-clamp-2"><span className="font-semibold text-gray-900">Hub:</span> {company.hub_principal}</span>
+                                <div className="space-y-3 pt-4 border-t border-gray-50">
+                                    <div className="flex items-center gap-3 text-sm">
+                                        <div className="w-8 h-8 bg-gray-50 rounded-lg flex items-center justify-center flex-shrink-0 text-gray-400">
+                                            <Building2 className="w-4 h-4" />
                                         </div>
-                                    )}
-                                    {company.contact && (
-                                        <div className="flex items-start gap-2 text-sm">
-                                            <Phone className="w-4 h-4 text-gray-400 mt-0.5 flex-shrink-0" />
-                                            <span className="text-gray-600"><span className="font-semibold text-gray-900">Contact:</span> {company.contact}</span>
+                                        <div>
+                                            <p className="text-gray-400 text-[10px] uppercase font-bold">Hub Principal</p>
+                                            <p className="text-gray-900 font-medium">{company.hub_principal}</p>
                                         </div>
-                                    )}
-
-                                    {company.destinations && company.destinations.length > 0 && (
-                                        <div className="pt-2 border-t border-gray-50">
-                                            <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2 flex items-center gap-1">
-                                                <MapPin className="w-3 h-3" />
-                                                Villes desservies ({company.destinations.length})
+                                    </div>
+                                    <div className="flex items-center gap-3 text-sm">
+                                        <div className="w-8 h-8 bg-gray-50 rounded-lg flex items-center justify-center flex-shrink-0 text-gray-400">
+                                            <Phone className="w-4 h-4" />
+                                        </div>
+                                        <div>
+                                            <p className="text-gray-400 text-[10px] uppercase font-bold">Contact</p>
+                                            <p className="text-gray-900 font-medium">{company.contact}</p>
+                                        </div>
+                                    </div>
+                                    <div className="flex items-start gap-3 text-sm">
+                                        <div className="w-8 h-8 bg-gray-50 rounded-lg flex items-center justify-center flex-shrink-0 text-gray-400">
+                                            <MapPin className="w-4 h-4" />
+                                        </div>
+                                        <div>
+                                            <p className="text-gray-400 text-[10px] uppercase font-bold">Régions</p>
+                                            <p className="text-gray-900 font-medium line-clamp-1">
+                                                {company.regions_desservies?.join(', ') || 'Aucune'}
                                             </p>
-                                            <div className="flex flex-wrap gap-1">
-                                                {company.destinations.slice(0, 5).map((dest, i) => (
-                                                    <span key={i} className="px-2 py-0.5 bg-gray-50 text-gray-600 text-[10px] font-bold rounded-md border border-gray-100">
-                                                        {dest}
-                                                    </span>
-                                                ))}
-                                                {company.destinations.length > 5 && (
-                                                    <span className="px-2 py-0.5 bg-gray-50 text-gray-400 text-[10px] font-bold rounded-md border border-gray-100 italic">
-                                                        +{company.destinations.length - 5} de plus
-                                                    </span>
-                                                )}
-                                            </div>
                                         </div>
-                                    )}
+                                    </div>
                                 </div>
                             </div>
-                            <div className={`h-1 w-full ${company.is_active ? 'bg-green-500' : 'bg-gray-200'}`} />
                         </div>
                     ))}
                 </div>
             )}
 
-            {showModal && (
-                <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 overflow-y-auto">
-                    <div className="bg-white rounded-3xl w-full max-w-2xl my-auto shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-200">
-                        <div className="p-8 border-b border-gray-100 flex items-center justify-between bg-gray-50/50">
-                            <div>
-                                <h2 className="text-2xl font-black text-gray-900 uppercase tracking-tight">
-                                    {editingCompany ? 'Modifier Compagnie' : 'Nouvelle Compagnie'}
-                                </h2>
-                                <p className="text-gray-500 text-sm">Configurez les gares et zones de livraison.</p>
-                            </div>
-                            <button onClick={() => setShowModal(false)} className="p-2 hover:bg-gray-200 rounded-full transition-colors text-gray-400">
+            {/* Modal for Add/Edit */}
+            {(isAddModalOpen || isEditModalOpen) && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm overflow-y-auto">
+                    <div className="bg-white rounded-3xl w-full max-w-2xl my-8 overflow-hidden shadow-2xl animate-in fade-in zoom-in duration-200">
+                        <div className="flex items-center justify-between p-6 border-b border-gray-100">
+                            <h2 className="text-xl font-bold">
+                                {selectedCompany ? 'Modifier la compagnie' : 'Ajouter une compagnie'}
+                            </h2>
+                            <button
+                                onClick={() => {
+                                    setIsAddModalOpen(false);
+                                    setIsEditModalOpen(false);
+                                }}
+                                className="p-2 hover:bg-gray-50 rounded-xl transition-colors"
+                            >
                                 <X className="w-6 h-6" />
                             </button>
                         </div>
 
-                        <form onSubmit={handleSubmit} className="p-8 space-y-6">
+                        <form onSubmit={handleSubmit} className="p-6">
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div className="space-y-4">
                                     <div>
-                                        <label className="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1.5 ml-1">Nom de la compagnie</label>
+                                        <label className="block text-sm font-bold text-gray-700 mb-1.5 uppercase tracking-wider">Nom de la compagnie</label>
                                         <input
                                             type="text"
                                             value={formData.name}
                                             onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                                            className="w-full px-4 py-3 bg-gray-50 border-gray-200 rounded-2xl focus:ring-2 focus:ring-black focus:bg-white transition-all outline-none border-2"
+                                            className="w-full px-4 py-2.5 border border-gray-200 rounded-xl focus:ring-2 focus:ring-black outline-none transition-all"
                                             required
                                         />
                                     </div>
                                     <div>
-                                        <label className="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1.5 ml-1">Slug / ID unique</label>
+                                        <label className="block text-sm font-bold text-gray-700 mb-1.5 uppercase tracking-wider">Slug (optionnel)</label>
                                         <input
                                             type="text"
                                             value={formData.slug}
-                                            onChange={(e) => setFormData({ ...formData, slug: e.target.value.toLowerCase().replace(/\s/g, '-') })}
-                                            className="w-full px-4 py-3 bg-gray-50 border-gray-200 rounded-2xl focus:ring-2 focus:ring-black focus:bg-white transition-all outline-none border-2"
-                                            placeholder="ex: utb, stc"
+                                            onChange={(e) => setFormData({ ...formData, slug: e.target.value })}
+                                            className="w-full px-4 py-2.5 border border-gray-200 rounded-xl focus:ring-2 focus:ring-black outline-none transition-all"
+                                            placeholder="ex: dhl-express"
                                         />
                                     </div>
                                     <div>
-                                        <label className="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1.5 ml-1">Type de couverture</label>
-                                        <input
-                                            type="text"
+                                        <label className="block text-sm font-bold text-gray-700 mb-1.5 uppercase tracking-wider">Type de réseau</label>
+                                        <select
                                             value={formData.type}
                                             onChange={(e) => setFormData({ ...formData, type: e.target.value })}
-                                            className="w-full px-4 py-3 bg-gray-50 border-gray-200 rounded-2xl focus:ring-2 focus:ring-black focus:bg-white transition-all outline-none border-2"
-                                            placeholder="ex: National, Local, Grand Régional"
+                                            className="w-full px-4 py-2.5 border border-gray-200 rounded-xl focus:ring-2 focus:ring-black outline-none transition-all bg-white"
+                                        >
+                                            <option value="National">National</option>
+                                            <option value="International">International</option>
+                                            <option value="Local">Local (Ville)</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label className="block text-sm font-bold text-gray-700 mb-1.5 uppercase tracking-wider">Hub Principal</label>
+                                        <input
+                                            type="text"
+                                            value={formData.hub_principal}
+                                            onChange={(e) => setFormData({ ...formData, hub_principal: e.target.value })}
+                                            className="w-full px-4 py-2.5 border border-gray-200 rounded-xl focus:ring-2 focus:ring-black outline-none transition-all"
+                                            required
                                         />
                                     </div>
                                     <div>
-                                        <label className="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1.5 ml-1">Contact Colis</label>
+                                        <label className="block text-sm font-bold text-gray-700 mb-1.5 uppercase tracking-wider">Contact</label>
                                         <input
                                             type="text"
                                             value={formData.contact}
                                             onChange={(e) => setFormData({ ...formData, contact: e.target.value })}
-                                            className="w-full px-4 py-3 bg-gray-50 border-gray-200 rounded-2xl focus:ring-2 focus:ring-black focus:bg-white transition-all outline-none border-2"
-                                            placeholder="N° Téléphone ou poste"
+                                            className="w-full px-4 py-2.5 border border-gray-200 rounded-xl focus:ring-2 focus:ring-black outline-none transition-all"
+                                            required
                                         />
                                     </div>
                                 </div>
 
                                 <div className="space-y-4">
                                     <div>
-                                        <label className="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1.5 ml-1">Hub / Gares principales</label>
-                                        <textarea
-                                            value={formData.hub_principal}
-                                            onChange={(e) => setFormData({ ...formData, hub_principal: e.target.value })}
-                                            className="w-full px-4 py-3 bg-gray-50 border-gray-200 rounded-2xl focus:ring-2 focus:ring-black focus:bg-white transition-all outline-none border-2 min-h-[100px]"
-                                            placeholder="Listez les gares principales..."
-                                        />
+                                        <label className="block text-sm font-bold text-gray-700 mb-1.5 uppercase tracking-wider">Régions desservies</label>
+                                        <div className="flex gap-2 mb-3">
+                                            <input
+                                                type="text"
+                                                value={newRegion}
+                                                onChange={(e) => setNewRegion(e.target.value)}
+                                                onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), (newRegion && setFormData({ ...formData, regions_desservies: [...formData.regions_desservies, newRegion] }), setNewRegion('')))}
+                                                className="flex-1 px-4 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-black outline-none text-sm"
+                                                placeholder="Ajouter une région..."
+                                            />
+                                            <button
+                                                type="button"
+                                                onClick={() => {
+                                                    if (newRegion) {
+                                                        setFormData({ ...formData, regions_desservies: [...formData.regions_desservies, newRegion] });
+                                                        setNewRegion('');
+                                                    }
+                                                }}
+                                                className="p-2 bg-black text-white rounded-xl"
+                                            >
+                                                <Plus className="w-5 h-5" />
+                                            </button>
+                                        </div>
+                                        <div className="flex flex-wrap gap-2">
+                                            {formData.regions_desservies.map((region, idx) => (
+                                                <span key={idx} className="flex items-center gap-1.5 bg-gray-50 text-gray-600 px-3 py-1 rounded-lg text-xs font-bold border border-gray-100">
+                                                    {region}
+                                                    <button type="button" onClick={() => setFormData({ ...formData, regions_desservies: formData.regions_desservies.filter((_, i) => i !== idx) })}>
+                                                        <X className="w-3 h-3 hover:text-red-500" />
+                                                    </button>
+                                                </span>
+                                            ))}
+                                        </div>
                                     </div>
 
                                     <div>
-                                        <label className="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1.5 ml-1">Régions desservies</label>
-                                        <div className="space-y-2">
-                                            <div className="flex gap-2">
+                                        <label className="block text-sm font-bold text-gray-700 mb-1.5 uppercase tracking-wider">Destinations spécifiques</label>
+                                        <div className="flex gap-2 mb-3">
+                                            <input
+                                                type="text"
+                                                value={newDestination}
+                                                onChange={(e) => setNewDestination(e.target.value)}
+                                                onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), (newDestination && setFormData({ ...formData, destinations: [...formData.destinations, newDestination] }), setNewDestination('')))}
+                                                className="flex-1 px-4 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-black outline-none text-sm"
+                                                placeholder="Ajouter une destination..."
+                                            />
+                                            <button
+                                                type="button"
+                                                onClick={() => {
+                                                    if (newDestination) {
+                                                        setFormData({ ...formData, destinations: [...formData.destinations, newDestination] });
+                                                        setNewDestination('');
+                                                    }
+                                                }}
+                                                className="p-2 bg-black text-white rounded-xl"
+                                            >
+                                                <Plus className="w-5 h-5" />
+                                            </button>
+                                        </div>
+                                        <div className="flex flex-wrap gap-2">
+                                            {formData.destinations.map((dest, i) => (
+                                                <span key={i} className="flex items-center gap-1.5 bg-blue-50 text-blue-600 px-3 py-1 rounded-lg text-xs font-bold border border-blue-100">
+                                                    <MapPin className="w-3 h-3" />
+                                                    {dest}
+                                                    <button type="button" onClick={() => setFormData({ ...formData, destinations: formData.destinations.filter((_, idx) => idx !== i) })}>
+                                                        <X className="w-3 h-3 hover:text-red-500" />
+                                                    </button>
+                                                </span>
+                                            ))}
+                                        </div>
+                                    </div>
+
+                                    <div className="pt-4 border-t border-gray-50">
+                                        <label className="flex items-center gap-3 cursor-pointer group">
+                                            <div className="relative">
                                                 <input
-                                                    type="text"
-                                                    value={newRegion}
-                                                    onChange={(e) => setNewRegion(e.target.value)}
-                                                    onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addRegion())}
-                                                    className="flex-1 px-4 py-2 bg-gray-50 border-gray-200 rounded-xl focus:ring-2 focus:ring-black focus:bg-white outline-none border-2 text-sm"
-                                                    placeholder="Zone (ex: Nord)"
+                                                    type="checkbox"
+                                                    checked={formData.is_active}
+                                                    onChange={(e) => setFormData({ ...formData, is_active: e.target.checked })}
+                                                    className="sr-only"
                                                 />
-                                                <button type="button" onClick={addRegion} className="p-2 bg-black text-white rounded-xl hover:bg-gray-800 transition-colors">
-                                                    <Plus className="w-5 h-5" />
-                                                </button>
+                                                <div className={`w-12 h-6 rounded-full transition-colors ${formData.is_active ? 'bg-black' : 'bg-gray-200'}`}></div>
+                                                <div className={`absolute top-1 w-4 h-4 bg-white rounded-full transition-transform ${formData.is_active ? 'left-7' : 'left-1'}`}></div>
                                             </div>
-                                            <div className="flex flex-wrap gap-2">
-                                                {formData.regions_desservies.map((region, idx) => (
-                                                    <span key={idx} className="flex items-center gap-1 pl-2 pr-1 py-1 bg-black text-white text-[10px] font-bold rounded-lg uppercase tracking-tight">
-                                                        {region}
-                                                        <button type="button" onClick={() => removeRegion(region)} className="p-0.5 hover:bg-white/20 rounded">
-                                                            <X className="w-3 h-3" />
-                                                        </button>
-                                                    </span>
-                                                ))}
-                                            </div>
+                                            <span className="text-sm font-bold text-gray-700 uppercase tracking-widest">Compagnie Active</span>
+                                        </label>
+                                        <div className="mt-4 p-4 bg-blue-50/50 rounded-2xl border border-blue-100 flex gap-3">
+                                            <Info className="w-5 h-5 text-blue-500 flex-shrink-0 mt-0.5" />
+                                            <p className="text-[11px] text-blue-700 leading-relaxed">
+                                                Une compagnie active sera visible pour les clients lors de la sélection du mode de livraison à la commande.
+                                            </p>
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
-                            <div className="border-t border-gray-100 pt-6">
-                                <label className="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2 ml-1 flex items-center gap-2">
-                                    <MapPin className="w-4 h-4" />
-                                    Villes desservies (Destinations précises)
-                                </label>
-                                <div className="space-y-4">
-                                    <div className="flex gap-2">
-                                        <input
-                                            type="text"
-                                            value={newDestination}
-                                            onChange={(e) => setNewDestination(e.target.value)}
-                                            onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addDestination())}
-                                            className="flex-1 px-4 py-3 bg-gray-50 border-gray-200 rounded-2xl focus:ring-2 focus:ring-black focus:bg-white transition-all outline-none border-2"
-                                            placeholder="Ajouter une ville..."
-                                        />
-                                        <button type="button" onClick={addDestination} className="px-6 bg-black text-white rounded-2xl hover:bg-gray-800 transition-colors flex items-center gap-2 font-bold uppercase text-[10px] tracking-widest">
-                                            Ajouter
-                                        </button>
-                                    </div>
-                                    <div className="flex flex-wrap gap-2 max-h-40 overflow-y-auto p-4 bg-gray-50 rounded-2xl border-2 border-dashed border-gray-200">
-                                        {formData.destinations.length > 0 ? (
-                                            formData.destinations.map((dest, idx) => (
-                                                <span key={idx} className="flex items-center gap-1.5 pl-3 pr-1.5 py-1.5 bg-white border border-gray-200 text-gray-900 text-[10px] font-bold rounded-xl uppercase shadow-sm">
-                                                    {dest}
-                                                    <button type="button" onClick={() => removeDestination(dest)} className="p-1 hover:bg-gray-100 rounded-lg text-red-500">
-                                                        <X className="w-3.5 h-3.5" />
-                                                    </button>
-                                                </span>
-                                            ))
-                                        ) : (
-                                            <div className="w-full flex flex-col items-center justify-center py-4 text-gray-400 gap-2">
-                                                <Info className="w-5 h-5" />
-                                                <p className="text-[10px] uppercase font-bold tracking-widest">Aucune ville ajoutée</p>
-                                            </div>
-                                        )}
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className="flex gap-4 pt-6 border-t border-gray-100">
+                            <div className="flex items-center justify-end gap-4 mt-10 pt-6 border-t border-gray-100">
                                 <button
                                     type="button"
-                                    onClick={() => setShowModal(false)}
-                                    className="flex-1 px-6 py-4 border-2 border-gray-200 rounded-2xl text-[10px] font-black uppercase tracking-widest hover:bg-gray-50 transition-all text-gray-500"
+                                    onClick={() => {
+                                        setIsAddModalOpen(false);
+                                        setIsEditModalOpen(false);
+                                    }}
+                                    className="px-6 py-2.5 text-sm font-black text-gray-500 uppercase tracking-widest hover:text-black transition-colors"
                                 >
                                     Annuler
                                 </button>
                                 <button
                                     type="submit"
-                                    disabled={isSaving}
-                                    className="flex-3 w-full max-w-[400px] px-8 py-4 bg-black text-white rounded-2xl font-black uppercase text-[12px] tracking-[0.2em] hover:bg-gray-800 transition-all disabled:opacity-50 flex items-center justify-center gap-3 shadow-xl shadow-black/10"
+                                    disabled={addMutation.isPending || updateMutation.isPending}
+                                    className="flex items-center gap-2 bg-black text-white px-10 py-3 rounded-2xl font-black uppercase tracking-widest hover:bg-gray-800 transition-all shadow-xl shadow-black/10 disabled:opacity-50"
                                 >
-                                    {isSaving ? <Loader2 className="w-5 h-5 animate-spin" /> : <Save className="w-5 h-5" />}
-                                    {editingCompany ? 'Mettre à jour la compagnie' : 'Créer la compagnie'}
+                                    {(addMutation.isPending || updateMutation.isPending) ? (
+                                        <Loader2 className="w-5 h-5 animate-spin" />
+                                    ) : (
+                                        <Save className="w-5 h-5" />
+                                    )}
+                                    {selectedCompany ? 'Enregistrer' : 'Ajouter'}
                                 </button>
                             </div>
                         </form>

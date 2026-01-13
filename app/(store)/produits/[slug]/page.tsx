@@ -381,7 +381,7 @@ export default async function ProductPage({ params }: { params: { slug: string }
                             </p>
                         </div>
 
-                        <div className="bg-white rounded-3xl shadow-xl overflow-hidden border border-gray-100">
+                        <div className="overflow-hidden">
                             <img
                                 src={product.ingredients_image}
                                 alt="Composition naturelle"

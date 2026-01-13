@@ -1,8 +1,9 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import Link from 'next/link';
 import { Search, Filter, Eye, ChevronLeft, ChevronRight } from 'lucide-react';
+import { useQuery } from '@tanstack/react-query';
 import { API_URL } from '@/lib/utils';
 
 interface Order {
@@ -38,51 +39,39 @@ const STATUS_LABELS: Record<string, string> = {
 };
 
 export default function AdminOrdersPage() {
-    const [orders, setOrders] = useState<Order[]>([]);
-    const [isLoading, setIsLoading] = useState(true);
     const [searchQuery, setSearchQuery] = useState('');
     const [statusFilter, setStatusFilter] = useState('');
-    const [pagination, setPagination] = useState({
+    const [paginationState, setPaginationState] = useState({
         page: 1,
-        limit: 20,
-        total: 0,
-        pages: 0
+        limit: 20
     });
 
-    useEffect(() => {
-        fetchOrders();
-    }, [pagination.page, statusFilter]);
-
-    const fetchOrders = async () => {
-        setIsLoading(true);
-        try {
-            let url = `${API_URL}/api/admin/orders?page=${pagination.page}&limit=${pagination.limit}`;
+    const { data, isLoading } = useQuery({
+        queryKey: ['admin', 'orders', paginationState.page, statusFilter],
+        queryFn: async () => {
+            let url = `${API_URL}/api/admin/orders?page=${paginationState.page}&limit=${paginationState.limit}`;
             if (statusFilter) url += `&status=${statusFilter}`;
 
             const response = await fetch(url);
-            const data = await response.json();
-
-            setOrders(data.orders || []);
-            setPagination(prev => ({
-                ...prev,
-                ...data.pagination
-            }));
-        } catch (error) {
-            console.error('Failed to fetch orders:', error);
-        } finally {
-            setIsLoading(false);
+            if (!response.ok) throw new Error('Failed to fetch orders');
+            return response.json();
         }
-    };
-
-    const filteredOrders = orders.filter(order => {
-        if (!searchQuery) return true;
-        const query = searchQuery.toLowerCase();
-        return (
-            order.customer_name?.toLowerCase().includes(query) ||
-            order.customer_phone?.includes(query) ||
-            order.id.toLowerCase().includes(query)
-        );
     });
+
+    const orders = data?.orders || [];
+    const pagination = data?.pagination || { page: paginationState.page, limit: paginationState.limit, total: 0, pages: 0 };
+
+    const filteredOrders = useMemo(() => {
+        return orders.filter((order: Order) => {
+            if (!searchQuery) return true;
+            const query = searchQuery.toLowerCase();
+            return (
+                order.customer_name?.toLowerCase().includes(query) ||
+                order.customer_phone?.includes(query) ||
+                order.id.toLowerCase().includes(query)
+            );
+        });
+    }, [orders, searchQuery]);
 
     return (
         <div className="space-y-6">
@@ -110,7 +99,7 @@ export default function AdminOrdersPage() {
                         value={statusFilter}
                         onChange={(e) => {
                             setStatusFilter(e.target.value);
-                            setPagination(prev => ({ ...prev, page: 1 }));
+                            setPaginationState(prev => ({ ...prev, page: 1 }));
                         }}
                         className="appearance-none pl-10 pr-10 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-black focus:border-transparent outline-none bg-white"
                     >
@@ -150,7 +139,7 @@ export default function AdminOrdersPage() {
                                     </tr>
                                 </thead>
                                 <tbody className="divide-y divide-gray-100">
-                                    {filteredOrders.map((order) => (
+                                    {filteredOrders.map((order: Order) => (
                                         <tr key={order.id} className="hover:bg-gray-50">
                                             <td className="px-6 py-4">
                                                 <span className="text-sm font-mono text-gray-600">
@@ -210,14 +199,14 @@ export default function AdminOrdersPage() {
                             </p>
                             <div className="flex gap-2">
                                 <button
-                                    onClick={() => setPagination(prev => ({ ...prev, page: prev.page - 1 }))}
+                                    onClick={() => setPaginationState(prev => ({ ...prev, page: prev.page - 1 }))}
                                     disabled={pagination.page <= 1}
                                     className="p-2 rounded-lg border border-gray-200 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
                                 >
                                     <ChevronLeft className="w-5 h-5" />
                                 </button>
                                 <button
-                                    onClick={() => setPagination(prev => ({ ...prev, page: prev.page + 1 }))}
+                                    onClick={() => setPaginationState(prev => ({ ...prev, page: prev.page + 1 }))}
                                     disabled={pagination.page >= pagination.pages}
                                     className="p-2 rounded-lg border border-gray-200 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
                                 >

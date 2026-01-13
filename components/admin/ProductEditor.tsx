@@ -1,12 +1,13 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import {
     Save, ArrowLeft, Loader2, Upload, Trash2, Plus,
-    Image as ImageIcon, Info, Tag, DollarSign, Package, CheckCircle2,
+    ImageIcon, Info, Tag, DollarSign, Package, CheckCircle2,
     Layout, Palette, Hash
 } from 'lucide-react';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { API_URL } from '@/lib/utils';
 
 interface ProductEditorProps {
@@ -16,8 +17,7 @@ interface ProductEditorProps {
 
 export default function ProductEditor({ productId, isNew }: ProductEditorProps) {
     const router = useRouter();
-    const [isLoading, setIsLoading] = useState(!isNew);
-    const [isSaving, setIsSaving] = useState(false);
+    const queryClient = useQueryClient();
     const [activeSection, setActiveSection] = useState('general');
 
     const [formData, setFormData] = useState({
@@ -40,17 +40,13 @@ export default function ProductEditor({ productId, isNew }: ProductEditorProps) 
 
     const [uploadingSlot, setUploadingSlot] = useState<string | null>(null);
 
-    useEffect(() => {
-        if (!isNew && productId) {
-            fetchProduct();
-        }
-    }, [productId, isNew]);
-
-    const fetchProduct = async () => {
-        try {
+    // Query for product data
+    const { isLoading: isLoadingProduct } = useQuery({
+        queryKey: ['admin', 'products', productId],
+        queryFn: async () => {
             const response = await fetch(`${API_URL}/api/admin/products/${productId}`, { cache: 'no-store' });
+            if (!response.ok) throw new Error('Failed to fetch product');
             const data = await response.json();
-            console.log('[ProductEditor] Fetched product data:', data.product);
             if (data.product) {
                 const p = data.product;
                 setFormData({
@@ -59,12 +55,13 @@ export default function ProductEditor({ productId, isNew }: ProductEditorProps) 
                     gallery: Array.isArray(p.gallery) ? p.gallery : [],
                 });
             }
-        } catch (error) {
-            console.error('Failed to fetch product:', error);
-        } finally {
-            setIsLoading(false);
-        }
-    };
+            return data.product;
+        },
+        enabled: !isNew && !!productId,
+        refetchOnWindowFocus: false, // Don't reset form if user tabs out
+    });
+
+    const isLoading = !isNew && isLoadingProduct;
 
     const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>, slot: string) => {
         const file = e.target.files?.[0];
@@ -114,20 +111,11 @@ export default function ProductEditor({ productId, isNew }: ProductEditorProps) 
         }));
     };
 
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
-        setIsSaving(true);
-        try {
+    const saveMutation = useMutation({
+        mutationFn: async (payload: any) => {
             const url = isNew
                 ? `${API_URL}/api/admin/products`
                 : `${API_URL}/api/admin/products/${productId}`;
-
-            const payload = {
-                ...formData,
-                benefits: formData.benefits.split(',').map(b => b.trim()).filter(b => b !== '')
-            };
-
-            console.log('[ProductEditor] Sending payload:', payload);
 
             const response = await fetch(url, {
                 method: isNew ? 'POST' : 'PATCH',
@@ -135,21 +123,33 @@ export default function ProductEditor({ productId, isNew }: ProductEditorProps) 
                 body: JSON.stringify(payload)
             });
 
-            if (response.ok) {
-                console.log('[ProductEditor] Save successful');
-                alert('Produit enregistré avec succès !');
-                router.push('/admin/products');
-                router.refresh();
-            } else {
+            if (!response.ok) {
                 const err = await response.json();
-                alert(err.error || 'Erreur lors de la sauvegarde');
+                throw new Error(err.error || 'Erreur lors de la sauvegarde');
             }
-        } catch (error) {
-            console.error('Save error:', error);
-            alert('Erreur réseau lors de la sauvegarde');
-        } finally {
-            setIsSaving(false);
+            return response.json();
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['admin', 'products'] });
+            if (!isNew) {
+                queryClient.invalidateQueries({ queryKey: ['admin', 'products', productId] });
+            }
+            alert('Produit enregistré avec succès !');
+            router.push('/admin/products');
+            router.refresh();
+        },
+        onError: (error) => {
+            alert(error.message);
         }
+    });
+
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        const payload = {
+            ...formData,
+            benefits: formData.benefits.split(',').map(b => b.trim()).filter(b => b !== '')
+        };
+        saveMutation.mutate(payload);
     };
 
     if (isLoading) {
@@ -227,10 +227,10 @@ export default function ProductEditor({ productId, isNew }: ProductEditorProps) 
                 <div className="flex items-center gap-3">
                     <button
                         type="submit"
-                        disabled={isSaving}
+                        disabled={saveMutation.isPending}
                         className="flex items-center gap-2 bg-black text-white px-6 py-2.5 rounded-xl font-bold hover:bg-gray-800 transition-all shadow-lg shadow-black/10 disabled:opacity-50"
                     >
-                        {isSaving ? <Loader2 className="w-5 h-5 animate-spin" /> : <Save className="w-5 h-5" />}
+                        {saveMutation.isPending ? <Loader2 className="w-5 h-5 animate-spin" /> : <Save className="w-5 h-5" />}
                         {isNew ? 'Créer le produit' : 'Enregistrer les modifications'}
                     </button>
                 </div>

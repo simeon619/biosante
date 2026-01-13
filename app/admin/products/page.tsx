@@ -2,7 +2,9 @@
 
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { Plus, Package, Edit, Trash2, Power, Search, Loader2 } from 'lucide-react';
+import { Plus, Edit, Trash2, Eye, LayoutGrid, List, Package, CheckCircle, XCircle, Loader2, Search, Power } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { API_URL } from '@/lib/utils';
 
 interface Product {
@@ -18,47 +20,56 @@ interface Product {
 }
 
 export default function AdminProductsPage() {
-    const [products, setProducts] = useState<Product[]>([]);
-    const [isLoading, setIsLoading] = useState(true);
+    const router = useRouter();
+    const queryClient = useQueryClient();
+
     const [searchQuery, setSearchQuery] = useState('');
 
-    useEffect(() => {
-        fetchProducts();
-    }, []);
-
-    const fetchProducts = async () => {
-        setIsLoading(true);
-        try {
+    const { data: products = [], isLoading } = useQuery<Product[]>({
+        queryKey: ['admin', 'products'],
+        queryFn: async () => {
             const response = await fetch(`${API_URL}/api/admin/products`, { cache: 'no-store' });
+            if (!response.ok) throw new Error('Failed to fetch products');
             const data = await response.json();
-            setProducts(data.products || []);
-        } catch (error) {
-            console.error('Failed to fetch products:', error);
-        } finally {
-            setIsLoading(false);
+            return data.products || [];
         }
-    };
+    });
 
-    const handleToggle = async (id: string) => {
-        try {
-            await fetch(`${API_URL}/api/admin/products/${id}/toggle`, {
-                method: 'POST'
+    const toggleMutation = useMutation({
+        mutationFn: async ({ id, isActive }: { id: string, isActive: boolean }) => {
+            const response = await fetch(`${API_URL}/api/admin/products/${id}/toggle`, {
+                method: 'PATCH',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ is_active: !isActive })
             });
-            fetchProducts();
-        } catch (error) {
-            console.error('Failed to toggle product:', error);
+            if (!response.ok) throw new Error('Failed to toggle status');
+            return response.json();
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['admin', 'products'] });
         }
+    });
+
+    const deleteMutation = useMutation({
+        mutationFn: async (id: string) => {
+            const response = await fetch(`${API_URL}/api/admin/products/${id}`, {
+                method: 'DELETE'
+            });
+            if (!response.ok) throw new Error('Failed to delete product');
+            return response.json();
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['admin', 'products'] });
+        }
+    });
+
+    const handleToggle = async (id: string, isActive: boolean) => {
+        toggleMutation.mutate({ id, isActive });
     };
 
     const handleDelete = async (id: string) => {
-        if (!confirm('Êtes-vous sûr de vouloir supprimer ce produit ?')) return;
-        try {
-            await fetch(`${API_URL}/api/admin/products/${id}`, {
-                method: 'DELETE'
-            });
-            fetchProducts();
-        } catch (error) {
-            console.error('Failed to delete product:', error);
+        if (confirm('Êtes-vous sûr de vouloir supprimer ce produit ?')) {
+            deleteMutation.mutate(id);
         }
     };
 
@@ -113,7 +124,7 @@ export default function AdminProductsPage() {
                                     </div>
                                     <div className="flex gap-2">
                                         <button
-                                            onClick={() => handleToggle(product.id)}
+                                            onClick={() => handleToggle(product.id, product.is_active)}
                                             className={`p-2.5 rounded-xl transition-colors ${product.is_active ? 'text-green-600 bg-green-50' : 'text-gray-400 bg-gray-50'}`}
                                             title={product.is_active ? 'Masquer du site' : 'Afficher sur le site'}
                                         >

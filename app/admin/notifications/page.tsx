@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { Bell, Clock, Info, Package, CreditCard, AlertTriangle, CheckCircle } from 'lucide-react';
+import { useQuery } from '@tanstack/react-query';
 import { API_URL } from '@/lib/utils';
 
 interface NotificationBatch {
@@ -18,34 +19,17 @@ interface NotificationBatch {
 }
 
 export default function NotificationsPage() {
-    const [notifications, setNotifications] = useState<NotificationBatch[]>([]);
-    const [isLoading, setIsLoading] = useState(true);
-
-    useEffect(() => {
-        fetchNotifications();
-    }, []);
-
-    const fetchNotifications = async () => {
-        try {
+    const { data: notifications = [], isLoading } = useQuery<NotificationBatch[]>({
+        queryKey: ['admin', 'notifications'],
+        queryFn: async () => {
             const token = localStorage.getItem('admin_token');
-            const baseUrl = API_URL;
-            const response = await fetch(`${baseUrl}/api/admin/notifications`, {
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                }
+            const response = await fetch(`${API_URL}/api/admin/notifications`, {
+                headers: { 'Authorization': `Bearer ${token}` }
             });
-
-            if (response.ok) {
-                const data = await response.json();
-                setNotifications(data || []);
-            }
-        } catch (error) {
-
-            console.error('Failed to fetch notifications:', error);
-        } finally {
-            setIsLoading(false);
+            if (!response.ok) throw new Error('Failed to fetch notifications');
+            return response.json();
         }
-    };
+    });
 
     const getIcon = (title: string) => {
         if (title.includes('Commande')) return <Package className="w-5 h-5" />;

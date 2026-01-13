@@ -46,7 +46,7 @@ export function ProductImageGallery({ mainImage, gallery, productName, accentBor
                     <div className="flex">
                         {allImages.map((img, i) => (
                             <div key={i} className="flex-[0_0_90%] min-w-0 px-2">
-                                <div className="aspect-square bg-white rounded-2xl flex items-center justify-center p-2 relative group touch-none">
+                                <div className="aspect-square rounded-2xl flex items-center justify-center p-2 relative group touch-none">
                                     <img
                                         src={img}
                                         alt={`${productName} - Vue ${i + 1}`}
@@ -75,7 +75,7 @@ export function ProductImageGallery({ mainImage, gallery, productName, accentBor
 
             {/* Desktop Main Image */}
             <div className="hidden lg:block relative">
-                <div className="aspect-square max-h-[500px] bg-white rounded-3xl shadow-xl overflow-hidden border border-gray-100 group mx-auto">
+                <div className="aspect-square max-h-[500px] overflow-hidden group mx-auto">
                     <div className="relative w-full h-full p-12 flex items-center justify-center">
                         <img
                             src={allImages[selectedIndex] || mainImage}
