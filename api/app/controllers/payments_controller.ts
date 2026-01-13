@@ -362,7 +362,7 @@ export default class PaymentsController {
      * GET /api/admin/payments
      */
     async listPayments({ request, response }: HttpContext) {
-        const { status, provider, search, page = 1, limit = 20 } = request.qs()
+        const { status, provider, search, page = 1, limit = 6 } = request.qs()
 
         try {
             // Refactor to use orders as base to ensure all transactions are visible

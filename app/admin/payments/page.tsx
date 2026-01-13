@@ -61,7 +61,7 @@ export default function AdminPaymentsPage() {
                 provider: providerFilter,
                 search: searchTerm,
                 page: currentPage.toString(),
-                limit: '20'
+                limit: '6'
             });
 
             const response = await fetch(`${API_URL}/api/admin/payments?${params.toString()}`, {
