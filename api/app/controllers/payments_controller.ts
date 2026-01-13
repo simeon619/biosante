@@ -362,7 +362,7 @@ export default class PaymentsController {
      * GET /api/admin/payments
      */
     async listPayments({ request, response }: HttpContext) {
-        const { status, provider, search } = request.qs()
+        const { status, provider, search, page = 1, limit = 20 } = request.qs()
 
         try {
             // Refactor to use orders as base to ensure all transactions are visible
@@ -411,10 +411,12 @@ export default class PaymentsController {
                 })
             }
 
-            const results = await query.orderBy('orders.created_at', 'desc')
+            // Paginate results
+            const results = await query.orderBy('orders.created_at', 'desc').paginate(page, limit)
+            const serialized = results.toJSON()
 
             // Map results to match the frontend expected structure
-            const payments = results.map(r => ({
+            const payments = serialized.data.map((r: any) => ({
                 id: r.payment_table_id || r.order_id,
                 order_id: r.order_id,
                 provider: r.payment_method,
@@ -431,7 +433,10 @@ export default class PaymentsController {
                 created_at: r.created_at
             }))
 
-            return response.ok(payments)
+            return response.ok({
+                data: payments,
+                meta: serialized.meta
+            })
         } catch (error: any) {
             console.error('[Admin] listPayments error:', error)
             return response.internalServerError({ message: error.message })

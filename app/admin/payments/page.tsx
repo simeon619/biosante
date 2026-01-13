@@ -8,6 +8,7 @@ import {
     AlertTriangle,
     Search,
     ChevronRight,
+    ChevronLeft,
     ExternalLink,
     Smartphone,
     User,
@@ -42,10 +43,12 @@ export default function AdminPaymentsPage() {
     const [providerFilter, setProviderFilter] = useState('all');
     const [selectedPayment, setSelectedPayment] = useState<Payment | null>(null);
     const [isActionLoading, setIsActionLoading] = useState(false);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [paginationMeta, setPaginationMeta] = useState<any>(null);
 
     useEffect(() => {
         fetchPayments();
-    }, [statusFilter, providerFilter]);
+    }, [statusFilter, providerFilter, currentPage]);
 
     const fetchPayments = async () => {
         setIsLoading(true);
@@ -56,7 +59,9 @@ export default function AdminPaymentsPage() {
             const params = new URLSearchParams({
                 status: statusFilter,
                 provider: providerFilter,
-                search: searchTerm
+                search: searchTerm,
+                page: currentPage.toString(),
+                limit: '20'
             });
 
             const response = await fetch(`${API_URL}/api/admin/payments?${params.toString()}`, {
@@ -65,8 +70,9 @@ export default function AdminPaymentsPage() {
                     'X-Admin-Id': adminData.id
                 }
             });
-            const data = await response.json();
-            setPayments(data);
+            const result = await response.json();
+            setPayments(result.data || []);
+            setPaginationMeta(result.meta || null);
         } catch (error) {
             console.error('Failed to fetch payments:', error);
         } finally {
@@ -76,6 +82,7 @@ export default function AdminPaymentsPage() {
 
     const handleSearch = (e: React.FormEvent) => {
         e.preventDefault();
+        setCurrentPage(1); // Reset to first page on search
         fetchPayments();
     };
 
@@ -146,7 +153,7 @@ export default function AdminPaymentsPage() {
                     {['all', 'pending', 'confirmed', 'rejected'].map((s) => (
                         <button
                             key={s}
-                            onClick={() => setStatusFilter(s)}
+                            onClick={() => { setStatusFilter(s); setCurrentPage(1); }}
                             className={cn(
                                 "px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all",
                                 statusFilter === s
@@ -165,7 +172,7 @@ export default function AdminPaymentsPage() {
                     {['all', 'wave', 'orange', 'mtn', 'manual_transfer'].map((p) => (
                         <button
                             key={p}
-                            onClick={() => setProviderFilter(p)}
+                            onClick={() => { setProviderFilter(p); setCurrentPage(1); }}
                             className={cn(
                                 "px-3 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all border",
                                 providerFilter === p
@@ -253,6 +260,56 @@ export default function AdminPaymentsPage() {
                                     </div>
                                 </div>
                             ))}
+
+                            {/* Pagination UI */}
+                            {paginationMeta && paginationMeta.last_page > 1 && (
+                                <div className="flex items-center justify-center gap-4 py-8">
+                                    <button
+                                        disabled={currentPage === 1}
+                                        onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
+                                        className="px-6 py-3 rounded-2xl bg-white border border-slate-200 text-slate-900 font-black uppercase text-[10px] tracking-widest disabled:opacity-30 hover:border-indigo-600 transition-all shadow-sm flex items-center gap-2"
+                                    >
+                                        <ChevronLeft className="w-4 h-4" />
+                                        Précédent
+                                    </button>
+
+                                    <div className="flex items-center gap-2 bg-slate-50 p-1.5 rounded-2xl border border-slate-100">
+                                        {Array.from({ length: Math.min(5, paginationMeta.last_page) }, (_, i) => {
+                                            // Simplified page numbers around current page
+                                            let pageNum = currentPage;
+                                            if (currentPage <= 3) pageNum = i + 1;
+                                            else if (currentPage >= paginationMeta.last_page - 2) pageNum = paginationMeta.last_page - 4 + i;
+                                            else pageNum = currentPage - 2 + i;
+
+                                            if (pageNum <= 0 || pageNum > paginationMeta.last_page) return null;
+
+                                            return (
+                                                <button
+                                                    key={pageNum}
+                                                    onClick={() => setCurrentPage(pageNum)}
+                                                    className={cn(
+                                                        "w-10 h-10 rounded-xl font-black text-xs transition-all",
+                                                        currentPage === pageNum
+                                                            ? "bg-slate-900 text-white shadow-lg"
+                                                            : "text-slate-400 hover:text-slate-600 hover:bg-white"
+                                                    )}
+                                                >
+                                                    {pageNum}
+                                                </button>
+                                            );
+                                        })}
+                                    </div>
+
+                                    <button
+                                        disabled={currentPage === paginationMeta.last_page}
+                                        onClick={() => setCurrentPage(p => Math.min(paginationMeta.last_page, p + 1))}
+                                        className="px-6 py-3 rounded-2xl bg-white border border-slate-200 text-slate-900 font-black uppercase text-[10px] tracking-widest disabled:opacity-30 hover:border-indigo-600 transition-all shadow-sm flex items-center gap-2"
+                                    >
+                                        Suivant
+                                        <ChevronRight className="w-4 h-4" />
+                                    </button>
+                                </div>
+                            )}
                         </div>
                     )}
                 </div>
