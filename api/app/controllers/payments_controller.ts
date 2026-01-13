@@ -365,37 +365,71 @@ export default class PaymentsController {
         const { status, provider, search } = request.qs()
 
         try {
-            let query = db.from('payments')
-                .join('orders', 'payments.order_id', 'orders.id')
+            // Refactor to use orders as base to ensure all transactions are visible
+            let query = db.from('orders')
+                .leftJoin('payments', 'orders.id', 'payments.order_id')
                 .select(
-                    'payments.*',
+                    'orders.id as order_id',
                     'orders.customer_name',
                     'orders.customer_phone',
                     'orders.total as order_total',
-                    'orders.created_at as order_date',
+                    'orders.created_at as created_at',
+                    'orders.status as order_status',
                     'orders.manual_payment_status',
+                    'orders.payment_method',
                     'orders.proof_image',
-                    'orders.transaction_ref'
+                    'orders.transaction_ref',
+                    'payments.id as payment_table_id',
+                    'payments.status as payment_status',
+                    'payments.moneroo_payment_id',
+                    'payments.amount as amount_paid',
+                    'payments.trust_score',
+                    'payments.reference as payment_reference'
                 )
 
             if (status && status !== 'all') {
-                query = query.where('payments.status', status)
+                if (status === 'pending') {
+                    query = query.whereIn('orders.status', ['pending', 'verifying'])
+                } else if (status === 'confirmed') {
+                    query = query.where('orders.status', 'paid')
+                } else if (status === 'rejected') {
+                    query = query.where('orders.status', 'cancelled')
+                }
             }
 
             if (provider && provider !== 'all') {
-                query = query.where('payments.payment_method', provider)
+                query = query.where('orders.payment_method', provider)
             }
 
             if (search) {
                 query = query.where((q) => {
                     q.where('orders.customer_name', 'ilike', `%${search}%`)
                         .orWhere('orders.customer_phone', 'ilike', `%${search}%`)
-                        .orWhere('payments.moneroo_payment_id', 'ilike', `%${search}%`)
+                        .orWhere('orders.id', 'ilike', `%${search}%`)
                         .orWhere('orders.transaction_ref', 'ilike', `%${search}%`)
+                        .orWhere('payments.moneroo_payment_id', 'ilike', `%${search}%`)
                 })
             }
 
-            const payments = await query.orderBy('payments.created_at', 'desc')
+            const results = await query.orderBy('orders.created_at', 'desc')
+
+            // Map results to match the frontend expected structure
+            const payments = results.map(r => ({
+                id: r.payment_table_id || r.order_id,
+                order_id: r.order_id,
+                provider: r.payment_method,
+                reference: r.payment_reference || r.transaction_ref || 'SANS RÉF',
+                moneroo_payment_id: r.moneroo_payment_id || `ORD-${r.order_id.slice(0, 8)}`,
+                payment_method: r.payment_method,
+                amount_expected: r.order_total,
+                trust_score: r.trust_score || 0,
+                status: r.order_status === 'paid' ? 'confirmed' : (r.order_status === 'cancelled' ? 'rejected' : 'pending'),
+                rejection_reason: null,
+                customer_name: r.customer_name,
+                order_total: r.order_total,
+                order_date: r.created_at,
+                created_at: r.created_at
+            }))
 
             return response.ok(payments)
         } catch (error: any) {
