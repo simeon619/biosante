@@ -9,6 +9,7 @@ import { FacebookPixel } from "@/components/FacebookPixel";
 import { getPublicSettings } from "@/services/settings";
 import { Suspense } from "react";
 import { SettingsProvider } from "@/context/SettingsContext";
+import QueryProvider from "@/components/providers/QueryProvider";
 
 
 const inter = Inter({
@@ -90,15 +91,17 @@ export default async function RootLayout({
                 <Suspense fallback={null}>
                     <FacebookPixel pixelId={pixelId} />
                 </Suspense>
-                <SettingsProvider>
-                    <AuthProvider>
-                        <UIProvider>
-                            <CartProvider>
-                                {children}
-                            </CartProvider>
-                        </UIProvider>
-                    </AuthProvider>
-                </SettingsProvider>
+                <QueryProvider>
+                    <SettingsProvider>
+                        <AuthProvider>
+                            <UIProvider>
+                                <CartProvider>
+                                    {children}
+                                </CartProvider>
+                            </UIProvider>
+                        </AuthProvider>
+                    </SettingsProvider>
+                </QueryProvider>
             </body>
         </html>
     );

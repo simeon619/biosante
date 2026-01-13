@@ -2,6 +2,11 @@
 
 import React, { useEffect, useState } from 'react';
 import {
+    useQuery,
+    useMutation,
+    useQueryClient
+} from '@tanstack/react-query';
+import {
     CheckCircle,
     XCircle,
     Clock,
@@ -36,30 +41,25 @@ interface Payment {
 }
 
 export default function AdminPaymentsPage() {
-    const [payments, setPayments] = useState<Payment[]>([]);
-    const [isLoading, setIsLoading] = useState(true);
+    const queryClient = useQueryClient();
     const [searchTerm, setSearchTerm] = useState('');
+    const [dbSearchTerm, setDbSearchTerm] = useState(''); // Only updates on submit
     const [statusFilter, setStatusFilter] = useState('all');
     const [providerFilter, setProviderFilter] = useState('all');
-    const [selectedPayment, setSelectedPayment] = useState<Payment | null>(null);
-    const [isActionLoading, setIsActionLoading] = useState(false);
     const [currentPage, setCurrentPage] = useState(1);
-    const [paginationMeta, setPaginationMeta] = useState<any>(null);
+    const [selectedPayment, setSelectedPayment] = useState<Payment | null>(null);
 
-    useEffect(() => {
-        fetchPayments();
-    }, [statusFilter, providerFilter, currentPage]);
-
-    const fetchPayments = async () => {
-        setIsLoading(true);
-        try {
+    // Fetch Payments with useQuery
+    const { data: result, isLoading, isPlaceholderData } = useQuery({
+        queryKey: ['admin', 'payments', statusFilter, providerFilter, dbSearchTerm, currentPage],
+        queryFn: async () => {
             const token = localStorage.getItem('admin_token');
             const adminData = JSON.parse(localStorage.getItem('admin_data') || '{}');
 
             const params = new URLSearchParams({
                 status: statusFilter,
                 provider: providerFilter,
-                search: searchTerm,
+                search: dbSearchTerm,
                 page: currentPage.toString(),
                 limit: '6'
             });
@@ -70,28 +70,18 @@ export default function AdminPaymentsPage() {
                     'X-Admin-Id': adminData.id
                 }
             });
-            const result = await response.json();
-            setPayments(result.data || []);
-            setPaginationMeta(result.meta || null);
-        } catch (error) {
-            console.error('Failed to fetch payments:', error);
-        } finally {
-            setIsLoading(false);
-        }
-    };
+            if (!response.ok) throw new Error('Network response was not ok');
+            return response.json();
+        },
+        placeholderData: (previousData) => previousData, // keep data visible during next page load
+    });
 
-    const handleSearch = (e: React.FormEvent) => {
-        e.preventDefault();
-        setCurrentPage(1); // Reset to first page on search
-        fetchPayments();
-    };
+    const payments = result?.data || [];
+    const paginationMeta = result?.meta || null;
 
-    const handleAction = async (paymentId: number, status: 'confirmed' | 'rejected') => {
-        const reason = status === 'rejected' ? prompt('Raison du rejet ?') : null;
-        if (status === 'rejected' && reason === null) return;
-
-        setIsActionLoading(true);
-        try {
+    // Handle Confirm/Reject with useMutation
+    const actionMutation = useMutation({
+        mutationFn: async ({ paymentId, status, reason }: { paymentId: number, status: 'confirmed' | 'rejected', reason: string | null }) => {
             const token = localStorage.getItem('admin_token');
             const adminData = JSON.parse(localStorage.getItem('admin_data') || '{}');
             const response = await fetch(`${API_URL}/api/admin/payments/${paymentId}/confirm`, {
@@ -104,18 +94,32 @@ export default function AdminPaymentsPage() {
                 body: JSON.stringify({ status, reason })
             });
 
-            if (response.ok) {
-                await fetchPayments();
-                setSelectedPayment(null);
-            } else {
+            if (!response.ok) {
                 const err = await response.json();
-                alert(err.message || 'Erreur lors de l\'action');
+                throw new Error(err.message || 'Erreur lors de l\'action');
             }
-        } catch (error) {
-            console.error('Failed to perform action:', error);
-        } finally {
-            setIsActionLoading(false);
+            return response.json();
+        },
+        onSuccess: () => {
+            // Invalidate and refetch payments
+            queryClient.invalidateQueries({ queryKey: ['admin', 'payments'] });
+            setSelectedPayment(null);
+        },
+        onError: (error: any) => {
+            alert(error.message);
         }
+    });
+
+    const handleSearch = (e: React.FormEvent) => {
+        e.preventDefault();
+        setCurrentPage(1);
+        setDbSearchTerm(searchTerm);
+    };
+
+    const handleAction = (paymentId: number, status: 'confirmed' | 'rejected') => {
+        const reason = status === 'rejected' ? prompt('Raison du rejet ?') : null;
+        if (status === 'rejected' && reason === null) return;
+        actionMutation.mutate({ paymentId, status, reason });
     };
 
     const getTrustColor = (score: number) => {
@@ -131,6 +135,7 @@ export default function AdminPaymentsPage() {
                     <h1 className="text-3xl font-black text-slate-900 tracking-tight flex items-center gap-3">
                         <DollarSign className="w-8 h-8 text-indigo-600" />
                         Gestion des Paiements
+                        {isPlaceholderData && <Clock className="w-5 h-5 animate-spin text-slate-300" />}
                     </h1>
                     <p className="text-slate-500 text-sm font-medium">Contrôle des flux financiers et validations manuelles</p>
                 </div>
@@ -204,7 +209,7 @@ export default function AdminPaymentsPage() {
                         </div>
                     ) : (
                         <div className="space-y-4">
-                            {payments.map((p) => (
+                            {payments.map((p: Payment) => (
                                 <div
                                     key={p.id}
                                     onClick={() => setSelectedPayment(p)}
@@ -266,7 +271,7 @@ export default function AdminPaymentsPage() {
                                 <div className="flex items-center justify-center gap-4 py-8">
                                     <button
                                         disabled={currentPage === 1}
-                                        onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
+                                        onClick={() => setCurrentPage((p: number) => Math.max(1, p - 1))}
                                         className="px-6 py-3 rounded-2xl bg-white border border-slate-200 text-slate-900 font-black uppercase text-[10px] tracking-widest disabled:opacity-30 hover:border-indigo-600 transition-all shadow-sm flex items-center gap-2"
                                     >
                                         <ChevronLeft className="w-4 h-4" />
@@ -302,7 +307,7 @@ export default function AdminPaymentsPage() {
 
                                     <button
                                         disabled={currentPage === paginationMeta.last_page}
-                                        onClick={() => setCurrentPage(p => Math.min(paginationMeta.last_page, p + 1))}
+                                        onClick={() => setCurrentPage((p: number) => Math.min(paginationMeta.last_page, p + 1))}
                                         className="px-6 py-3 rounded-2xl bg-white border border-slate-200 text-slate-900 font-black uppercase text-[10px] tracking-widest disabled:opacity-30 hover:border-indigo-600 transition-all shadow-sm flex items-center gap-2"
                                     >
                                         Suivant
@@ -370,7 +375,7 @@ export default function AdminPaymentsPage() {
                                     <div className="space-y-4 pt-4">
                                         <button
                                             onClick={() => handleAction(selectedPayment.id, 'confirmed')}
-                                            disabled={isActionLoading}
+                                            disabled={actionMutation.isPending}
                                             className="w-full bg-slate-900 text-white font-black py-5 rounded-2xl hover:bg-slate-800 transition-all flex items-center justify-center gap-3 uppercase text-xs tracking-[0.2em] shadow-2xl shadow-slate-200 disabled:opacity-50 active:scale-95 group"
                                         >
                                             <CheckCircle className="w-5 h-5 group-hover:scale-110 transition-transform" />
@@ -378,7 +383,7 @@ export default function AdminPaymentsPage() {
                                         </button>
                                         <button
                                             onClick={() => handleAction(selectedPayment.id, 'rejected')}
-                                            disabled={isActionLoading}
+                                            disabled={actionMutation.isPending}
                                             className="w-full bg-white text-red-500 border border-red-50 font-bold py-4 rounded-2xl hover:bg-red-50 transition-all uppercase text-[10px] tracking-widest disabled:opacity-50"
                                         >
                                             Rejeter la transaction
