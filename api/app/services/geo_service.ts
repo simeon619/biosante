@@ -3,8 +3,12 @@ import env from '#start/env'
 import axios from 'axios'
 
 export class GeoService {
-    private nominatimUrl = env.get('GEO_NOMINATIM_URL')
+    // Use public Nominatim if no private instance is configured
+    private nominatimUrl = env.get('GEO_NOMINATIM_URL') || 'https://nominatim.openstreetmap.org'
     private valhallaUrl = env.get('GEO_VALHALLA_URL')
+
+    // Required User-Agent for public Nominatim API
+    private userAgent = 'BioSante/1.0 (contact@biosante.com)'
 
     /**
      * Geocode an address to get coordinates
@@ -16,7 +20,11 @@ export class GeoService {
                     q: address,
                     format: 'json',
                     limit: 1,
-                    addressdetails: 1
+                    addressdetails: 1,
+                    countrycodes: 'ci' // Restrict to Côte d'Ivoire
+                },
+                headers: {
+                    'User-Agent': this.userAgent
                 }
             })
 
@@ -31,7 +39,7 @@ export class GeoService {
                 display_name: result.display_name,
                 address: result.address
             }
-        } catch (error) {
+        } catch (error: any) {
             console.error('Geocoding error:', error.message)
             return null
         }
@@ -46,7 +54,7 @@ export class GeoService {
             const coordPattern = /^(-?\d+\.?\d*),\s*(-?\d+\.?\d*)$/
             const match = query.match(coordPattern)
 
-            console.log('[GeoService] search called with:', query, 'match:', !!match)
+            console.log('[GeoService] search called with:', query, 'match:', !!match, 'url:', this.nominatimUrl)
 
             if (match) {
                 // Reverse geocoding - query is coordinates
@@ -61,6 +69,9 @@ export class GeoService {
                         lon,
                         format: 'json',
                         addressdetails: 1
+                    },
+                    headers: {
+                        'User-Agent': this.userAgent
                     }
                 })
 
@@ -84,8 +95,13 @@ export class GeoService {
                     limit: 5,
                     addressdetails: 1,
                     countrycodes: 'ci' // Restrict to Côte d'Ivoire
+                },
+                headers: {
+                    'User-Agent': this.userAgent
                 }
             })
+
+            console.log('[GeoService] Forward search response count:', response.data?.length || 0)
 
             if (!response.data) return []
 
@@ -95,11 +111,12 @@ export class GeoService {
                 display_name: result.display_name,
                 address: result.address
             }))
-        } catch (error) {
+        } catch (error: any) {
             console.error('Geocoding search error:', error.message)
             return []
         }
     }
+
 
     /**
      * Calculate route between two points

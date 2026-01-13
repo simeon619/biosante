@@ -11,7 +11,9 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$play$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Play$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/play.js [app-ssr] (ecmascript) <export default as Play>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$pause$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Pause$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/pause.js [app-ssr] (ecmascript) <export default as Pause>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$map$2d$pin$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__MapPin$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/map-pin.js [app-ssr] (ecmascript) <export default as MapPin>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$utils$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/lib/utils.ts [app-ssr] (ecmascript)");
 'use client';
+;
 ;
 ;
 ;
@@ -47,19 +49,19 @@ const AudioPlayer = ({ testimonial, colorClass = 'bg-black', barColorClass = 'bg
                     size: 20
                 }, void 0, false, {
                     fileName: "[project]/components/AudioPlayer.tsx",
-                    lineNumber: 48,
+                    lineNumber: 49,
                     columnNumber: 30
                 }, ("TURBOPACK compile-time value", void 0)) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$play$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Play$3e$__["Play"], {
                     size: 20,
                     className: "ml-1"
                 }, void 0, false, {
                     fileName: "[project]/components/AudioPlayer.tsx",
-                    lineNumber: 48,
+                    lineNumber: 49,
                     columnNumber: 52
                 }, ("TURBOPACK compile-time value", void 0))
             }, void 0, false, {
                 fileName: "[project]/components/AudioPlayer.tsx",
-                lineNumber: 44,
+                lineNumber: 45,
                 columnNumber: 13
             }, ("TURBOPACK compile-time value", void 0)),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -70,7 +72,7 @@ const AudioPlayer = ({ testimonial, colorClass = 'bg-black', barColorClass = 'bg
                         children: testimonial.author
                     }, void 0, false, {
                         fileName: "[project]/components/AudioPlayer.tsx",
-                        lineNumber: 51,
+                        lineNumber: 52,
                         columnNumber: 17
                     }, ("TURBOPACK compile-time value", void 0)),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -80,7 +82,7 @@ const AudioPlayer = ({ testimonial, colorClass = 'bg-black', barColorClass = 'bg
                                 size: 10
                             }, void 0, false, {
                                 fileName: "[project]/components/AudioPlayer.tsx",
-                                lineNumber: 53,
+                                lineNumber: 54,
                                 columnNumber: 21
                             }, ("TURBOPACK compile-time value", void 0)),
                             " ",
@@ -88,13 +90,13 @@ const AudioPlayer = ({ testimonial, colorClass = 'bg-black', barColorClass = 'bg
                         ]
                     }, void 0, true, {
                         fileName: "[project]/components/AudioPlayer.tsx",
-                        lineNumber: 52,
+                        lineNumber: 53,
                         columnNumber: 17
                     }, ("TURBOPACK compile-time value", void 0))
                 ]
             }, void 0, true, {
                 fileName: "[project]/components/AudioPlayer.tsx",
-                lineNumber: 50,
+                lineNumber: 51,
                 columnNumber: 13
             }, ("TURBOPACK compile-time value", void 0)),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -115,12 +117,12 @@ const AudioPlayer = ({ testimonial, colorClass = 'bg-black', barColorClass = 'bg
                                 }
                             }, i, false, {
                                 fileName: "[project]/components/AudioPlayer.tsx",
-                                lineNumber: 59,
+                                lineNumber: 60,
                                 columnNumber: 25
                             }, ("TURBOPACK compile-time value", void 0)))
                     }, void 0, false, {
                         fileName: "[project]/components/AudioPlayer.tsx",
-                        lineNumber: 57,
+                        lineNumber: 58,
                         columnNumber: 17
                     }, ("TURBOPACK compile-time value", void 0)),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -128,30 +130,30 @@ const AudioPlayer = ({ testimonial, colorClass = 'bg-black', barColorClass = 'bg
                         children: testimonial.duration
                     }, void 0, false, {
                         fileName: "[project]/components/AudioPlayer.tsx",
-                        lineNumber: 66,
+                        lineNumber: 67,
                         columnNumber: 17
                     }, ("TURBOPACK compile-time value", void 0))
                 ]
             }, void 0, true, {
                 fileName: "[project]/components/AudioPlayer.tsx",
-                lineNumber: 56,
+                lineNumber: 57,
                 columnNumber: 13
             }, ("TURBOPACK compile-time value", void 0)),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("audio", {
                 ref: audioRef,
-                src: testimonial.url.startsWith('/uploads') ? `http://localhost:3333${testimonial.url}` : testimonial.url,
+                src: testimonial.url.startsWith('/uploads') ? `${__TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$utils$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["API_URL"]}${testimonial.url}` : testimonial.url,
                 onEnded: ()=>setIsPlaying(false),
                 onPause: ()=>setIsPlaying(false),
                 onPlay: ()=>setIsPlaying(true)
             }, void 0, false, {
                 fileName: "[project]/components/AudioPlayer.tsx",
-                lineNumber: 68,
+                lineNumber: 69,
                 columnNumber: 13
             }, ("TURBOPACK compile-time value", void 0))
         ]
     }, void 0, true, {
         fileName: "[project]/components/AudioPlayer.tsx",
-        lineNumber: 43,
+        lineNumber: 44,
         columnNumber: 9
     }, ("TURBOPACK compile-time value", void 0));
 };

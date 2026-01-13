@@ -1,6 +1,7 @@
 import type { HttpContext } from '@adonisjs/core/http'
 import db from '@adonisjs/lucid/services/db'
 import { DateTime } from 'luxon'
+import fs from 'node:fs/promises'
 
 export default class AdminShippingController {
     /**
@@ -8,7 +9,15 @@ export default class AdminShippingController {
      */
     async index({ response }: HttpContext) {
         const companies = await db.from('shipping_companies').orderBy('name', 'asc')
-        return response.ok({ companies })
+
+        // Format to match expected structure
+        const formatted = companies.map(c => ({
+            ...c,
+            regions_desservies: c.regions_desservies || [],
+            destinations: c.destinations || []
+        }))
+
+        return response.ok({ companies: formatted })
     }
 
     /**
@@ -24,10 +33,20 @@ export default class AdminShippingController {
      * Create company
      */
     async store({ request, response }: HttpContext) {
-        const data = request.only(['name', 'type', 'contact', 'is_active'])
+        const data = request.only([
+            'slug', 'name', 'hub_principal', 'type', 'contact',
+            'regions_desservies', 'destinations', 'is_active'
+        ])
 
         const [company] = await db.table('shipping_companies').insert({
-            ...data,
+            slug: data.slug,
+            name: data.name,
+            hub_principal: data.hub_principal || '',
+            type: data.type || 'National',
+            contact: data.contact || '',
+            regions_desservies: JSON.stringify(data.regions_desservies || []),
+            destinations: JSON.stringify(data.destinations || []),
+            is_active: data.is_active !== false,
             created_at: DateTime.now().toSQL(),
             updated_at: DateTime.now().toSQL()
         }).returning('*')
@@ -39,14 +58,25 @@ export default class AdminShippingController {
      * Update company
      */
     async update({ params, request, response }: HttpContext) {
-        const data = request.only(['name', 'type', 'contact', 'is_active'])
+        const data = request.only([
+            'slug', 'name', 'hub_principal', 'type', 'contact',
+            'regions_desservies', 'destinations', 'is_active'
+        ])
+
+        const updates: Record<string, any> = { updated_at: DateTime.now().toSQL() }
+
+        if (data.slug !== undefined) updates.slug = data.slug
+        if (data.name !== undefined) updates.name = data.name
+        if (data.hub_principal !== undefined) updates.hub_principal = data.hub_principal
+        if (data.type !== undefined) updates.type = data.type
+        if (data.contact !== undefined) updates.contact = data.contact
+        if (data.regions_desservies !== undefined) updates.regions_desservies = JSON.stringify(data.regions_desservies)
+        if (data.destinations !== undefined) updates.destinations = JSON.stringify(data.destinations)
+        if (data.is_active !== undefined) updates.is_active = data.is_active
 
         await db.from('shipping_companies')
             .where('id', params.id)
-            .update({
-                ...data,
-                updated_at: DateTime.now().toSQL()
-            })
+            .update(updates)
 
         const updated = await db.from('shipping_companies').where('id', params.id).first()
         return response.ok({ success: true, company: updated })
@@ -76,27 +106,58 @@ export default class AdminShippingController {
     }
 
     /**
-     * Seed initial shipping companies
+     * Seed shipping companies from exp_cie.json
+     * This will replace all existing data
      */
-    async seed({ response }: HttpContext) {
+    async seed({ request, response }: HttpContext) {
+        const { force } = request.only(['force'])
+
+        // Check if already has data
         const existing = await db.from('shipping_companies').first()
-        if (existing) return response.badRequest({ error: 'Les compagnies sont déjà initialisées' })
-
-        const companies = [
-            { name: 'AVS', type: 'local', contact: 'Abidjan Section', is_active: true },
-            { name: 'UTB', type: 'inland', contact: '01 02 03 04 05', is_active: true },
-            { name: 'AVS Transport', type: 'inland', contact: '07 08 09 10 11', is_active: true },
-            { name: 'Général Express', type: 'inland', contact: '21 22 23 24 25', is_active: true }
-        ]
-
-        for (const c of companies) {
-            await db.table('shipping_companies').insert({
-                ...c,
-                created_at: DateTime.now().toSQL(),
-                updated_at: DateTime.now().toSQL()
+        if (existing && !force) {
+            return response.badRequest({
+                error: 'Des compagnies existent déjà. Utilisez force:true pour tout réinitialiser'
             })
         }
 
-        return response.created({ success: true, message: 'Compagnies initialisées' })
+        try {
+            // Read exp_cie.json from /app directory (copied during Docker build)
+            const jsonPath = '/app/exp_cie.json'
+            const jsonContent = await fs.readFile(jsonPath, 'utf-8')
+            const companies = JSON.parse(jsonContent)
+
+            // Clear existing if force
+            if (force) {
+                await db.from('shipping_companies').delete()
+            }
+
+            let imported = 0
+            for (const c of companies) {
+                await db.table('shipping_companies').insert({
+                    slug: c.id,
+                    name: c.name,
+                    hub_principal: c.hub_principal || '',
+                    type: c.type || 'National',
+                    contact: c.contact_colis || '',
+                    regions_desservies: JSON.stringify(c.regions_desservies || []),
+                    destinations: JSON.stringify(c.destinations || []),
+                    is_active: true,
+                    created_at: DateTime.now().toSQL(),
+                    updated_at: DateTime.now().toSQL()
+                })
+                imported++
+            }
+
+            return response.created({
+                success: true,
+                message: `${imported} compagnies importées depuis exp_cie.json`
+            })
+        } catch (error) {
+            console.error('Failed to seed shipping companies:', error)
+            return response.internalServerError({
+                error: 'Erreur lors de l\'import',
+                details: error instanceof Error ? error.message : 'Unknown error'
+            })
+        }
     }
 }

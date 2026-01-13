@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import {
     Save, ArrowLeft, Loader2, Upload, Trash2, Plus,
     Image as ImageIcon, Info, Tag, DollarSign, Package, CheckCircle2,
-    Layout
+    Layout, Palette, Hash
 } from 'lucide-react';
 import { API_URL } from '@/lib/utils';
 
@@ -33,7 +33,9 @@ export default function ProductEditor({ productId, isNew }: ProductEditorProps) 
         gallery: [] as string[],
         tagline: '',
         category: '',
-        benefits: ''
+        benefits: '',
+        theme_color: 'green',
+        display_order: 0
     });
 
     const [uploadingSlot, setUploadingSlot] = useState<string | null>(null);
@@ -314,6 +316,45 @@ export default function ProductEditor({ productId, isNew }: ProductEditorProps) 
                                             className="w-full px-5 py-3 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-black outline-none transition-all"
                                             placeholder="ex: HYPERTENSION"
                                         />
+                                    </div>
+                                </div>
+
+                                {/* Theme Color and Display Order */}
+                                <div className="grid grid-cols-2 gap-6">
+                                    <div>
+                                        <label className="block text-sm font-bold text-gray-700 mb-2 flex items-center gap-2">
+                                            <Palette className="w-4 h-4" />
+                                            Couleur du Thème
+                                        </label>
+                                        <select
+                                            value={formData.theme_color}
+                                            onChange={(e) => setFormData({ ...formData, theme_color: e.target.value })}
+                                            className="w-full px-5 py-3 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-black outline-none transition-all"
+                                        >
+                                            <option value="red">🔴 Rouge</option>
+                                            <option value="green">🟢 Vert</option>
+                                            <option value="blue">🔵 Bleu</option>
+                                            <option value="yellow">🟡 Jaune</option>
+                                            <option value="orange">🟠 Orange</option>
+                                            <option value="purple">🟣 Violet</option>
+                                            <option value="pink">💗 Rose</option>
+                                            <option value="teal">🩵 Turquoise</option>
+                                        </select>
+                                        <p className="text-xs text-gray-500 mt-1">Couleur des textes et bordures sur la page d'accueil</p>
+                                    </div>
+                                    <div>
+                                        <label className="block text-sm font-bold text-gray-700 mb-2 flex items-center gap-2">
+                                            <Hash className="w-4 h-4" />
+                                            Ordre d'Affichage
+                                        </label>
+                                        <input
+                                            type="number"
+                                            min="0"
+                                            value={formData.display_order}
+                                            onChange={(e) => setFormData({ ...formData, display_order: parseInt(e.target.value) || 0 })}
+                                            className="w-full px-5 py-3 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-black outline-none transition-all"
+                                        />
+                                        <p className="text-xs text-gray-500 mt-1">Plus petit = affiché en premier sur l'accueil</p>
                                     </div>
                                 </div>
                             </div>

@@ -265,22 +265,22 @@ const defaultSettings = {
         interior: 3500,
         freeThreshold: 25000
     },
-    payment_wave_number: '+2250507859953',
+    payment_wave_number: '+2250759091098',
     payment_orange_number: '+2250707631861',
-    payment_mtn_number: '+2250507859953',
-    payment_moov_number: '+2250507859953',
+    payment_mtn_number: '+2250759091098',
+    payment_moov_number: '+2250759091098',
     payment: {
-        wave: '+2250507859953',
+        wave: '+2250759091098',
         orange: '+2250707631861',
-        mtn: '+2250507859953',
-        moov: '+2250507859953'
+        mtn: '+2250759091098',
+        moov: '+2250759091098'
     },
-    contact_customer_service: '+2250507859953',
-    contact_whatsapp: '+2250507859953',
+    contact_customer_service: '+2250759091098',
+    contact_whatsapp: '+2250759091098',
     contact_email: 'contact@sante-vitalite.com',
     contact: {
-        phone: '+2250507859953',
-        whatsapp: '+2250507859953',
+        phone: '+2250759091098',
+        whatsapp: '+2250759091098',
         email: 'contact@sante-vitalite.com'
     },
     business_name: 'BIO SANTÉ',
@@ -341,7 +341,7 @@ function getPaymentNumber(settings, provider) {
     }
 }
 function formatPhoneDisplay(phone) {
-    // +2250507859953 -> +225 05 07 85 99 53
+    // +2250759091098 -> +225 07 59 09 10 98
     const cleaned = phone.replace(/\D/g, '');
     if (cleaned.length === 13 && cleaned.startsWith('225')) {
         const rest = cleaned.substring(3);
@@ -502,12 +502,33 @@ async function RootLayout({ children }) {
         suppressHydrationWarning: true,
         children: [
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("head", {
-                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$OrganizationJsonLd$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["OrganizationJsonLd"], {}, void 0, false, {
-                    fileName: "[project]/app/layout.tsx",
-                    lineNumber: 85,
-                    columnNumber: 17
-                }, this)
-            }, void 0, false, {
+                children: [
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$OrganizationJsonLd$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["OrganizationJsonLd"], {}, void 0, false, {
+                        fileName: "[project]/app/layout.tsx",
+                        lineNumber: 85,
+                        columnNumber: 17
+                    }, this),
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("link", {
+                        rel: "stylesheet",
+                        href: "https://unpkg.com/leaflet@1.9.4/dist/leaflet.css",
+                        integrity: "sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=",
+                        crossOrigin: ""
+                    }, void 0, false, {
+                        fileName: "[project]/app/layout.tsx",
+                        lineNumber: 86,
+                        columnNumber: 17
+                    }, this),
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("script", {
+                        src: "https://unpkg.com/leaflet@1.9.4/dist/leaflet.js",
+                        integrity: "sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=",
+                        crossOrigin: ""
+                    }, void 0, false, {
+                        fileName: "[project]/app/layout.tsx",
+                        lineNumber: 87,
+                        columnNumber: 17
+                    }, this)
+                ]
+            }, void 0, true, {
                 fileName: "[project]/app/layout.tsx",
                 lineNumber: 84,
                 columnNumber: 13
@@ -522,12 +543,12 @@ async function RootLayout({ children }) {
                             pixelId: pixelId
                         }, void 0, false, {
                             fileName: "[project]/app/layout.tsx",
-                            lineNumber: 89,
+                            lineNumber: 91,
                             columnNumber: 21
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/app/layout.tsx",
-                        lineNumber: 88,
+                        lineNumber: 90,
                         columnNumber: 17
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$context$2f$SettingsContext$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["SettingsProvider"], {
@@ -537,28 +558,28 @@ async function RootLayout({ children }) {
                                     children: children
                                 }, void 0, false, {
                                     fileName: "[project]/app/layout.tsx",
-                                    lineNumber: 94,
+                                    lineNumber: 96,
                                     columnNumber: 29
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/app/layout.tsx",
-                                lineNumber: 93,
+                                lineNumber: 95,
                                 columnNumber: 25
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/app/layout.tsx",
-                            lineNumber: 92,
+                            lineNumber: 94,
                             columnNumber: 21
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/app/layout.tsx",
-                        lineNumber: 91,
+                        lineNumber: 93,
                         columnNumber: 17
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/layout.tsx",
-                lineNumber: 87,
+                lineNumber: 89,
                 columnNumber: 13
             }, this)
         ]

@@ -35,6 +35,38 @@ function LoginForm() {
     const [error, setError] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(null);
     const [isLoading, setIsLoading] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(false);
     const [isOtpSent, setIsOtpSent] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(false);
+    const [expiresAt, setExpiresAt] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(null);
+    const [timeLeft, setTimeLeft] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(0);
+    // Countdown timer
+    (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useEffect"])(()=>{
+        if (!expiresAt) {
+            setTimeLeft(0);
+            return;
+        }
+        const interval = setInterval(()=>{
+            const now = Date.now();
+            const diff = Math.ceil((expiresAt - now) / 1000);
+            if (diff <= 0) {
+                setTimeLeft(0);
+                setExpiresAt(null);
+                clearInterval(interval);
+            } else {
+                setTimeLeft(diff);
+            }
+        }, 1000);
+        // Initial set
+        const now = Date.now();
+        const diff = Math.ceil((expiresAt - now) / 1000);
+        setTimeLeft(diff > 0 ? diff : 0);
+        return ()=>clearInterval(interval);
+    }, [
+        expiresAt
+    ]);
+    const formatCountdown = ()=>{
+        const minutes = Math.floor(timeLeft / 60);
+        const seconds = timeLeft % 60;
+        return `${minutes}:${seconds.toString().padStart(2, '0')}`;
+    };
     const { sendOtp, verifyOtp, register } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$context$2f$AuthContext$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useAuth"])();
     const router = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useRouter"])();
     const searchParams = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useSearchParams"])();
@@ -78,6 +110,7 @@ function LoginForm() {
             await sendOtp(rawPhone);
             setStep('otp');
             setIsOtpSent(true);
+            setExpiresAt(Date.now() + 5 * 60 * 1000);
         } catch (err) {
             setError(err.message || 'Erreur lors de l\'envoi du code');
         } finally{
@@ -132,7 +165,7 @@ function LoginForm() {
                         className: "absolute inset-0 bg-[url('https://images.unsplash.com/photo-1544367563-12123d8965cd?q=80&w=2070&auto=format&fit=crop')] opacity-20 bg-cover bg-center mix-blend-overlay"
                     }, void 0, false, {
                         fileName: "[project]/app/(store)/login/page.tsx",
-                        lineNumber: 130,
+                        lineNumber: 167,
                         columnNumber: 17
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -145,7 +178,7 @@ function LoginForm() {
                                         className: "w-8 h-8 text-[#9dbfae]"
                                     }, void 0, false, {
                                         fileName: "[project]/app/(store)/login/page.tsx",
-                                        lineNumber: 133,
+                                        lineNumber: 170,
                                         columnNumber: 25
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -153,13 +186,13 @@ function LoginForm() {
                                         children: "BIOSANTÉ"
                                     }, void 0, false, {
                                         fileName: "[project]/app/(store)/login/page.tsx",
-                                        lineNumber: 134,
+                                        lineNumber: 171,
                                         columnNumber: 25
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/(store)/login/page.tsx",
-                                lineNumber: 132,
+                                lineNumber: 169,
                                 columnNumber: 21
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -170,7 +203,7 @@ function LoginForm() {
                                         children: "La nature au service de votre vitalité."
                                     }, void 0, false, {
                                         fileName: "[project]/app/(store)/login/page.tsx",
-                                        lineNumber: 137,
+                                        lineNumber: 174,
                                         columnNumber: 25
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -178,19 +211,19 @@ function LoginForm() {
                                         children: "Connectez-vous pour suivre vos commandes, accéder à vos recommandations personnalisées et profiter de nos offres exclusives."
                                     }, void 0, false, {
                                         fileName: "[project]/app/(store)/login/page.tsx",
-                                        lineNumber: 140,
+                                        lineNumber: 177,
                                         columnNumber: 25
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/(store)/login/page.tsx",
-                                lineNumber: 136,
+                                lineNumber: 173,
                                 columnNumber: 21
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/(store)/login/page.tsx",
-                        lineNumber: 131,
+                        lineNumber: 168,
                         columnNumber: 17
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -200,33 +233,33 @@ function LoginForm() {
                                 children: "© 2026 Santé Vitalité"
                             }, void 0, false, {
                                 fileName: "[project]/app/(store)/login/page.tsx",
-                                lineNumber: 146,
+                                lineNumber: 183,
                                 columnNumber: 21
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                 className: "w-1 h-1 rounded-full bg-[#9dbfae]"
                             }, void 0, false, {
                                 fileName: "[project]/app/(store)/login/page.tsx",
-                                lineNumber: 147,
+                                lineNumber: 184,
                                 columnNumber: 21
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                 children: "Qualité Premium"
                             }, void 0, false, {
                                 fileName: "[project]/app/(store)/login/page.tsx",
-                                lineNumber: 148,
+                                lineNumber: 185,
                                 columnNumber: 21
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/(store)/login/page.tsx",
-                        lineNumber: 145,
+                        lineNumber: 182,
                         columnNumber: 17
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/(store)/login/page.tsx",
-                lineNumber: 129,
+                lineNumber: 166,
                 columnNumber: 13
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -246,7 +279,7 @@ function LoginForm() {
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/(store)/login/page.tsx",
-                                    lineNumber: 156,
+                                    lineNumber: 193,
                                     columnNumber: 25
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -258,13 +291,13 @@ function LoginForm() {
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/(store)/login/page.tsx",
-                                    lineNumber: 161,
+                                    lineNumber: 198,
                                     columnNumber: 25
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/(store)/login/page.tsx",
-                            lineNumber: 155,
+                            lineNumber: 192,
                             columnNumber: 21
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -277,27 +310,27 @@ function LoginForm() {
                                             className: `h-1 flex-1 rounded-full transition-all duration-300 ${step === 'otp' || step === 'profile' ? 'bg-[#1A4731]' : 'bg-gray-200'}`
                                         }, void 0, false, {
                                             fileName: "[project]/app/(store)/login/page.tsx",
-                                            lineNumber: 172,
+                                            lineNumber: 209,
                                             columnNumber: 33
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                             className: `h-1 flex-1 rounded-full transition-all duration-300 ${step === 'otp' || step === 'profile' ? 'bg-[#1A4731]' : 'bg-gray-200'}`
                                         }, void 0, false, {
                                             fileName: "[project]/app/(store)/login/page.tsx",
-                                            lineNumber: 173,
+                                            lineNumber: 210,
                                             columnNumber: 33
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                             className: `h-1 flex-1 rounded-full transition-all duration-300 ${step === 'profile' ? 'bg-[#1A4731]' : 'bg-gray-200'}`
                                         }, void 0, false, {
                                             fileName: "[project]/app/(store)/login/page.tsx",
-                                            lineNumber: 174,
+                                            lineNumber: 211,
                                             columnNumber: 33
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/(store)/login/page.tsx",
-                                    lineNumber: 171,
+                                    lineNumber: 208,
                                     columnNumber: 29
                                 }, this),
                                 reason === 'checkout' && step === 'phone' && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -307,7 +340,7 @@ function LoginForm() {
                                             className: "w-5 h-5 flex-shrink-0 mt-0.5 text-amber-600"
                                         }, void 0, false, {
                                             fileName: "[project]/app/(store)/login/page.tsx",
-                                            lineNumber: 180,
+                                            lineNumber: 217,
                                             columnNumber: 33
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -317,7 +350,7 @@ function LoginForm() {
                                                     children: "Finalisez votre commande"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/(store)/login/page.tsx",
-                                                    lineNumber: 182,
+                                                    lineNumber: 219,
                                                     columnNumber: 37
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -325,19 +358,19 @@ function LoginForm() {
                                                     children: "Connectez-vous pour valider votre panier et suivre la livraison de vos produits."
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/(store)/login/page.tsx",
-                                                    lineNumber: 183,
+                                                    lineNumber: 220,
                                                     columnNumber: 37
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/(store)/login/page.tsx",
-                                            lineNumber: 181,
+                                            lineNumber: 218,
                                             columnNumber: 33
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/(store)/login/page.tsx",
-                                    lineNumber: 179,
+                                    lineNumber: 216,
                                     columnNumber: 29
                                 }, this),
                                 error && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -347,20 +380,20 @@ function LoginForm() {
                                             className: "w-5 h-5 flex-shrink-0 mt-0.5"
                                         }, void 0, false, {
                                             fileName: "[project]/app/(store)/login/page.tsx",
-                                            lineNumber: 192,
+                                            lineNumber: 229,
                                             columnNumber: 33
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
                                             children: error
                                         }, void 0, false, {
                                             fileName: "[project]/app/(store)/login/page.tsx",
-                                            lineNumber: 193,
+                                            lineNumber: 230,
                                             columnNumber: 33
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/(store)/login/page.tsx",
-                                    lineNumber: 191,
+                                    lineNumber: 228,
                                     columnNumber: 29
                                 }, this),
                                 step === 'phone' && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("form", {
@@ -375,7 +408,7 @@ function LoginForm() {
                                                     children: "Numéro de téléphone"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/(store)/login/page.tsx",
-                                                    lineNumber: 200,
+                                                    lineNumber: 237,
                                                     columnNumber: 37
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -389,14 +422,14 @@ function LoginForm() {
                                                                     children: "🇨🇮"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/app/(store)/login/page.tsx",
-                                                                    lineNumber: 203,
+                                                                    lineNumber: 240,
                                                                     columnNumber: 45
                                                                 }, this),
                                                                 " +225"
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/app/(store)/login/page.tsx",
-                                                            lineNumber: 202,
+                                                            lineNumber: 239,
                                                             columnNumber: 41
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -408,13 +441,13 @@ function LoginForm() {
                                                             autoFocus: true
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/(store)/login/page.tsx",
-                                                            lineNumber: 205,
+                                                            lineNumber: 242,
                                                             columnNumber: 41
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/(store)/login/page.tsx",
-                                                    lineNumber: 201,
+                                                    lineNumber: 238,
                                                     columnNumber: 37
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -422,13 +455,13 @@ function LoginForm() {
                                                     children: "Format: 10 chiffres (ex: 07 07 ...)"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/(store)/login/page.tsx",
-                                                    lineNumber: 214,
+                                                    lineNumber: 251,
                                                     columnNumber: 37
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/(store)/login/page.tsx",
-                                            lineNumber: 199,
+                                            lineNumber: 236,
                                             columnNumber: 33
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -439,7 +472,7 @@ function LoginForm() {
                                                 className: "w-5 h-5 animate-spin"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/(store)/login/page.tsx",
-                                                lineNumber: 221,
+                                                lineNumber: 258,
                                                 columnNumber: 50
                                             }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Fragment"], {
                                                 children: [
@@ -448,20 +481,20 @@ function LoginForm() {
                                                         className: "ml-2 w-4 h-4"
                                                     }, void 0, false, {
                                                         fileName: "[project]/app/(store)/login/page.tsx",
-                                                        lineNumber: 221,
+                                                        lineNumber: 258,
                                                         columnNumber: 116
                                                     }, this)
                                                 ]
                                             }, void 0, true)
                                         }, void 0, false, {
                                             fileName: "[project]/app/(store)/login/page.tsx",
-                                            lineNumber: 216,
+                                            lineNumber: 253,
                                             columnNumber: 33
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/(store)/login/page.tsx",
-                                    lineNumber: 198,
+                                    lineNumber: 235,
                                     columnNumber: 29
                                 }, this),
                                 step === 'otp' && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("form", {
@@ -476,7 +509,7 @@ function LoginForm() {
                                                     children: "Code de vérification"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/(store)/login/page.tsx",
-                                                    lineNumber: 229,
+                                                    lineNumber: 266,
                                                     columnNumber: 37
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -492,7 +525,7 @@ function LoginForm() {
                                                     autoFocus: true
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/(store)/login/page.tsx",
-                                                    lineNumber: 230,
+                                                    lineNumber: 267,
                                                     columnNumber: 37
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -505,27 +538,46 @@ function LoginForm() {
                                                             children: "Numéro incorrect ?"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/(store)/login/page.tsx",
-                                                            lineNumber: 240,
+                                                            lineNumber: 277,
                                                             columnNumber: 41
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                                             className: "text-xs text-gray-400",
-                                                            children: "Expire dans 5 min"
+                                                            children: timeLeft > 0 ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Fragment"], {
+                                                                children: [
+                                                                    "Expire dans ",
+                                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                                        className: "font-bold text-[#1A4731]",
+                                                                        children: formatCountdown()
+                                                                    }, void 0, false, {
+                                                                        fileName: "[project]/app/(store)/login/page.tsx",
+                                                                        lineNumber: 286,
+                                                                        columnNumber: 63
+                                                                    }, this)
+                                                                ]
+                                                            }, void 0, true) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                                className: "text-red-500",
+                                                                children: "Expiré"
+                                                            }, void 0, false, {
+                                                                fileName: "[project]/app/(store)/login/page.tsx",
+                                                                lineNumber: 288,
+                                                                columnNumber: 49
+                                                            }, this)
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/(store)/login/page.tsx",
-                                                            lineNumber: 247,
+                                                            lineNumber: 284,
                                                             columnNumber: 41
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/(store)/login/page.tsx",
-                                                    lineNumber: 239,
+                                                    lineNumber: 276,
                                                     columnNumber: 37
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/(store)/login/page.tsx",
-                                            lineNumber: 228,
+                                            lineNumber: 265,
                                             columnNumber: 33
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -536,18 +588,18 @@ function LoginForm() {
                                                 className: "w-5 h-5 animate-spin"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/(store)/login/page.tsx",
-                                                lineNumber: 255,
+                                                lineNumber: 298,
                                                 columnNumber: 50
                                             }, this) : 'Vérifier le code'
                                         }, void 0, false, {
                                             fileName: "[project]/app/(store)/login/page.tsx",
-                                            lineNumber: 250,
+                                            lineNumber: 293,
                                             columnNumber: 33
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/(store)/login/page.tsx",
-                                    lineNumber: 227,
+                                    lineNumber: 264,
                                     columnNumber: 29
                                 }, this),
                                 step === 'profile' && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("form", {
@@ -565,7 +617,7 @@ function LoginForm() {
                                                             children: "Nom complet"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/(store)/login/page.tsx",
-                                                            lineNumber: 264,
+                                                            lineNumber: 307,
                                                             columnNumber: 41
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -575,7 +627,7 @@ function LoginForm() {
                                                                     className: "absolute left-3.5 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/app/(store)/login/page.tsx",
-                                                                    lineNumber: 266,
+                                                                    lineNumber: 309,
                                                                     columnNumber: 45
                                                                 }, this),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -591,19 +643,19 @@ function LoginForm() {
                                                                     autoFocus: true
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/app/(store)/login/page.tsx",
-                                                                    lineNumber: 267,
+                                                                    lineNumber: 310,
                                                                     columnNumber: 45
                                                                 }, this)
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/app/(store)/login/page.tsx",
-                                                            lineNumber: 265,
+                                                            lineNumber: 308,
                                                             columnNumber: 41
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/(store)/login/page.tsx",
-                                                    lineNumber: 263,
+                                                    lineNumber: 306,
                                                     columnNumber: 37
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -618,13 +670,13 @@ function LoginForm() {
                                                                     children: "(optionnel)"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/app/(store)/login/page.tsx",
-                                                                    lineNumber: 279,
+                                                                    lineNumber: 322,
                                                                     columnNumber: 105
                                                                 }, this)
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/app/(store)/login/page.tsx",
-                                                            lineNumber: 279,
+                                                            lineNumber: 322,
                                                             columnNumber: 41
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -634,7 +686,7 @@ function LoginForm() {
                                                                     className: "absolute left-3.5 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/app/(store)/login/page.tsx",
-                                                                    lineNumber: 281,
+                                                                    lineNumber: 324,
                                                                     columnNumber: 45
                                                                 }, this),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -648,25 +700,25 @@ function LoginForm() {
                                                                         })
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/app/(store)/login/page.tsx",
-                                                                    lineNumber: 282,
+                                                                    lineNumber: 325,
                                                                     columnNumber: 45
                                                                 }, this)
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/app/(store)/login/page.tsx",
-                                                            lineNumber: 280,
+                                                            lineNumber: 323,
                                                             columnNumber: 41
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/(store)/login/page.tsx",
-                                                    lineNumber: 278,
+                                                    lineNumber: 321,
                                                     columnNumber: 37
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/(store)/login/page.tsx",
-                                            lineNumber: 262,
+                                            lineNumber: 305,
                                             columnNumber: 33
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -677,24 +729,24 @@ function LoginForm() {
                                                 className: "w-5 h-5 animate-spin"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/(store)/login/page.tsx",
-                                                lineNumber: 297,
+                                                lineNumber: 340,
                                                 columnNumber: 50
                                             }, this) : 'Créer mon compte'
                                         }, void 0, false, {
                                             fileName: "[project]/app/(store)/login/page.tsx",
-                                            lineNumber: 292,
+                                            lineNumber: 335,
                                             columnNumber: 33
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/(store)/login/page.tsx",
-                                    lineNumber: 261,
+                                    lineNumber: 304,
                                     columnNumber: 29
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/(store)/login/page.tsx",
-                            lineNumber: 168,
+                            lineNumber: 205,
                             columnNumber: 21
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -706,36 +758,36 @@ function LoginForm() {
                                         className: "w-3 h-3"
                                     }, void 0, false, {
                                         fileName: "[project]/app/(store)/login/page.tsx",
-                                        lineNumber: 305,
+                                        lineNumber: 348,
                                         columnNumber: 29
                                     }, this),
                                     "Données chiffrées & Paiement 100% sécurisé"
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/(store)/login/page.tsx",
-                                lineNumber: 304,
+                                lineNumber: 347,
                                 columnNumber: 25
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/app/(store)/login/page.tsx",
-                            lineNumber: 303,
+                            lineNumber: 346,
                             columnNumber: 21
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/app/(store)/login/page.tsx",
-                    lineNumber: 154,
+                    lineNumber: 191,
                     columnNumber: 17
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/app/(store)/login/page.tsx",
-                lineNumber: 153,
+                lineNumber: 190,
                 columnNumber: 13
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/app/(store)/login/page.tsx",
-        lineNumber: 127,
+        lineNumber: 164,
         columnNumber: 9
     }, this);
 }
@@ -747,22 +799,22 @@ function LoginPage() {
                 className: "w-10 h-10 text-[#1A4731] animate-spin"
             }, void 0, false, {
                 fileName: "[project]/app/(store)/login/page.tsx",
-                lineNumber: 319,
+                lineNumber: 362,
                 columnNumber: 17
             }, void 0)
         }, void 0, false, {
             fileName: "[project]/app/(store)/login/page.tsx",
-            lineNumber: 318,
+            lineNumber: 361,
             columnNumber: 13
         }, void 0),
         children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(LoginForm, {}, void 0, false, {
             fileName: "[project]/app/(store)/login/page.tsx",
-            lineNumber: 322,
+            lineNumber: 365,
             columnNumber: 13
         }, this)
     }, void 0, false, {
         fileName: "[project]/app/(store)/login/page.tsx",
-        lineNumber: 317,
+        lineNumber: 360,
         columnNumber: 9
     }, this);
 }

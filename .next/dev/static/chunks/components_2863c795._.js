@@ -11,9 +11,12 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$play$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Play$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/play.js [app-client] (ecmascript) <export default as Play>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$pause$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Pause$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/pause.js [app-client] (ecmascript) <export default as Pause>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$map$2d$pin$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__MapPin$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/map-pin.js [app-client] (ecmascript) <export default as MapPin>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$quote$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Quote$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/quote.js [app-client] (ecmascript) <export default as Quote>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$utils$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/lib/utils.ts [app-client] (ecmascript)");
 ;
 var _s = __turbopack_context__.k.signature();
 'use client';
+;
 ;
 ;
 const AudioPlayer = ({ testimonial, colorClass = 'bg-black', barColorClass = 'bg-gray-300' })=>{
@@ -26,136 +29,257 @@ const AudioPlayer = ({ testimonial, colorClass = 'bg-black', barColorClass = 'bg
             setIsMounted(true);
         }
     }["AudioPlayer.useEffect"], []);
+    const audioUrl = testimonial.url || testimonial.audio_url;
+    const hasAudio = !!audioUrl;
+    const hasText = !!testimonial.text_content;
+    const hasImage = !!testimonial.author_image;
     const togglePlay = ()=>{
-        if (audioRef.current) {
-            if (isPlaying) {
-                audioRef.current.pause();
-            } else {
-                document.querySelectorAll('audio').forEach((el)=>{
-                    if (el !== audioRef.current) {
-                        el.pause();
-                    }
-                });
-                audioRef.current.play();
-            }
-            setIsPlaying(!isPlaying);
+        if (!hasAudio || !audioRef.current) return;
+        if (isPlaying) {
+            audioRef.current.pause();
+        } else {
+            document.querySelectorAll('audio').forEach((el)=>{
+                if (el !== audioRef.current) {
+                    el.pause();
+                }
+            });
+            audioRef.current.play();
         }
+        setIsPlaying(!isPlaying);
+    };
+    const getAudioSrc = ()=>{
+        if (!audioUrl) return '';
+        if (audioUrl.startsWith('/uploads')) {
+            return `${__TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$utils$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["API_URL"]}${audioUrl}`;
+        }
+        return audioUrl;
     };
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-        className: "bg-white rounded-xl p-4 shadow-sm border border-gray-100 flex items-center gap-4 transition-all hover:shadow-md",
+        className: "bg-white rounded-xl p-4 shadow-sm border border-gray-100 transition-all hover:shadow-md",
         children: [
-            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-                onClick: togglePlay,
-                className: `w-12 h-12 rounded-full ${isPlaying ? 'bg-gray-900' : colorClass} text-white flex items-center justify-center flex-shrink-0 transition-all hover:scale-105`,
-                children: isPlaying ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$pause$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Pause$3e$__["Pause"], {
-                    size: 20
-                }, void 0, false, {
-                    fileName: "[project]/components/AudioPlayer.tsx",
-                    lineNumber: 48,
-                    columnNumber: 30
-                }, ("TURBOPACK compile-time value", void 0)) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$play$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Play$3e$__["Play"], {
-                    size: 20,
-                    className: "ml-1"
-                }, void 0, false, {
-                    fileName: "[project]/components/AudioPlayer.tsx",
-                    lineNumber: 48,
-                    columnNumber: 52
-                }, ("TURBOPACK compile-time value", void 0))
-            }, void 0, false, {
-                fileName: "[project]/components/AudioPlayer.tsx",
-                lineNumber: 44,
-                columnNumber: 13
-            }, ("TURBOPACK compile-time value", void 0)),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                className: "flex-1",
+                className: "flex items-start gap-4",
                 children: [
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                        className: "font-bold text-gray-900 text-sm",
-                        children: testimonial.author
-                    }, void 0, false, {
-                        fileName: "[project]/components/AudioPlayer.tsx",
-                        lineNumber: 51,
-                        columnNumber: 17
-                    }, ("TURBOPACK compile-time value", void 0)),
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                        className: "text-xs text-gray-500 flex items-center gap-1",
-                        children: [
-                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$map$2d$pin$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__MapPin$3e$__["MapPin"], {
-                                size: 10
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                        className: "relative flex-shrink-0",
+                        children: hasImage ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                            className: "relative",
+                            children: [
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("img", {
+                                    src: testimonial.author_image,
+                                    alt: testimonial.author,
+                                    className: "w-14 h-14 rounded-full object-cover border-2 border-gray-100"
+                                }, void 0, false, {
+                                    fileName: "[project]/components/AudioPlayer.tsx",
+                                    lineNumber: 73,
+                                    columnNumber: 29
+                                }, ("TURBOPACK compile-time value", void 0)),
+                                hasAudio && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                                    onClick: togglePlay,
+                                    className: `absolute -bottom-1 -right-1 w-7 h-7 rounded-full ${isPlaying ? 'bg-gray-900' : colorClass} text-white flex items-center justify-center transition-all hover:scale-105 shadow-lg`,
+                                    children: isPlaying ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$pause$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Pause$3e$__["Pause"], {
+                                        size: 12
+                                    }, void 0, false, {
+                                        fileName: "[project]/components/AudioPlayer.tsx",
+                                        lineNumber: 83,
+                                        columnNumber: 50
+                                    }, ("TURBOPACK compile-time value", void 0)) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$play$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Play$3e$__["Play"], {
+                                        size: 12,
+                                        className: "ml-0.5"
+                                    }, void 0, false, {
+                                        fileName: "[project]/components/AudioPlayer.tsx",
+                                        lineNumber: 83,
+                                        columnNumber: 72
+                                    }, ("TURBOPACK compile-time value", void 0))
+                                }, void 0, false, {
+                                    fileName: "[project]/components/AudioPlayer.tsx",
+                                    lineNumber: 79,
+                                    columnNumber: 33
+                                }, ("TURBOPACK compile-time value", void 0))
+                            ]
+                        }, void 0, true, {
+                            fileName: "[project]/components/AudioPlayer.tsx",
+                            lineNumber: 72,
+                            columnNumber: 25
+                        }, ("TURBOPACK compile-time value", void 0)) : hasAudio ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                            onClick: togglePlay,
+                            className: `w-14 h-14 rounded-full ${isPlaying ? 'bg-gray-900' : colorClass} text-white flex items-center justify-center flex-shrink-0 transition-all hover:scale-105`,
+                            children: isPlaying ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$pause$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Pause$3e$__["Pause"], {
+                                size: 22
                             }, void 0, false, {
                                 fileName: "[project]/components/AudioPlayer.tsx",
-                                lineNumber: 53,
+                                lineNumber: 92,
+                                columnNumber: 42
+                            }, ("TURBOPACK compile-time value", void 0)) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$play$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Play$3e$__["Play"], {
+                                size: 22,
+                                className: "ml-1"
+                            }, void 0, false, {
+                                fileName: "[project]/components/AudioPlayer.tsx",
+                                lineNumber: 92,
+                                columnNumber: 64
+                            }, ("TURBOPACK compile-time value", void 0))
+                        }, void 0, false, {
+                            fileName: "[project]/components/AudioPlayer.tsx",
+                            lineNumber: 88,
+                            columnNumber: 25
+                        }, ("TURBOPACK compile-time value", void 0)) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                            className: "w-14 h-14 rounded-full bg-gray-100 flex items-center justify-center",
+                            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$quote$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Quote$3e$__["Quote"], {
+                                size: 20,
+                                className: "text-gray-400"
+                            }, void 0, false, {
+                                fileName: "[project]/components/AudioPlayer.tsx",
+                                lineNumber: 96,
+                                columnNumber: 29
+                            }, ("TURBOPACK compile-time value", void 0))
+                        }, void 0, false, {
+                            fileName: "[project]/components/AudioPlayer.tsx",
+                            lineNumber: 95,
+                            columnNumber: 25
+                        }, ("TURBOPACK compile-time value", void 0))
+                    }, void 0, false, {
+                        fileName: "[project]/components/AudioPlayer.tsx",
+                        lineNumber: 70,
+                        columnNumber: 17
+                    }, ("TURBOPACK compile-time value", void 0)),
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                        className: "flex-1 min-w-0",
+                        children: [
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                className: "flex items-start justify-between gap-2",
+                                children: [
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                        children: [
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                                className: "font-bold text-gray-900 text-sm",
+                                                children: testimonial.author
+                                            }, void 0, false, {
+                                                fileName: "[project]/components/AudioPlayer.tsx",
+                                                lineNumber: 105,
+                                                columnNumber: 29
+                                            }, ("TURBOPACK compile-time value", void 0)),
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                                className: "text-xs text-gray-500 flex items-center gap-1",
+                                                children: [
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$map$2d$pin$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__MapPin$3e$__["MapPin"], {
+                                                        size: 10
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/components/AudioPlayer.tsx",
+                                                        lineNumber: 107,
+                                                        columnNumber: 33
+                                                    }, ("TURBOPACK compile-time value", void 0)),
+                                                    " ",
+                                                    testimonial.location
+                                                ]
+                                            }, void 0, true, {
+                                                fileName: "[project]/components/AudioPlayer.tsx",
+                                                lineNumber: 106,
+                                                columnNumber: 29
+                                            }, ("TURBOPACK compile-time value", void 0))
+                                        ]
+                                    }, void 0, true, {
+                                        fileName: "[project]/components/AudioPlayer.tsx",
+                                        lineNumber: 104,
+                                        columnNumber: 25
+                                    }, ("TURBOPACK compile-time value", void 0)),
+                                    hasAudio && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                        className: "flex items-center gap-2 flex-shrink-0",
+                                        children: [
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                className: "hidden sm:flex space-x-0.5 items-end h-4",
+                                                children: [
+                                                    1,
+                                                    2,
+                                                    3,
+                                                    4,
+                                                    5
+                                                ].map((i)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                        className: `w-1 rounded-t-sm ${isPlaying ? 'animate-pulse' : ''} ${barColorClass}`,
+                                                        style: {
+                                                            height: isMounted ? `${30 + Math.random() * 70}%` : '50%'
+                                                        }
+                                                    }, i, false, {
+                                                        fileName: "[project]/components/AudioPlayer.tsx",
+                                                        lineNumber: 114,
+                                                        columnNumber: 41
+                                                    }, ("TURBOPACK compile-time value", void 0)))
+                                            }, void 0, false, {
+                                                fileName: "[project]/components/AudioPlayer.tsx",
+                                                lineNumber: 112,
+                                                columnNumber: 33
+                                            }, ("TURBOPACK compile-time value", void 0)),
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                className: "text-xs font-mono text-gray-500 bg-gray-100 px-2 py-1 rounded",
+                                                children: testimonial.duration || '0:00'
+                                            }, void 0, false, {
+                                                fileName: "[project]/components/AudioPlayer.tsx",
+                                                lineNumber: 121,
+                                                columnNumber: 33
+                                            }, ("TURBOPACK compile-time value", void 0))
+                                        ]
+                                    }, void 0, true, {
+                                        fileName: "[project]/components/AudioPlayer.tsx",
+                                        lineNumber: 111,
+                                        columnNumber: 29
+                                    }, ("TURBOPACK compile-time value", void 0))
+                                ]
+                            }, void 0, true, {
+                                fileName: "[project]/components/AudioPlayer.tsx",
+                                lineNumber: 103,
                                 columnNumber: 21
                             }, ("TURBOPACK compile-time value", void 0)),
-                            " ",
-                            testimonial.location
+                            hasText && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                className: "mt-3 relative",
+                                children: [
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$quote$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Quote$3e$__["Quote"], {
+                                        size: 14,
+                                        className: "absolute -left-1 -top-1 text-gray-200"
+                                    }, void 0, false, {
+                                        fileName: "[project]/components/AudioPlayer.tsx",
+                                        lineNumber: 131,
+                                        columnNumber: 29
+                                    }, ("TURBOPACK compile-time value", void 0)),
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                        className: "text-sm text-gray-700 italic pl-4 leading-relaxed line-clamp-3",
+                                        children: testimonial.text_content
+                                    }, void 0, false, {
+                                        fileName: "[project]/components/AudioPlayer.tsx",
+                                        lineNumber: 132,
+                                        columnNumber: 29
+                                    }, ("TURBOPACK compile-time value", void 0))
+                                ]
+                            }, void 0, true, {
+                                fileName: "[project]/components/AudioPlayer.tsx",
+                                lineNumber: 130,
+                                columnNumber: 25
+                            }, ("TURBOPACK compile-time value", void 0))
                         ]
                     }, void 0, true, {
                         fileName: "[project]/components/AudioPlayer.tsx",
-                        lineNumber: 52,
+                        lineNumber: 102,
                         columnNumber: 17
                     }, ("TURBOPACK compile-time value", void 0))
                 ]
             }, void 0, true, {
                 fileName: "[project]/components/AudioPlayer.tsx",
-                lineNumber: 50,
+                lineNumber: 68,
                 columnNumber: 13
             }, ("TURBOPACK compile-time value", void 0)),
-            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                className: "flex items-center gap-2",
-                children: [
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                        className: "hidden sm:flex space-x-0.5 items-end h-4",
-                        children: [
-                            1,
-                            2,
-                            3,
-                            4,
-                            5
-                        ].map((i)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                className: `w-1 rounded-t-sm ${isPlaying ? 'animate-pulse' : ''} ${barColorClass}`,
-                                style: {
-                                    height: isMounted ? `${30 + Math.random() * 70}%` : '50%'
-                                }
-                            }, i, false, {
-                                fileName: "[project]/components/AudioPlayer.tsx",
-                                lineNumber: 59,
-                                columnNumber: 25
-                            }, ("TURBOPACK compile-time value", void 0)))
-                    }, void 0, false, {
-                        fileName: "[project]/components/AudioPlayer.tsx",
-                        lineNumber: 57,
-                        columnNumber: 17
-                    }, ("TURBOPACK compile-time value", void 0)),
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                        className: "text-xs font-mono text-gray-500 bg-gray-100 px-2 py-1 rounded",
-                        children: testimonial.duration
-                    }, void 0, false, {
-                        fileName: "[project]/components/AudioPlayer.tsx",
-                        lineNumber: 66,
-                        columnNumber: 17
-                    }, ("TURBOPACK compile-time value", void 0))
-                ]
-            }, void 0, true, {
-                fileName: "[project]/components/AudioPlayer.tsx",
-                lineNumber: 56,
-                columnNumber: 13
-            }, ("TURBOPACK compile-time value", void 0)),
-            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("audio", {
+            hasAudio && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("audio", {
                 ref: audioRef,
-                src: testimonial.url.startsWith('/uploads') ? `http://localhost:3333${testimonial.url}` : testimonial.url,
+                src: getAudioSrc(),
                 onEnded: ()=>setIsPlaying(false),
                 onPause: ()=>setIsPlaying(false),
                 onPlay: ()=>setIsPlaying(true)
             }, void 0, false, {
                 fileName: "[project]/components/AudioPlayer.tsx",
-                lineNumber: 68,
-                columnNumber: 13
+                lineNumber: 142,
+                columnNumber: 17
             }, ("TURBOPACK compile-time value", void 0))
         ]
     }, void 0, true, {
         fileName: "[project]/components/AudioPlayer.tsx",
-        lineNumber: 43,
+        lineNumber: 67,
         columnNumber: 9
     }, ("TURBOPACK compile-time value", void 0));
 };
@@ -309,56 +433,132 @@ var _s = __turbopack_context__.k.signature();
 ;
 ;
 ;
-const slides = [
-    {
-        id: 'bioactif',
-        label: 'Formulation Clinique',
-        title: 'BioActif',
-        subtitle: 'Une approche scientifique pour réguler l\'hypertension et améliorer la circulation sanguine. 100% Végétal.',
-        accentColor: 'text-red-600',
-        bgColor: 'bg-red-600',
-        borderColor: 'border-red-600',
-        productId: 'bioactif',
-        imageIndex: 0 // Index in products array
+// Color mapping for theme_color field from database
+const colorClasses = {
+    red: {
+        accent: 'text-red-600',
+        bg: 'bg-red-600',
+        border: 'border-red-600'
     },
-    {
-        id: 'vitamax',
-        label: 'Santé Masculine',
-        title: 'VitaMax',
-        subtitle: 'Rétablit le confort urinaire et booste la vitalité masculine. Formule cliniquement étudiée.',
-        accentColor: 'text-green-600',
-        bgColor: 'bg-green-600',
-        borderColor: 'border-green-600',
-        productId: 'vitamax',
-        imageIndex: 1 // Index in products array
+    green: {
+        accent: 'text-green-600',
+        bg: 'bg-green-600',
+        border: 'border-green-600'
+    },
+    blue: {
+        accent: 'text-blue-600',
+        bg: 'bg-blue-600',
+        border: 'border-blue-600'
+    },
+    yellow: {
+        accent: 'text-yellow-600',
+        bg: 'bg-yellow-600',
+        border: 'border-yellow-600'
+    },
+    orange: {
+        accent: 'text-orange-600',
+        bg: 'bg-orange-600',
+        border: 'border-orange-600'
+    },
+    purple: {
+        accent: 'text-purple-600',
+        bg: 'bg-purple-600',
+        border: 'border-purple-600'
+    },
+    pink: {
+        accent: 'text-pink-600',
+        bg: 'bg-pink-600',
+        border: 'border-pink-600'
+    },
+    teal: {
+        accent: 'text-teal-600',
+        bg: 'bg-teal-600',
+        border: 'border-teal-600'
+    },
+    // Default fallback
+    default: {
+        accent: 'text-emerald-600',
+        bg: 'bg-emerald-600',
+        border: 'border-emerald-600'
     }
-];
-const HeroSection = ({ dynamicProducts })=>{
+};
+const HeroSection = ({ dynamicProducts = [] })=>{
     _s();
     const [currentSlide, setCurrentSlide] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(0);
-    // Auto-advance
+    // Generate slides from dynamic products
+    const slides = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useMemo"])({
+        "HeroSection.useMemo[slides]": ()=>{
+            if (!dynamicProducts || dynamicProducts.length === 0) {
+                return [];
+            }
+            return dynamicProducts.map({
+                "HeroSection.useMemo[slides]": (product, index)=>{
+                    const themeColor = product.theme_color || 'green';
+                    const colors = colorClasses[themeColor] || colorClasses.default;
+                    return {
+                        id: product.id,
+                        productId: product.id,
+                        title: product.name,
+                        label: product.tagline || product.category || 'Santé Naturelle',
+                        subtitle: product.description || '',
+                        image: product.image || '/images/placeholder-product.png',
+                        accentColor: colors.accent,
+                        bgColor: colors.bg,
+                        borderColor: colors.border,
+                        figNumber: index + 1
+                    };
+                }
+            }["HeroSection.useMemo[slides]"]);
+        }
+    }["HeroSection.useMemo[slides]"], [
+        dynamicProducts
+    ]);
+    // Auto-advance slides
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
         "HeroSection.useEffect": ()=>{
+            if (slides.length <= 1) return;
             const timer = setInterval({
                 "HeroSection.useEffect.timer": ()=>{
                     setCurrentSlide({
                         "HeroSection.useEffect.timer": (prev)=>(prev + 1) % slides.length
                     }["HeroSection.useEffect.timer"]);
                 }
-            }["HeroSection.useEffect.timer"], 6000); // 6 seconds
+            }["HeroSection.useEffect.timer"], 6000);
             return ({
                 "HeroSection.useEffect": ()=>clearInterval(timer)
             })["HeroSection.useEffect"];
         }
-    }["HeroSection.useEffect"], []);
+    }["HeroSection.useEffect"], [
+        slides.length
+    ]);
     const nextSlide = ()=>setCurrentSlide((prev)=>(prev + 1) % slides.length);
     const prevSlide = ()=>setCurrentSlide((prev)=>(prev - 1 + slides.length) % slides.length);
+    // Handle empty state
+    if (slides.length === 0) {
+        return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("section", {
+            className: "relative bg-transparent text-black min-h-[40vh] flex items-center justify-center",
+            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                className: "text-center",
+                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                    className: "text-black/50",
+                    children: "Chargement des produits..."
+                }, void 0, false, {
+                    fileName: "[project]/components/HeroSection.tsx",
+                    lineNumber: 73,
+                    columnNumber: 21
+                }, ("TURBOPACK compile-time value", void 0))
+            }, void 0, false, {
+                fileName: "[project]/components/HeroSection.tsx",
+                lineNumber: 72,
+                columnNumber: 17
+            }, ("TURBOPACK compile-time value", void 0))
+        }, void 0, false, {
+            fileName: "[project]/components/HeroSection.tsx",
+            lineNumber: 71,
+            columnNumber: 13
+        }, ("TURBOPACK compile-time value", void 0));
+    }
     const slide = slides[currentSlide];
-    const product = dynamicProducts?.find((p)=>p.id === slide.productId) || {
-        id: slide.productId,
-        name: slide.title,
-        image: '/images/bioactif/bioactif-ingredients.jpg' // Fallback image
-    };
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("section", {
         className: "jsx-40213128dc752535" + " " + "relative bg-transparent text-black min-h-[40vh] md:min-h-[50vh] flex flex-col justify-center overflow-hidden transition-colors duration-700",
         children: [
@@ -377,12 +577,12 @@ const HeroSection = ({ dynamicProducts })=>{
                                         children: slide.label
                                     }, void 0, false, {
                                         fileName: "[project]/components/HeroSection.tsx",
-                                        lineNumber: 68,
+                                        lineNumber: 88,
                                         columnNumber: 29
                                     }, ("TURBOPACK compile-time value", void 0))
                                 }, void 0, false, {
                                     fileName: "[project]/components/HeroSection.tsx",
-                                    lineNumber: 67,
+                                    lineNumber: 87,
                                     columnNumber: 25
                                 }, ("TURBOPACK compile-time value", void 0)),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h1", {
@@ -393,7 +593,7 @@ const HeroSection = ({ dynamicProducts })=>{
                                             children: slide.title
                                         }, void 0, false, {
                                             fileName: "[project]/components/HeroSection.tsx",
-                                            lineNumber: 71,
+                                            lineNumber: 91,
                                             columnNumber: 29
                                         }, ("TURBOPACK compile-time value", void 0)),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -401,13 +601,13 @@ const HeroSection = ({ dynamicProducts })=>{
                                             children: "®"
                                         }, void 0, false, {
                                             fileName: "[project]/components/HeroSection.tsx",
-                                            lineNumber: 71,
+                                            lineNumber: 91,
                                             columnNumber: 85
                                         }, ("TURBOPACK compile-time value", void 0))
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/components/HeroSection.tsx",
-                                    lineNumber: 70,
+                                    lineNumber: 90,
                                     columnNumber: 25
                                 }, ("TURBOPACK compile-time value", void 0)),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -415,7 +615,7 @@ const HeroSection = ({ dynamicProducts })=>{
                                     children: slide.subtitle
                                 }, void 0, false, {
                                     fileName: "[project]/components/HeroSection.tsx",
-                                    lineNumber: 73,
+                                    lineNumber: 93,
                                     columnNumber: 25
                                 }, ("TURBOPACK compile-time value", void 0)),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -428,12 +628,12 @@ const HeroSection = ({ dynamicProducts })=>{
                                                 children: "Découvrir le Protocole"
                                             }, void 0, false, {
                                                 fileName: "[project]/components/HeroSection.tsx",
-                                                lineNumber: 78,
+                                                lineNumber: 98,
                                                 columnNumber: 33
                                             }, ("TURBOPACK compile-time value", void 0))
                                         }, void 0, false, {
                                             fileName: "[project]/components/HeroSection.tsx",
-                                            lineNumber: 77,
+                                            lineNumber: 97,
                                             columnNumber: 29
                                         }, ("TURBOPACK compile-time value", void 0)),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
@@ -444,29 +644,29 @@ const HeroSection = ({ dynamicProducts })=>{
                                                 children: "Voir la Science"
                                             }, void 0, false, {
                                                 fileName: "[project]/components/HeroSection.tsx",
-                                                lineNumber: 83,
+                                                lineNumber: 103,
                                                 columnNumber: 33
                                             }, ("TURBOPACK compile-time value", void 0))
                                         }, void 0, false, {
                                             fileName: "[project]/components/HeroSection.tsx",
-                                            lineNumber: 82,
+                                            lineNumber: 102,
                                             columnNumber: 29
                                         }, ("TURBOPACK compile-time value", void 0))
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/components/HeroSection.tsx",
-                                    lineNumber: 76,
+                                    lineNumber: 96,
                                     columnNumber: 25
                                 }, ("TURBOPACK compile-time value", void 0))
                             ]
                         }, currentSlide, true, {
                             fileName: "[project]/components/HeroSection.tsx",
-                            lineNumber: 66,
+                            lineNumber: 86,
                             columnNumber: 21
                         }, ("TURBOPACK compile-time value", void 0))
                     }, void 0, false, {
                         fileName: "[project]/components/HeroSection.tsx",
-                        lineNumber: 65,
+                        lineNumber: 85,
                         columnNumber: 17
                     }, ("TURBOPACK compile-time value", void 0)),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -478,14 +678,14 @@ const HeroSection = ({ dynamicProducts })=>{
                                     className: "jsx-40213128dc752535" + " " + `absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] border ${slide.borderColor} opacity-20 rounded-full animate-[spin_60s_linear_infinite] transition-colors duration-1000`
                                 }, void 0, false, {
                                     fileName: "[project]/components/HeroSection.tsx",
-                                    lineNumber: 95,
+                                    lineNumber: 115,
                                     columnNumber: 25
                                 }, ("TURBOPACK compile-time value", void 0)),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                     className: "jsx-40213128dc752535" + " " + `absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[90%] h-[90%] border ${slide.borderColor} opacity-10 rounded-full animate-[spin_40s_linear_infinite_reverse] transition-colors duration-1000`
                                 }, void 0, false, {
                                     fileName: "[project]/components/HeroSection.tsx",
-                                    lineNumber: 96,
+                                    lineNumber: 116,
                                     columnNumber: 25
                                 }, ("TURBOPACK compile-time value", void 0)),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -495,7 +695,7 @@ const HeroSection = ({ dynamicProducts })=>{
                                         children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                             className: "jsx-40213128dc752535" + " " + "relative w-full h-full animate-[float_6s_ease-in-out_infinite] drop-shadow-[0_35px_35px_rgba(0,0,0,0.15)]",
                                             children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$image$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
-                                                src: product.image,
+                                                src: slide.image,
                                                 alt: `${slide.title} - Solution naturelle pour la santé en Côte d'Ivoire`,
                                                 fill: true,
                                                 sizes: "(max-width: 768px) 100vw, 50vw",
@@ -504,42 +704,42 @@ const HeroSection = ({ dynamicProducts })=>{
                                                 unoptimized: true
                                             }, void 0, false, {
                                                 fileName: "[project]/components/HeroSection.tsx",
-                                                lineNumber: 103,
+                                                lineNumber: 122,
                                                 columnNumber: 37
                                             }, ("TURBOPACK compile-time value", void 0))
                                         }, void 0, false, {
                                             fileName: "[project]/components/HeroSection.tsx",
-                                            lineNumber: 102,
+                                            lineNumber: 121,
                                             columnNumber: 33
                                         }, ("TURBOPACK compile-time value", void 0))
                                     }, currentSlide, false, {
                                         fileName: "[project]/components/HeroSection.tsx",
-                                        lineNumber: 100,
+                                        lineNumber: 120,
                                         columnNumber: 29
                                     }, ("TURBOPACK compile-time value", void 0))
                                 }, void 0, false, {
                                     fileName: "[project]/components/HeroSection.tsx",
-                                    lineNumber: 99,
+                                    lineNumber: 119,
                                     columnNumber: 25
                                 }, ("TURBOPACK compile-time value", void 0))
                             ]
                         }, void 0, true, {
                             fileName: "[project]/components/HeroSection.tsx",
-                            lineNumber: 93,
+                            lineNumber: 113,
                             columnNumber: 21
                         }, ("TURBOPACK compile-time value", void 0))
                     }, void 0, false, {
                         fileName: "[project]/components/HeroSection.tsx",
-                        lineNumber: 92,
+                        lineNumber: 112,
                         columnNumber: 17
                     }, ("TURBOPACK compile-time value", void 0))
                 ]
             }, void 0, true, {
                 fileName: "[project]/components/HeroSection.tsx",
-                lineNumber: 63,
+                lineNumber: 83,
                 columnNumber: 13
             }, ("TURBOPACK compile-time value", void 0)),
-            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+            slides.length > 1 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                 className: "jsx-40213128dc752535" + " " + "absolute bottom-12 left-0 w-full flex justify-center z-30 pointer-events-none",
                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                     className: "jsx-40213128dc752535" + " " + "flex items-center gap-4 bg-white/80 backdrop-blur px-4 py-2 rounded-full border border-black/5 pointer-events-auto shadow-sm",
@@ -551,13 +751,13 @@ const HeroSection = ({ dynamicProducts })=>{
                                 size: 20
                             }, void 0, false, {
                                 fileName: "[project]/components/HeroSection.tsx",
-                                lineNumber: 123,
-                                columnNumber: 25
+                                lineNumber: 143,
+                                columnNumber: 29
                             }, ("TURBOPACK compile-time value", void 0))
                         }, void 0, false, {
                             fileName: "[project]/components/HeroSection.tsx",
-                            lineNumber: 122,
-                            columnNumber: 21
+                            lineNumber: 142,
+                            columnNumber: 25
                         }, ("TURBOPACK compile-time value", void 0)),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                             className: "jsx-40213128dc752535" + " " + "flex gap-2",
@@ -566,13 +766,13 @@ const HeroSection = ({ dynamicProducts })=>{
                                     className: "jsx-40213128dc752535" + " " + `w-2.5 h-2.5 rounded-full transition-all duration-300 ${idx === currentSlide ? 'bg-black scale-125' : 'bg-black/20 hover:bg-black/40'}`
                                 }, idx, false, {
                                     fileName: "[project]/components/HeroSection.tsx",
-                                    lineNumber: 127,
-                                    columnNumber: 29
+                                    lineNumber: 147,
+                                    columnNumber: 33
                                 }, ("TURBOPACK compile-time value", void 0)))
                         }, void 0, false, {
                             fileName: "[project]/components/HeroSection.tsx",
-                            lineNumber: 125,
-                            columnNumber: 21
+                            lineNumber: 145,
+                            columnNumber: 25
                         }, ("TURBOPACK compile-time value", void 0)),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
                             onClick: nextSlide,
@@ -581,24 +781,24 @@ const HeroSection = ({ dynamicProducts })=>{
                                 size: 20
                             }, void 0, false, {
                                 fileName: "[project]/components/HeroSection.tsx",
-                                lineNumber: 135,
-                                columnNumber: 25
+                                lineNumber: 155,
+                                columnNumber: 29
                             }, ("TURBOPACK compile-time value", void 0))
                         }, void 0, false, {
                             fileName: "[project]/components/HeroSection.tsx",
-                            lineNumber: 134,
-                            columnNumber: 21
+                            lineNumber: 154,
+                            columnNumber: 25
                         }, ("TURBOPACK compile-time value", void 0))
                     ]
                 }, void 0, true, {
                     fileName: "[project]/components/HeroSection.tsx",
-                    lineNumber: 121,
-                    columnNumber: 17
+                    lineNumber: 141,
+                    columnNumber: 21
                 }, ("TURBOPACK compile-time value", void 0))
             }, void 0, false, {
                 fileName: "[project]/components/HeroSection.tsx",
-                lineNumber: 120,
-                columnNumber: 13
+                lineNumber: 140,
+                columnNumber: 17
             }, ("TURBOPACK compile-time value", void 0)),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                 className: "jsx-40213128dc752535" + " " + "absolute bottom-0 w-full border-t border-black/5 py-2.5 bg-white/30 backdrop-blur-sm hidden md:block",
@@ -609,13 +809,13 @@ const HeroSection = ({ dynamicProducts })=>{
                             className: "jsx-40213128dc752535",
                             children: [
                                 "Fig. 0",
-                                currentSlide + 1,
+                                slide.figNumber,
                                 " — ",
                                 slide.label
                             ]
                         }, void 0, true, {
                             fileName: "[project]/components/HeroSection.tsx",
-                            lineNumber: 143,
+                            lineNumber: 164,
                             columnNumber: 21
                         }, ("TURBOPACK compile-time value", void 0)),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -623,7 +823,7 @@ const HeroSection = ({ dynamicProducts })=>{
                             children: "Validé Scientifiquement"
                         }, void 0, false, {
                             fileName: "[project]/components/HeroSection.tsx",
-                            lineNumber: 144,
+                            lineNumber: 165,
                             columnNumber: 21
                         }, ("TURBOPACK compile-time value", void 0)),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -631,18 +831,18 @@ const HeroSection = ({ dynamicProducts })=>{
                             children: "Côte d'Ivoire"
                         }, void 0, false, {
                             fileName: "[project]/components/HeroSection.tsx",
-                            lineNumber: 145,
+                            lineNumber: 166,
                             columnNumber: 21
                         }, ("TURBOPACK compile-time value", void 0))
                     ]
                 }, void 0, true, {
                     fileName: "[project]/components/HeroSection.tsx",
-                    lineNumber: 142,
+                    lineNumber: 163,
                     columnNumber: 17
                 }, ("TURBOPACK compile-time value", void 0))
             }, void 0, false, {
                 fileName: "[project]/components/HeroSection.tsx",
-                lineNumber: 141,
+                lineNumber: 162,
                 columnNumber: 13
             }, ("TURBOPACK compile-time value", void 0)),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$styled$2d$jsx$2f$style$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
@@ -652,11 +852,11 @@ const HeroSection = ({ dynamicProducts })=>{
         ]
     }, void 0, true, {
         fileName: "[project]/components/HeroSection.tsx",
-        lineNumber: 60,
+        lineNumber: 82,
         columnNumber: 9
     }, ("TURBOPACK compile-time value", void 0));
 };
-_s(HeroSection, "/jm+XmndjAYlDCFyCnfFEXJOloU=");
+_s(HeroSection, "cLqb6WI5BGFQPX8LcxvIVClK3a0=");
 _c = HeroSection;
 var _c;
 __turbopack_context__.k.register(_c, "HeroSection");
@@ -673,7 +873,6 @@ __turbopack_context__.s([
 ]);
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/compiled/react/jsx-dev-runtime.js [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/compiled/react/index.js [app-client] (ecmascript)");
-var __TURBOPACK__imported__module__$5b$project$5d2f$data$2f$products$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/data/products.ts [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$shield$2d$check$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__ShieldCheck$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/shield-check.js [app-client] (ecmascript) <export default as ShieldCheck>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$truck$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Truck$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/truck.js [app-client] (ecmascript) <export default as Truck>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$star$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Star$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/star.js [app-client] (ecmascript) <export default as Star>");
@@ -700,20 +899,110 @@ var _s = __turbopack_context__.k.signature();
 ;
 ;
 ;
-;
+// Color mapping for theme_color field from database
+const colorClasses = {
+    red: {
+        accent: 'text-red-600',
+        text: 'text-red-600',
+        border: 'border-red-600',
+        bg: 'bg-red-600',
+        bgLight: 'bg-red-600/10',
+        bullet: 'text-red-600 border-red-600/30',
+        bulletHover: 'group-hover:bg-red-600',
+        testimonialBg: 'bg-red-600 hover:bg-red-700',
+        testimonialBar: 'bg-red-400'
+    },
+    green: {
+        accent: 'text-green-600',
+        text: 'text-green-600',
+        border: 'border-green-600',
+        bg: 'bg-green-600',
+        bgLight: 'bg-green-600/10',
+        bullet: 'text-green-600 border-green-600/30',
+        bulletHover: 'group-hover:bg-green-600',
+        testimonialBg: 'bg-green-600 hover:bg-green-700',
+        testimonialBar: 'bg-green-400'
+    },
+    blue: {
+        accent: 'text-blue-600',
+        text: 'text-blue-600',
+        border: 'border-blue-600',
+        bg: 'bg-blue-600',
+        bgLight: 'bg-blue-600/10',
+        bullet: 'text-blue-600 border-blue-600/30',
+        bulletHover: 'group-hover:bg-blue-600',
+        testimonialBg: 'bg-blue-600 hover:bg-blue-700',
+        testimonialBar: 'bg-blue-400'
+    },
+    yellow: {
+        accent: 'text-yellow-600',
+        text: 'text-yellow-600',
+        border: 'border-yellow-600',
+        bg: 'bg-yellow-600',
+        bgLight: 'bg-yellow-600/10',
+        bullet: 'text-yellow-600 border-yellow-600/30',
+        bulletHover: 'group-hover:bg-yellow-600',
+        testimonialBg: 'bg-yellow-600 hover:bg-yellow-700',
+        testimonialBar: 'bg-yellow-400'
+    },
+    orange: {
+        accent: 'text-orange-600',
+        text: 'text-orange-600',
+        border: 'border-orange-600',
+        bg: 'bg-orange-600',
+        bgLight: 'bg-orange-600/10',
+        bullet: 'text-orange-600 border-orange-600/30',
+        bulletHover: 'group-hover:bg-orange-600',
+        testimonialBg: 'bg-orange-600 hover:bg-orange-700',
+        testimonialBar: 'bg-orange-400'
+    },
+    purple: {
+        accent: 'text-purple-600',
+        text: 'text-purple-600',
+        border: 'border-purple-600',
+        bg: 'bg-purple-600',
+        bgLight: 'bg-purple-600/10',
+        bullet: 'text-purple-600 border-purple-600/30',
+        bulletHover: 'group-hover:bg-purple-600',
+        testimonialBg: 'bg-purple-600 hover:bg-purple-700',
+        testimonialBar: 'bg-purple-400'
+    },
+    pink: {
+        accent: 'text-pink-600',
+        text: 'text-pink-600',
+        border: 'border-pink-600',
+        bg: 'bg-pink-600',
+        bgLight: 'bg-pink-600/10',
+        bullet: 'text-pink-600 border-pink-600/30',
+        bulletHover: 'group-hover:bg-pink-600',
+        testimonialBg: 'bg-pink-600 hover:bg-pink-700',
+        testimonialBar: 'bg-pink-400'
+    },
+    teal: {
+        accent: 'text-teal-600',
+        text: 'text-teal-600',
+        border: 'border-teal-600',
+        bg: 'bg-teal-600',
+        bgLight: 'bg-teal-600/10',
+        bullet: 'text-teal-600 border-teal-600/30',
+        bulletHover: 'group-hover:bg-teal-600',
+        testimonialBg: 'bg-teal-600 hover:bg-teal-700',
+        testimonialBar: 'bg-teal-400'
+    }
+};
+const defaultColors = colorClasses.green;
 function HomeClient() {
     _s();
     const { setActiveColor } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$context$2f$UIContext$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useUI"])();
-    const [products, setProducts] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(__TURBOPACK__imported__module__$5b$project$5d2f$data$2f$products$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["products"]);
-    // Refs for sections to observe
-    const bioactifRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRef"])(null);
-    const vitamaxRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRef"])(null);
+    const [products, setProducts] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])([]);
+    const [loading, setLoading] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(true);
+    // Dynamic refs for product sections
+    const sectionRefs = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRef"])(new Map());
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
         "HomeClient.useEffect": ()=>{
             const fetchProducts = {
                 "HomeClient.useEffect.fetchProducts": async ()=>{
                     try {
-                        // Add timestamp to force fresh fetch and explicitly disable caching
                         const response = await fetch(`${__TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$utils$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["API_URL"]}/api/products?t=${Date.now()}`, {
                             cache: 'no-store',
                             next: {
@@ -722,43 +1011,44 @@ function HomeClient() {
                         });
                         if (response.ok) {
                             const { products: dbProducts } = await response.json();
+                            // Products are already ordered by display_order from API
                             const activeProducts = dbProducts.map({
-                                "HomeClient.useEffect.fetchProducts.activeProducts": (dbp)=>{
-                                    const sp = __TURBOPACK__imported__module__$5b$project$5d2f$data$2f$products$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["products"].find({
-                                        "HomeClient.useEffect.fetchProducts.activeProducts.sp": (p)=>p.id === dbp.id
-                                    }["HomeClient.useEffect.fetchProducts.activeProducts.sp"]);
-                                    return {
-                                        ...sp,
+                                "HomeClient.useEffect.fetchProducts.activeProducts": (dbp)=>({
                                         id: dbp.id,
                                         name: dbp.name,
                                         price: dbp.price,
                                         stock: dbp.stock,
                                         inStock: dbp.stock > 0,
-                                        description: dbp.description || sp?.description || '',
+                                        description: dbp.description || '',
                                         is_active: dbp.is_active,
-                                        image: dbp.image && dbp.image.length > 0 ? dbp.image : sp?.image || '',
-                                        tagline: dbp.tagline || sp?.tagline || '',
-                                        category: dbp.category || sp?.category || '',
-                                        ingredients_image: dbp.ingredients_image || sp?.ingredients_image,
-                                        infographic_image: dbp.infographic_image || sp?.infographic_image,
-                                        gallery: dbp.gallery ? typeof dbp.gallery === 'string' ? JSON.parse(dbp.gallery) : dbp.gallery : sp?.gallery || [],
-                                        benefits: dbp.benefits ? typeof dbp.benefits === 'string' ? JSON.parse(dbp.benefits) : dbp.benefits : sp?.benefits || [],
-                                        testimonials: dbp.testimonials && dbp.testimonials.length > 0 ? dbp.testimonials : sp?.testimonials || []
-                                    };
-                                }
+                                        image: dbp.image || '/images/placeholder-product.png',
+                                        tagline: dbp.tagline || '',
+                                        category: dbp.category || '',
+                                        theme_color: dbp.theme_color || 'green',
+                                        display_order: dbp.display_order || 0,
+                                        ingredients_image: dbp.ingredients_image,
+                                        infographic_image: dbp.infographic_image,
+                                        gallery: dbp.gallery ? typeof dbp.gallery === 'string' ? JSON.parse(dbp.gallery) : dbp.gallery : [],
+                                        benefits: dbp.benefits ? typeof dbp.benefits === 'string' ? JSON.parse(dbp.benefits) : dbp.benefits : [],
+                                        testimonials: dbp.testimonials || []
+                                    })
                             }["HomeClient.useEffect.fetchProducts.activeProducts"]);
                             setProducts(activeProducts);
                         }
                     } catch (error) {
                         console.error('Failed to sync products:', error);
+                    } finally{
+                        setLoading(false);
                     }
                 }
             }["HomeClient.useEffect.fetchProducts"];
             fetchProducts();
         }
     }["HomeClient.useEffect"], []);
+    // Intersection observer for color changes based on visible product
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
         "HomeClient.useEffect": ()=>{
+            if (products.length === 0) return;
             const options = {
                 threshold: 0.3
             };
@@ -767,28 +1057,39 @@ function HomeClient() {
                     entries.forEach({
                         "HomeClient.useEffect": (entry)=>{
                             if (entry.isIntersecting) {
-                                if (entry.target === bioactifRef.current) {
-                                    setActiveColor('red');
-                                } else if (entry.target === vitamaxRef.current) {
-                                    setActiveColor('green');
+                                const productId = entry.target.getAttribute('data-product-id');
+                                const product = products.find({
+                                    "HomeClient.useEffect.product": (p)=>p.id === productId
+                                }["HomeClient.useEffect.product"]);
+                                if (product) {
+                                    setActiveColor(product.theme_color || 'neutral');
                                 }
                             }
                         }
                     }["HomeClient.useEffect"]);
                 }
             }["HomeClient.useEffect"], options);
-            if (bioactifRef.current) observer.observe(bioactifRef.current);
-            if (vitamaxRef.current) observer.observe(vitamaxRef.current);
+            // Observe all product sections
+            sectionRefs.current.forEach({
+                "HomeClient.useEffect": (ref)=>{
+                    if (ref) observer.observe(ref);
+                }
+            }["HomeClient.useEffect"]);
             return ({
                 "HomeClient.useEffect": ()=>{
-                    if (bioactifRef.current) observer.unobserve(bioactifRef.current);
-                    if (vitamaxRef.current) observer.unobserve(vitamaxRef.current);
+                    sectionRefs.current.forEach({
+                        "HomeClient.useEffect": (ref)=>{
+                            if (ref) observer.unobserve(ref);
+                        }
+                    }["HomeClient.useEffect"]);
                 }
             })["HomeClient.useEffect"];
         }
     }["HomeClient.useEffect"], [
+        products,
         setActiveColor
     ]);
+    // Reset color on scroll to top
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
         "HomeClient.useEffect": ()=>{
             const handleScroll = {
@@ -806,6 +1107,9 @@ function HomeClient() {
     }["HomeClient.useEffect"], [
         setActiveColor
     ]);
+    const getColors = (themeColor)=>{
+        return colorClasses[themeColor] || defaultColors;
+    };
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
         className: "flex flex-col gap-0 min-h-screen bg-transparent text-black relative",
         children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -815,7 +1119,7 @@ function HomeClient() {
                     dynamicProducts: products
                 }, void 0, false, {
                     fileName: "[project]/components/HomeClient.tsx",
-                    lineNumber: 113,
+                    lineNumber: 222,
                     columnNumber: 17
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("section", {
@@ -832,7 +1136,7 @@ function HomeClient() {
                                             className: "w-6 h-6 text-black stroke-[1.5]"
                                         }, void 0, false, {
                                             fileName: "[project]/components/HomeClient.tsx",
-                                            lineNumber: 119,
+                                            lineNumber: 229,
                                             columnNumber: 33
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -843,7 +1147,7 @@ function HomeClient() {
                                                     children: "100% Végétal"
                                                 }, void 0, false, {
                                                     fileName: "[project]/components/HomeClient.tsx",
-                                                    lineNumber: 121,
+                                                    lineNumber: 231,
                                                     columnNumber: 37
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -851,19 +1155,19 @@ function HomeClient() {
                                                     children: "Source Naturelle"
                                                 }, void 0, false, {
                                                     fileName: "[project]/components/HomeClient.tsx",
-                                                    lineNumber: 122,
+                                                    lineNumber: 232,
                                                     columnNumber: 37
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/components/HomeClient.tsx",
-                                            lineNumber: 120,
+                                            lineNumber: 230,
                                             columnNumber: 33
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/components/HomeClient.tsx",
-                                    lineNumber: 118,
+                                    lineNumber: 228,
                                     columnNumber: 29
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -873,7 +1177,7 @@ function HomeClient() {
                                             className: "w-6 h-6 text-black stroke-[1.5]"
                                         }, void 0, false, {
                                             fileName: "[project]/components/HomeClient.tsx",
-                                            lineNumber: 126,
+                                            lineNumber: 236,
                                             columnNumber: 33
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -884,7 +1188,7 @@ function HomeClient() {
                                                     children: "Cliniquement Testé"
                                                 }, void 0, false, {
                                                     fileName: "[project]/components/HomeClient.tsx",
-                                                    lineNumber: 128,
+                                                    lineNumber: 238,
                                                     columnNumber: 37
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -892,19 +1196,19 @@ function HomeClient() {
                                                     children: "Efficacité Prouvée"
                                                 }, void 0, false, {
                                                     fileName: "[project]/components/HomeClient.tsx",
-                                                    lineNumber: 129,
+                                                    lineNumber: 239,
                                                     columnNumber: 37
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/components/HomeClient.tsx",
-                                            lineNumber: 127,
+                                            lineNumber: 237,
                                             columnNumber: 33
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/components/HomeClient.tsx",
-                                    lineNumber: 125,
+                                    lineNumber: 235,
                                     columnNumber: 29
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -914,7 +1218,7 @@ function HomeClient() {
                                             className: "w-6 h-6 text-black stroke-[1.5]"
                                         }, void 0, false, {
                                             fileName: "[project]/components/HomeClient.tsx",
-                                            lineNumber: 133,
+                                            lineNumber: 243,
                                             columnNumber: 33
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -925,7 +1229,7 @@ function HomeClient() {
                                                     children: "Santé Durable"
                                                 }, void 0, false, {
                                                     fileName: "[project]/components/HomeClient.tsx",
-                                                    lineNumber: 135,
+                                                    lineNumber: 245,
                                                     columnNumber: 37
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -933,19 +1237,19 @@ function HomeClient() {
                                                     children: "Sans Effets Secondaires"
                                                 }, void 0, false, {
                                                     fileName: "[project]/components/HomeClient.tsx",
-                                                    lineNumber: 136,
+                                                    lineNumber: 246,
                                                     columnNumber: 37
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/components/HomeClient.tsx",
-                                            lineNumber: 134,
+                                            lineNumber: 244,
                                             columnNumber: 33
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/components/HomeClient.tsx",
-                                    lineNumber: 132,
+                                    lineNumber: 242,
                                     columnNumber: 29
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -955,7 +1259,7 @@ function HomeClient() {
                                             className: "w-6 h-6 text-black stroke-[1.5]"
                                         }, void 0, false, {
                                             fileName: "[project]/components/HomeClient.tsx",
-                                            lineNumber: 140,
+                                            lineNumber: 250,
                                             columnNumber: 33
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -966,7 +1270,7 @@ function HomeClient() {
                                                     children: "Livraison 24h"
                                                 }, void 0, false, {
                                                     fileName: "[project]/components/HomeClient.tsx",
-                                                    lineNumber: 142,
+                                                    lineNumber: 252,
                                                     columnNumber: 37
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -974,48 +1278,53 @@ function HomeClient() {
                                                     children: "Partout en Côte d'Ivoire"
                                                 }, void 0, false, {
                                                     fileName: "[project]/components/HomeClient.tsx",
-                                                    lineNumber: 143,
+                                                    lineNumber: 253,
                                                     columnNumber: 37
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/components/HomeClient.tsx",
-                                            lineNumber: 141,
+                                            lineNumber: 251,
                                             columnNumber: 33
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/components/HomeClient.tsx",
-                                    lineNumber: 139,
+                                    lineNumber: 249,
                                     columnNumber: 29
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/components/HomeClient.tsx",
-                            lineNumber: 117,
+                            lineNumber: 227,
                             columnNumber: 25
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/components/HomeClient.tsx",
-                        lineNumber: 116,
+                        lineNumber: 226,
                         columnNumber: 21
                     }, this)
                 }, void 0, false, {
                     fileName: "[project]/components/HomeClient.tsx",
-                    lineNumber: 115,
+                    lineNumber: 225,
                     columnNumber: 17
                 }, this),
-                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("section", {
-                    ref: bioactifRef,
-                    id: "showcase",
-                    className: "py-6 md:py-8 border-b border-black/5 relative overflow-hidden",
-                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                        className: "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10",
-                        children: products.filter((p)=>p.id === 'bioactif').map((product)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                className: "grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-center",
+                products.map((product, index)=>{
+                    const colors = getColors(product.theme_color);
+                    const isEven = index % 2 === 0;
+                    return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("section", {
+                        ref: (el)=>{
+                            if (el) sectionRefs.current.set(product.id, el);
+                        },
+                        "data-product-id": product.id,
+                        className: "py-6 md:py-8 border-b border-black/5 relative overflow-hidden",
+                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                            className: "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10",
+                            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                className: `grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-center`,
                                 children: [
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                        className: "lg:col-span-6 order-2 lg:order-1 relative",
+                                        className: `lg:col-span-6 relative ${isEven ? 'order-2 lg:order-1' : 'order-2 lg:order-2'}`,
                                         children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                             className: "grid grid-cols-2 gap-4",
                                             children: [
@@ -1033,188 +1342,192 @@ function HomeClient() {
                                                                 unoptimized: true
                                                             }, void 0, false, {
                                                                 fileName: "[project]/components/HomeClient.tsx",
-                                                                lineNumber: 158,
-                                                                columnNumber: 49
+                                                                lineNumber: 279,
+                                                                columnNumber: 53
                                                             }, this)
                                                         }, void 0, false, {
                                                             fileName: "[project]/components/HomeClient.tsx",
-                                                            lineNumber: 157,
-                                                            columnNumber: 45
+                                                            lineNumber: 278,
+                                                            columnNumber: 49
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                             className: "absolute top-6 left-6 text-[10px] font-mono uppercase tracking-[0.2em] text-black/40 bg-white/80 backdrop-blur px-3 py-1 rounded-full border border-black/5",
-                                                            children: "Fig. 01 — Composition"
-                                                        }, void 0, false, {
+                                                            children: [
+                                                                "Fig. 0",
+                                                                index + 1,
+                                                                " — Composition"
+                                                            ]
+                                                        }, void 0, true, {
                                                             fileName: "[project]/components/HomeClient.tsx",
-                                                            lineNumber: 167,
-                                                            columnNumber: 45
+                                                            lineNumber: 288,
+                                                            columnNumber: 49
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/components/HomeClient.tsx",
-                                                    lineNumber: 156,
-                                                    columnNumber: 41
+                                                    lineNumber: 277,
+                                                    columnNumber: 45
                                                 }, this),
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                product.infographic_image && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                     className: "col-span-1 aspect-square relative bg-white rounded-sm border border-black/10 overflow-hidden group",
                                                     children: [
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$image$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
-                                                            src: product.infographic_image || product.gallery?.[1] || product.image,
-                                                            alt: `Infographie ${product.name} - Bienfaits et résultats`,
+                                                            src: product.infographic_image,
+                                                            alt: `Infographie ${product.name}`,
                                                             fill: true,
                                                             sizes: "(max-width: 768px) 50vw, 33vw",
                                                             className: "object-cover hover:scale-105 transition-transform duration-700",
                                                             unoptimized: true
                                                         }, void 0, false, {
                                                             fileName: "[project]/components/HomeClient.tsx",
-                                                            lineNumber: 172,
-                                                            columnNumber: 45
+                                                            lineNumber: 294,
+                                                            columnNumber: 53
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                            className: "absolute bottom-2 right-2 text-[10px] font-mono uppercase tracking-widest text-white bg-red-600/90 px-2 py-0.5",
+                                                            className: `absolute bottom-2 right-2 text-[10px] font-mono uppercase tracking-widest text-white ${colors.bg}/90 px-2 py-0.5`,
                                                             children: "Cible"
                                                         }, void 0, false, {
                                                             fileName: "[project]/components/HomeClient.tsx",
-                                                            lineNumber: 180,
-                                                            columnNumber: 45
+                                                            lineNumber: 302,
+                                                            columnNumber: 53
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/components/HomeClient.tsx",
-                                                    lineNumber: 171,
-                                                    columnNumber: 41
+                                                    lineNumber: 293,
+                                                    columnNumber: 49
                                                 }, this),
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                product.gallery?.[0] && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                     className: "col-span-1 aspect-square relative bg-white rounded-sm border border-black/10 overflow-hidden group",
                                                     children: [
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$image$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
-                                                            src: product.gallery?.[2] || product.image,
-                                                            alt: `Résultats patients ${product.name}`,
+                                                            src: product.gallery[0],
+                                                            alt: `${product.name} lifestyle`,
                                                             fill: true,
                                                             sizes: "(max-width: 768px) 50vw, 33vw",
                                                             className: "object-cover hover:scale-105 transition-transform duration-700",
                                                             unoptimized: true
                                                         }, void 0, false, {
                                                             fileName: "[project]/components/HomeClient.tsx",
-                                                            lineNumber: 185,
-                                                            columnNumber: 45
+                                                            lineNumber: 309,
+                                                            columnNumber: 53
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                            className: "absolute bottom-2 right-2 text-[10px] font-mono uppercase tracking-widest text-white bg-red-600/90 px-2 py-0.5",
+                                                            className: `absolute bottom-2 right-2 text-[10px] font-mono uppercase tracking-widest text-white ${colors.bg}/90 px-2 py-0.5`,
                                                             children: "Résultat"
                                                         }, void 0, false, {
                                                             fileName: "[project]/components/HomeClient.tsx",
-                                                            lineNumber: 193,
-                                                            columnNumber: 45
+                                                            lineNumber: 317,
+                                                            columnNumber: 53
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/components/HomeClient.tsx",
-                                                    lineNumber: 184,
-                                                    columnNumber: 41
+                                                    lineNumber: 308,
+                                                    columnNumber: 49
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/components/HomeClient.tsx",
-                                            lineNumber: 155,
-                                            columnNumber: 37
+                                            lineNumber: 276,
+                                            columnNumber: 41
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/components/HomeClient.tsx",
-                                        lineNumber: 154,
-                                        columnNumber: 33
+                                        lineNumber: 275,
+                                        columnNumber: 37
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                        className: "lg:col-span-6 order-1 lg:order-2 space-y-4",
+                                        className: `lg:col-span-6 space-y-4 ${isEven ? 'order-1 lg:order-2' : 'order-1 lg:order-1'}`,
                                         children: [
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                 className: "space-y-4",
                                                 children: [
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                        className: "inline-block border border-red-600 px-3 py-1 rounded-full",
+                                                        className: `inline-block border ${colors.border} px-3 py-1 rounded-full`,
                                                         children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                                            className: "text-xs font-bold uppercase tracking-widest text-red-600",
-                                                            children: "Hypertension"
+                                                            className: `text-xs font-bold uppercase tracking-widest ${colors.text}`,
+                                                            children: product.tagline
                                                         }, void 0, false, {
                                                             fileName: "[project]/components/HomeClient.tsx",
-                                                            lineNumber: 203,
-                                                            columnNumber: 45
+                                                            lineNumber: 329,
+                                                            columnNumber: 49
                                                         }, this)
                                                     }, void 0, false, {
                                                         fileName: "[project]/components/HomeClient.tsx",
-                                                        lineNumber: 202,
-                                                        columnNumber: 41
+                                                        lineNumber: 328,
+                                                        columnNumber: 45
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
-                                                        className: "text-5xl md:text-6xl font-bold tracking-tighter text-red-600",
+                                                        className: `text-5xl md:text-6xl font-bold tracking-tighter ${colors.text}`,
                                                         children: [
-                                                            "BioActif",
+                                                            product.name,
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                                                 className: "align-super text-lg text-black",
                                                                 children: "®"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/components/HomeClient.tsx",
-                                                                lineNumber: 206,
-                                                                columnNumber: 53
+                                                                lineNumber: 332,
+                                                                columnNumber: 63
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/components/HomeClient.tsx",
-                                                        lineNumber: 205,
-                                                        columnNumber: 41
+                                                        lineNumber: 331,
+                                                        columnNumber: 45
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
                                                         className: "text-xl text-black/70 leading-relaxed font-light",
-                                                        children: "Une formulation synergique conçue pour réguler naturellement la pression artérielle et améliorer la circulation sanguine."
+                                                        children: product.description
                                                     }, void 0, false, {
                                                         fileName: "[project]/components/HomeClient.tsx",
-                                                        lineNumber: 208,
-                                                        columnNumber: 41
+                                                        lineNumber: 334,
+                                                        columnNumber: 45
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/components/HomeClient.tsx",
-                                                lineNumber: 201,
-                                                columnNumber: 37
+                                                lineNumber: 327,
+                                                columnNumber: 41
                                             }, this),
-                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                            product.benefits && product.benefits.length > 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                 className: "space-y-4 pt-4 border-t border-black/10",
                                                 children: product.benefits.map((benefit, i)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                         className: "flex items-start gap-3 group",
                                                         children: [
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                                className: "mt-1 w-5 h-5 rounded-full border border-red-600/30 flex items-center justify-center group-hover:bg-red-600 group-hover:text-white transition-colors",
+                                                                className: `mt-1 w-5 h-5 rounded-full border ${colors.bullet} flex items-center justify-center ${colors.bulletHover} group-hover:text-white transition-colors`,
                                                                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                                                    className: "text-[10px] text-red-600 group-hover:text-white",
+                                                                    className: `text-[10px] ${colors.text} group-hover:text-white`,
                                                                     children: "•"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/components/HomeClient.tsx",
-                                                                    lineNumber: 217,
-                                                                    columnNumber: 53
+                                                                    lineNumber: 345,
+                                                                    columnNumber: 61
                                                                 }, this)
                                                             }, void 0, false, {
                                                                 fileName: "[project]/components/HomeClient.tsx",
-                                                                lineNumber: 216,
-                                                                columnNumber: 49
+                                                                lineNumber: 344,
+                                                                columnNumber: 57
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                                                 className: "text-base font-medium text-black/90",
                                                                 children: benefit
                                                             }, void 0, false, {
                                                                 fileName: "[project]/components/HomeClient.tsx",
-                                                                lineNumber: 219,
-                                                                columnNumber: 49
+                                                                lineNumber: 347,
+                                                                columnNumber: 57
                                                             }, this)
                                                         ]
                                                     }, i, true, {
                                                         fileName: "[project]/components/HomeClient.tsx",
-                                                        lineNumber: 215,
-                                                        columnNumber: 45
+                                                        lineNumber: 343,
+                                                        columnNumber: 53
                                                     }, this))
                                             }, void 0, false, {
                                                 fileName: "[project]/components/HomeClient.tsx",
-                                                lineNumber: 213,
-                                                columnNumber: 37
+                                                lineNumber: 341,
+                                                columnNumber: 45
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                 className: "flex flex-col sm:flex-row items-center gap-6 pt-8",
@@ -1227,61 +1540,62 @@ function HomeClient() {
                                                                 children: "Investissement Santé"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/components/HomeClient.tsx",
-                                                                lineNumber: 226,
-                                                                columnNumber: 45
+                                                                lineNumber: 356,
+                                                                columnNumber: 49
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
                                                                 className: "text-4xl font-bold text-black font-heading",
                                                                 children: (0, __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$utils$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["formatCurrency"])(product.price)
                                                             }, void 0, false, {
                                                                 fileName: "[project]/components/HomeClient.tsx",
-                                                                lineNumber: 227,
-                                                                columnNumber: 45
+                                                                lineNumber: 357,
+                                                                columnNumber: 49
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/components/HomeClient.tsx",
-                                                        lineNumber: 225,
-                                                        columnNumber: 41
+                                                        lineNumber: 355,
+                                                        columnNumber: 45
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$AddToCartButton$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["AddToCartButton"], {
                                                         product: product,
                                                         className: "w-full sm:w-auto h-14 px-10 text-base bg-black text-white hover:bg-black/90 rounded-full tracking-wide shadow-xl shadow-black/10"
                                                     }, void 0, false, {
                                                         fileName: "[project]/components/HomeClient.tsx",
-                                                        lineNumber: 229,
-                                                        columnNumber: 41
+                                                        lineNumber: 359,
+                                                        columnNumber: 45
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/components/HomeClient.tsx",
-                                                lineNumber: 224,
-                                                columnNumber: 37
+                                                lineNumber: 354,
+                                                columnNumber: 41
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/components/HomeClient.tsx",
-                                        lineNumber: 200,
-                                        columnNumber: 33
+                                        lineNumber: 326,
+                                        columnNumber: 37
                                     }, this)
                                 ]
-                            }, product.id, true, {
+                            }, void 0, true, {
                                 fileName: "[project]/components/HomeClient.tsx",
-                                lineNumber: 153,
-                                columnNumber: 29
-                            }, this))
-                    }, void 0, false, {
+                                lineNumber: 273,
+                                columnNumber: 33
+                            }, this)
+                        }, void 0, false, {
+                            fileName: "[project]/components/HomeClient.tsx",
+                            lineNumber: 272,
+                            columnNumber: 29
+                        }, this)
+                    }, product.id, false, {
                         fileName: "[project]/components/HomeClient.tsx",
-                        lineNumber: 151,
-                        columnNumber: 21
-                    }, this)
-                }, void 0, false, {
-                    fileName: "[project]/components/HomeClient.tsx",
-                    lineNumber: 150,
-                    columnNumber: 17
-                }, this),
-                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("section", {
-                    className: "bg-black/95 backdrop-blur-md py-8 text-white relative overflow-hidden",
+                        lineNumber: 266,
+                        columnNumber: 25
+                    }, this);
+                }),
+                products.length > 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("section", {
+                    className: "bg-black/95 backdrop-blur-md py-12 md:py-16 text-white relative overflow-hidden",
                     children: [
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                             className: "absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none opacity-20",
@@ -1290,533 +1604,303 @@ function HomeClient() {
                                     className: "absolute top-10 left-10 w-96 h-96 bg-red-600 rounded-full blur-[128px]"
                                 }, void 0, false, {
                                     fileName: "[project]/components/HomeClient.tsx",
-                                    lineNumber: 239,
-                                    columnNumber: 25
+                                    lineNumber: 373,
+                                    columnNumber: 29
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                     className: "absolute bottom-10 right-10 w-96 h-96 bg-green-600 rounded-full blur-[128px]"
                                 }, void 0, false, {
                                     fileName: "[project]/components/HomeClient.tsx",
-                                    lineNumber: 240,
-                                    columnNumber: 25
+                                    lineNumber: 374,
+                                    columnNumber: 29
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/components/HomeClient.tsx",
-                            lineNumber: 238,
-                            columnNumber: 21
+                            lineNumber: 372,
+                            columnNumber: 25
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                             className: "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10",
                             children: [
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                    className: "text-center mb-8",
+                                    className: "text-center mb-10 md:mb-12",
                                     children: [
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$star$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Star$3e$__["Star"], {
                                             className: "w-8 h-8 text-white mx-auto mb-4 opacity-80 fill-white"
                                         }, void 0, false, {
                                             fileName: "[project]/components/HomeClient.tsx",
-                                            lineNumber: 245,
-                                            columnNumber: 29
+                                            lineNumber: 380,
+                                            columnNumber: 33
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
-                                            className: "text-3xl md:text-4xl font-bold tracking-tight mb-3",
+                                            className: "text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight mb-4",
                                             children: "La Voix de la Guérison"
                                         }, void 0, false, {
                                             fileName: "[project]/components/HomeClient.tsx",
-                                            lineNumber: 246,
-                                            columnNumber: 29
+                                            lineNumber: 381,
+                                            columnNumber: 33
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                            className: "text-white/60 text-base max-w-2xl mx-auto font-light",
+                                            className: "text-white/60 text-base md:text-lg max-w-2xl mx-auto font-light",
                                             children: "Écoutez les témoignages authentiques de patients qui ont retrouvé leur vitalité grâce à nos protocoles."
                                         }, void 0, false, {
                                             fileName: "[project]/components/HomeClient.tsx",
-                                            lineNumber: 247,
-                                            columnNumber: 29
+                                            lineNumber: 382,
+                                            columnNumber: 33
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/components/HomeClient.tsx",
-                                    lineNumber: 244,
-                                    columnNumber: 25
+                                    lineNumber: 379,
+                                    columnNumber: 29
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                    className: "grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-16",
-                                    children: [
-                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                            className: "space-y-8",
+                                    className: "space-y-12 md:space-y-16",
+                                    children: products.map((product)=>{
+                                        const colors = getColors(product.theme_color);
+                                        const testimonials = product.testimonials || [];
+                                        const hasMany = testimonials.length > 4;
+                                        return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                            className: "space-y-6",
                                             children: [
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                    className: "flex items-center gap-4 mb-6 border-b border-red-600/30 pb-4",
+                                                    className: `flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4 border-b ${colors.border}/30 pb-4`,
                                                     children: [
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                            className: "w-3 h-3 bg-red-600 rounded-full animate-pulse"
-                                                        }, void 0, false, {
-                                                            fileName: "[project]/components/HomeClient.tsx",
-                                                            lineNumber: 255,
-                                                            columnNumber: 37
-                                                        }, this),
-                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
-                                                            className: "text-2xl font-bold text-red-500 tracking-tight",
+                                                            className: "flex items-center gap-3",
                                                             children: [
-                                                                "BioActif",
-                                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                                                    className: "text-xs align-top ml-1 text-white/50",
-                                                                    children: "®"
+                                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                                    className: `w-3 h-3 ${colors.bg} rounded-full animate-pulse`
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/components/HomeClient.tsx",
-                                                                    lineNumber: 256,
-                                                                    columnNumber: 108
+                                                                    lineNumber: 399,
+                                                                    columnNumber: 53
+                                                                }, this),
+                                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
+                                                                    className: `text-2xl md:text-3xl font-bold ${colors.accent} tracking-tight`,
+                                                                    children: [
+                                                                        product.name,
+                                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                                            className: "text-xs align-top ml-1 text-white/50",
+                                                                            children: "®"
+                                                                        }, void 0, false, {
+                                                                            fileName: "[project]/components/HomeClient.tsx",
+                                                                            lineNumber: 401,
+                                                                            columnNumber: 71
+                                                                        }, this)
+                                                                    ]
+                                                                }, void 0, true, {
+                                                                    fileName: "[project]/components/HomeClient.tsx",
+                                                                    lineNumber: 400,
+                                                                    columnNumber: 53
                                                                 }, this)
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/components/HomeClient.tsx",
-                                                            lineNumber: 256,
-                                                            columnNumber: 37
+                                                            lineNumber: 398,
+                                                            columnNumber: 49
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                            className: "ml-auto text-xs font-mono uppercase tracking-widest text-red-500/80 bg-red-950/30 px-2 py-1 rounded",
-                                                            children: "Hypertension"
-                                                        }, void 0, false, {
-                                                            fileName: "[project]/components/HomeClient.tsx",
-                                                            lineNumber: 257,
-                                                            columnNumber: 37
-                                                        }, this)
-                                                    ]
-                                                }, void 0, true, {
-                                                    fileName: "[project]/components/HomeClient.tsx",
-                                                    lineNumber: 254,
-                                                    columnNumber: 33
-                                                }, this),
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                    className: "space-y-4",
-                                                    children: products.find((p)=>p.id === 'bioactif')?.testimonials.map((testimonial, idx)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                            className: "transform hover:-translate-y-1 transition-transform duration-300",
+                                                            className: "flex items-center gap-3 sm:ml-auto",
                                                             children: [
-                                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$AudioPlayer$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["AudioPlayer"], {
-                                                                    testimonial: testimonial,
-                                                                    colorClass: "bg-red-600 hover:bg-red-700",
-                                                                    barColorClass: "bg-red-400"
-                                                                }, void 0, false, {
-                                                                    fileName: "[project]/components/HomeClient.tsx",
-                                                                    lineNumber: 263,
-                                                                    columnNumber: 45
-                                                                }, this),
-                                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                                    className: "mt-3 ml-4 border-l-2 border-red-600/20 pl-4",
-                                                                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                                                        className: "text-sm text-white/70 italic",
-                                                                        children: '"Une stabilité remarquable dès les premières semaines..."'
-                                                                    }, void 0, false, {
-                                                                        fileName: "[project]/components/HomeClient.tsx",
-                                                                        lineNumber: 269,
-                                                                        columnNumber: 49
-                                                                    }, this)
-                                                                }, void 0, false, {
-                                                                    fileName: "[project]/components/HomeClient.tsx",
-                                                                    lineNumber: 268,
-                                                                    columnNumber: 45
-                                                                }, this)
-                                                            ]
-                                                        }, idx, true, {
-                                                            fileName: "[project]/components/HomeClient.tsx",
-                                                            lineNumber: 262,
-                                                            columnNumber: 41
-                                                        }, this))
-                                                }, void 0, false, {
-                                                    fileName: "[project]/components/HomeClient.tsx",
-                                                    lineNumber: 260,
-                                                    columnNumber: 33
-                                                }, this)
-                                            ]
-                                        }, void 0, true, {
-                                            fileName: "[project]/components/HomeClient.tsx",
-                                            lineNumber: 253,
-                                            columnNumber: 29
-                                        }, this),
-                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                            className: "space-y-8",
-                                            children: [
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                    className: "flex items-center gap-4 mb-6 border-b border-green-600/30 pb-4",
-                                                    children: [
-                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                            className: "w-3 h-3 bg-green-600 rounded-full animate-pulse"
-                                                        }, void 0, false, {
-                                                            fileName: "[project]/components/HomeClient.tsx",
-                                                            lineNumber: 278,
-                                                            columnNumber: 37
-                                                        }, this),
-                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
-                                                            className: "text-2xl font-bold text-green-500 tracking-tight",
-                                                            children: [
-                                                                "VitaMax",
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                                                    className: "text-xs align-top ml-1 text-white/50",
-                                                                    children: "®"
+                                                                    className: `text-xs font-mono uppercase tracking-widest ${colors.accent}/80 ${colors.bgLight} px-3 py-1.5 rounded-full`,
+                                                                    children: product.category || product.tagline
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/components/HomeClient.tsx",
-                                                                    lineNumber: 279,
-                                                                    columnNumber: 109
+                                                                    lineNumber: 405,
+                                                                    columnNumber: 53
+                                                                }, this),
+                                                                testimonials.length > 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                                    className: "text-xs text-white/40",
+                                                                    children: [
+                                                                        testimonials.length,
+                                                                        " témoignage",
+                                                                        testimonials.length > 1 ? 's' : ''
+                                                                    ]
+                                                                }, void 0, true, {
+                                                                    fileName: "[project]/components/HomeClient.tsx",
+                                                                    lineNumber: 409,
+                                                                    columnNumber: 57
                                                                 }, this)
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/components/HomeClient.tsx",
-                                                            lineNumber: 279,
-                                                            columnNumber: 37
-                                                        }, this),
-                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                            className: "ml-auto text-xs font-mono uppercase tracking-widest text-green-500/80 bg-green-950/30 px-2 py-1 rounded",
-                                                            children: "Vitalité"
-                                                        }, void 0, false, {
-                                                            fileName: "[project]/components/HomeClient.tsx",
-                                                            lineNumber: 280,
-                                                            columnNumber: 37
+                                                            lineNumber: 404,
+                                                            columnNumber: 49
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/components/HomeClient.tsx",
-                                                    lineNumber: 277,
-                                                    columnNumber: 33
+                                                    lineNumber: 397,
+                                                    columnNumber: 45
                                                 }, this),
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                testimonials.length > 0 ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                     className: "space-y-4",
-                                                    children: products.find((p)=>p.id === 'vitamax')?.testimonials.map((testimonial, idx)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                            className: "transform hover:-translate-y-1 transition-transform duration-300",
-                                                            children: [
-                                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$AudioPlayer$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["AudioPlayer"], {
-                                                                    testimonial: testimonial,
-                                                                    colorClass: "bg-green-600 hover:bg-green-700",
-                                                                    barColorClass: "bg-green-400"
-                                                                }, void 0, false, {
-                                                                    fileName: "[project]/components/HomeClient.tsx",
-                                                                    lineNumber: 286,
-                                                                    columnNumber: 45
-                                                                }, this),
-                                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                                    className: "mt-3 ml-4 border-l-2 border-green-600/20 pl-4",
-                                                                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                                                        className: "text-sm text-white/70 italic",
-                                                                        children: '"Je me sens plus énergique et mes nuits sont paisibles..."'
+                                                    children: [
+                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                            className: `grid gap-4 md:gap-5
+                                                        ${testimonials.length === 1 ? 'grid-cols-1 max-w-xl mx-auto' : ''}
+                                                        ${testimonials.length === 2 ? 'grid-cols-1 md:grid-cols-2' : ''}
+                                                        ${testimonials.length >= 3 ? 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3' : ''}
+                                                    `,
+                                                            children: testimonials.slice(0, hasMany ? 6 : testimonials.length).map((testimonial, idx)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                                    className: "transform hover:-translate-y-1 hover:scale-[1.02] transition-all duration-300",
+                                                                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$AudioPlayer$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["AudioPlayer"], {
+                                                                        testimonial: testimonial,
+                                                                        colorClass: colors.testimonialBg,
+                                                                        barColorClass: colors.testimonialBar
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/components/HomeClient.tsx",
-                                                                        lineNumber: 292,
-                                                                        columnNumber: 49
+                                                                        lineNumber: 430,
+                                                                        columnNumber: 65
                                                                     }, this)
+                                                                }, testimonial.id || idx, false, {
+                                                                    fileName: "[project]/components/HomeClient.tsx",
+                                                                    lineNumber: 426,
+                                                                    columnNumber: 61
+                                                                }, this))
+                                                        }, void 0, false, {
+                                                            fileName: "[project]/components/HomeClient.tsx",
+                                                            lineNumber: 420,
+                                                            columnNumber: 53
+                                                        }, this),
+                                                        testimonials.length > 6 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("details", {
+                                                            className: "group",
+                                                            children: [
+                                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("summary", {
+                                                                    className: `cursor-pointer flex items-center justify-center gap-2 text-sm font-medium ${colors.accent} hover:opacity-80 transition-opacity py-3 select-none`,
+                                                                    children: [
+                                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                                            className: "group-open:hidden",
+                                                                            children: [
+                                                                                "Voir ",
+                                                                                testimonials.length - 6,
+                                                                                " témoignages de plus"
+                                                                            ]
+                                                                        }, void 0, true, {
+                                                                            fileName: "[project]/components/HomeClient.tsx",
+                                                                            lineNumber: 443,
+                                                                            columnNumber: 65
+                                                                        }, this),
+                                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                                            className: "hidden group-open:inline",
+                                                                            children: "Réduire"
+                                                                        }, void 0, false, {
+                                                                            fileName: "[project]/components/HomeClient.tsx",
+                                                                            lineNumber: 446,
+                                                                            columnNumber: 65
+                                                                        }, this),
+                                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("svg", {
+                                                                            className: "w-4 h-4 transition-transform group-open:rotate-180",
+                                                                            fill: "none",
+                                                                            stroke: "currentColor",
+                                                                            viewBox: "0 0 24 24",
+                                                                            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("path", {
+                                                                                strokeLinecap: "round",
+                                                                                strokeLinejoin: "round",
+                                                                                strokeWidth: 2,
+                                                                                d: "M19 9l-7 7-7-7"
+                                                                            }, void 0, false, {
+                                                                                fileName: "[project]/components/HomeClient.tsx",
+                                                                                lineNumber: 450,
+                                                                                columnNumber: 69
+                                                                            }, this)
+                                                                        }, void 0, false, {
+                                                                            fileName: "[project]/components/HomeClient.tsx",
+                                                                            lineNumber: 449,
+                                                                            columnNumber: 65
+                                                                        }, this)
+                                                                    ]
+                                                                }, void 0, true, {
+                                                                    fileName: "[project]/components/HomeClient.tsx",
+                                                                    lineNumber: 442,
+                                                                    columnNumber: 61
+                                                                }, this),
+                                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                                    className: `grid gap-4 md:gap-5 mt-4
+                                                                grid-cols-1 md:grid-cols-2 lg:grid-cols-3
+                                                            `,
+                                                                    children: testimonials.slice(6).map((testimonial, idx)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                                            className: "transform hover:-translate-y-1 hover:scale-[1.02] transition-all duration-300 animate-in fade-in slide-in-from-top-2",
+                                                                            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$AudioPlayer$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["AudioPlayer"], {
+                                                                                testimonial: testimonial,
+                                                                                colorClass: colors.testimonialBg,
+                                                                                barColorClass: colors.testimonialBar
+                                                                            }, void 0, false, {
+                                                                                fileName: "[project]/components/HomeClient.tsx",
+                                                                                lineNumber: 461,
+                                                                                columnNumber: 73
+                                                                            }, this)
+                                                                        }, testimonial.id || `extra-${idx}`, false, {
+                                                                            fileName: "[project]/components/HomeClient.tsx",
+                                                                            lineNumber: 457,
+                                                                            columnNumber: 69
+                                                                        }, this))
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/components/HomeClient.tsx",
-                                                                    lineNumber: 291,
-                                                                    columnNumber: 45
+                                                                    lineNumber: 453,
+                                                                    columnNumber: 61
                                                                 }, this)
                                                             ]
-                                                        }, idx, true, {
+                                                        }, void 0, true, {
                                                             fileName: "[project]/components/HomeClient.tsx",
-                                                            lineNumber: 285,
-                                                            columnNumber: 41
-                                                        }, this))
-                                                }, void 0, false, {
+                                                            lineNumber: 441,
+                                                            columnNumber: 57
+                                                        }, this)
+                                                    ]
+                                                }, void 0, true, {
                                                     fileName: "[project]/components/HomeClient.tsx",
-                                                    lineNumber: 283,
-                                                    columnNumber: 33
+                                                    lineNumber: 418,
+                                                    columnNumber: 49
+                                                }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                    className: "text-white/40 text-sm italic border border-white/10 rounded-xl p-6 text-center bg-white/5",
+                                                    children: [
+                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                                            children: "Témoignages à venir..."
+                                                        }, void 0, false, {
+                                                            fileName: "[project]/components/HomeClient.tsx",
+                                                            lineNumber: 474,
+                                                            columnNumber: 53
+                                                        }, this),
+                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                                            className: "text-xs mt-2 text-white/30",
+                                                            children: "Nos clients partagent bientôt leur expérience"
+                                                        }, void 0, false, {
+                                                            fileName: "[project]/components/HomeClient.tsx",
+                                                            lineNumber: 475,
+                                                            columnNumber: 53
+                                                        }, this)
+                                                    ]
+                                                }, void 0, true, {
+                                                    fileName: "[project]/components/HomeClient.tsx",
+                                                    lineNumber: 473,
+                                                    columnNumber: 49
                                                 }, this)
                                             ]
-                                        }, void 0, true, {
+                                        }, product.id, true, {
                                             fileName: "[project]/components/HomeClient.tsx",
-                                            lineNumber: 276,
-                                            columnNumber: 29
-                                        }, this)
-                                    ]
-                                }, void 0, true, {
+                                            lineNumber: 395,
+                                            columnNumber: 41
+                                        }, this);
+                                    })
+                                }, void 0, false, {
                                     fileName: "[project]/components/HomeClient.tsx",
-                                    lineNumber: 252,
-                                    columnNumber: 25
+                                    lineNumber: 388,
+                                    columnNumber: 29
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/components/HomeClient.tsx",
-                            lineNumber: 243,
-                            columnNumber: 21
+                            lineNumber: 377,
+                            columnNumber: 25
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/components/HomeClient.tsx",
-                    lineNumber: 237,
-                    columnNumber: 17
-                }, this),
-                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("section", {
-                    ref: vitamaxRef,
-                    className: "py-6 md:py-8 bg-transparent relative overflow-hidden",
-                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                        className: "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10",
-                        children: products.filter((p)=>p.id === 'vitamax').map((product)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                className: "grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-center",
-                                children: [
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                        className: "lg:col-span-6 space-y-4",
-                                        children: [
-                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                className: "space-y-4",
-                                                children: [
-                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                        className: "inline-block border border-green-600 px-3 py-1 rounded-full",
-                                                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                                            className: "text-xs font-bold uppercase tracking-widest text-green-600",
-                                                            children: "Santé Masculine"
-                                                        }, void 0, false, {
-                                                            fileName: "[project]/components/HomeClient.tsx",
-                                                            lineNumber: 309,
-                                                            columnNumber: 45
-                                                        }, this)
-                                                    }, void 0, false, {
-                                                        fileName: "[project]/components/HomeClient.tsx",
-                                                        lineNumber: 308,
-                                                        columnNumber: 41
-                                                    }, this),
-                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
-                                                        className: "text-5xl md:text-6xl font-bold tracking-tighter text-green-600",
-                                                        children: [
-                                                            "VitaMax",
-                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                                                className: "align-super text-lg text-black",
-                                                                children: "®"
-                                                            }, void 0, false, {
-                                                                fileName: "[project]/components/HomeClient.tsx",
-                                                                lineNumber: 312,
-                                                                columnNumber: 52
-                                                            }, this)
-                                                        ]
-                                                    }, void 0, true, {
-                                                        fileName: "[project]/components/HomeClient.tsx",
-                                                        lineNumber: 311,
-                                                        columnNumber: 41
-                                                    }, this),
-                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                                        className: "text-xl text-black/70 leading-relaxed font-light",
-                                                        children: "Rétablit le confort urinaire et booste la vitalité masculine grâce à une concentration unique d'actifs végétaux."
-                                                    }, void 0, false, {
-                                                        fileName: "[project]/components/HomeClient.tsx",
-                                                        lineNumber: 314,
-                                                        columnNumber: 41
-                                                    }, this)
-                                                ]
-                                            }, void 0, true, {
-                                                fileName: "[project]/components/HomeClient.tsx",
-                                                lineNumber: 307,
-                                                columnNumber: 37
-                                            }, this),
-                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                className: "space-y-4 pt-4 border-t border-black/10",
-                                                children: product.benefits.map((benefit, i)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                        className: "flex items-start gap-3 group",
-                                                        children: [
-                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                                className: "mt-1 w-5 h-5 rounded-full border border-green-600/30 flex items-center justify-center group-hover:bg-green-600 group-hover:text-white transition-colors",
-                                                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                                                    className: "text-[10px] text-green-600 group-hover:text-white",
-                                                                    children: "•"
-                                                                }, void 0, false, {
-                                                                    fileName: "[project]/components/HomeClient.tsx",
-                                                                    lineNumber: 323,
-                                                                    columnNumber: 53
-                                                                }, this)
-                                                            }, void 0, false, {
-                                                                fileName: "[project]/components/HomeClient.tsx",
-                                                                lineNumber: 322,
-                                                                columnNumber: 49
-                                                            }, this),
-                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                                                className: "text-base font-medium text-black/90",
-                                                                children: benefit
-                                                            }, void 0, false, {
-                                                                fileName: "[project]/components/HomeClient.tsx",
-                                                                lineNumber: 325,
-                                                                columnNumber: 49
-                                                            }, this)
-                                                        ]
-                                                    }, i, true, {
-                                                        fileName: "[project]/components/HomeClient.tsx",
-                                                        lineNumber: 321,
-                                                        columnNumber: 45
-                                                    }, this))
-                                            }, void 0, false, {
-                                                fileName: "[project]/components/HomeClient.tsx",
-                                                lineNumber: 319,
-                                                columnNumber: 37
-                                            }, this),
-                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                className: "flex flex-col sm:flex-row items-center gap-6 pt-8",
-                                                children: [
-                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                        className: "text-center sm:text-left",
-                                                        children: [
-                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                                                className: "text-xs uppercase tracking-widest text-black/50 mb-1",
-                                                                children: "Investissement Santé"
-                                                            }, void 0, false, {
-                                                                fileName: "[project]/components/HomeClient.tsx",
-                                                                lineNumber: 332,
-                                                                columnNumber: 45
-                                                            }, this),
-                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                                                className: "text-4xl font-bold text-black font-heading",
-                                                                children: (0, __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$utils$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["formatCurrency"])(product.price)
-                                                            }, void 0, false, {
-                                                                fileName: "[project]/components/HomeClient.tsx",
-                                                                lineNumber: 333,
-                                                                columnNumber: 45
-                                                            }, this)
-                                                        ]
-                                                    }, void 0, true, {
-                                                        fileName: "[project]/components/HomeClient.tsx",
-                                                        lineNumber: 331,
-                                                        columnNumber: 41
-                                                    }, this),
-                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$AddToCartButton$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["AddToCartButton"], {
-                                                        product: product,
-                                                        className: "w-full sm:w-auto h-14 px-10 text-base bg-black text-white hover:bg-black/90 rounded-full tracking-wide shadow-xl shadow-black/10"
-                                                    }, void 0, false, {
-                                                        fileName: "[project]/components/HomeClient.tsx",
-                                                        lineNumber: 335,
-                                                        columnNumber: 41
-                                                    }, this)
-                                                ]
-                                            }, void 0, true, {
-                                                fileName: "[project]/components/HomeClient.tsx",
-                                                lineNumber: 330,
-                                                columnNumber: 37
-                                            }, this)
-                                        ]
-                                    }, void 0, true, {
-                                        fileName: "[project]/components/HomeClient.tsx",
-                                        lineNumber: 306,
-                                        columnNumber: 33
-                                    }, this),
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                        className: "lg:col-span-6 relative",
-                                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                            className: "grid grid-cols-2 gap-4",
-                                            children: [
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                    className: "col-span-2 aspect-[4/3] relative bg-white/50 backdrop-blur-sm rounded-3xl border border-black/5 flex items-center justify-center p-8 hover:shadow-2xl transition-all duration-500 overflow-hidden group",
-                                                    children: [
-                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                            className: "relative w-full h-full drop-shadow-[0_25px_25px_rgba(0,0,0,0.1)]",
-                                                            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$image$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
-                                                                src: product.image,
-                                                                alt: product.name,
-                                                                fill: true,
-                                                                sizes: "(max-width: 768px) 100vw, 50vw",
-                                                                className: "object-contain mix-blend-multiply transition-transform duration-700 group-hover:scale-105",
-                                                                unoptimized: true
-                                                            }, void 0, false, {
-                                                                fileName: "[project]/components/HomeClient.tsx",
-                                                                lineNumber: 343,
-                                                                columnNumber: 49
-                                                            }, this)
-                                                        }, void 0, false, {
-                                                            fileName: "[project]/components/HomeClient.tsx",
-                                                            lineNumber: 342,
-                                                            columnNumber: 45
-                                                        }, this),
-                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                            className: "absolute top-6 left-6 text-[10px] font-mono uppercase tracking-[0.2em] text-black/40 bg-white/80 backdrop-blur px-3 py-1 rounded-full border border-black/5",
-                                                            children: "Fig. 02 — Formulation"
-                                                        }, void 0, false, {
-                                                            fileName: "[project]/components/HomeClient.tsx",
-                                                            lineNumber: 352,
-                                                            columnNumber: 45
-                                                        }, this)
-                                                    ]
-                                                }, void 0, true, {
-                                                    fileName: "[project]/components/HomeClient.tsx",
-                                                    lineNumber: 341,
-                                                    columnNumber: 41
-                                                }, this),
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                    className: "col-span-1 aspect-square relative bg-white rounded-sm border border-black/10 overflow-hidden group",
-                                                    children: [
-                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$image$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
-                                                            src: product.infographic_image || product.gallery?.[1] || product.image,
-                                                            alt: `Infographie ${product.name} - Confort urinaire et vitalité`,
-                                                            fill: true,
-                                                            sizes: "(max-width: 768px) 50vw, 33vw",
-                                                            className: "object-cover hover:scale-105 transition-transform duration-700",
-                                                            unoptimized: true
-                                                        }, void 0, false, {
-                                                            fileName: "[project]/components/HomeClient.tsx",
-                                                            lineNumber: 357,
-                                                            columnNumber: 45
-                                                        }, this),
-                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                            className: "absolute bottom-2 right-2 text-[10px] font-mono uppercase tracking-widest text-white bg-green-600/90 px-2 py-0.5",
-                                                            children: "Prostate"
-                                                        }, void 0, false, {
-                                                            fileName: "[project]/components/HomeClient.tsx",
-                                                            lineNumber: 365,
-                                                            columnNumber: 45
-                                                        }, this)
-                                                    ]
-                                                }, void 0, true, {
-                                                    fileName: "[project]/components/HomeClient.tsx",
-                                                    lineNumber: 356,
-                                                    columnNumber: 41
-                                                }, this),
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                    className: "col-span-1 aspect-square relative bg-white rounded-sm border border-black/10 overflow-hidden group",
-                                                    children: [
-                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$image$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
-                                                            src: product.gallery?.[0] || product.image,
-                                                            alt: `Mode de vie sain avec ${product.name}`,
-                                                            fill: true,
-                                                            sizes: "(max-width: 768px) 50vw, 33vw",
-                                                            className: "object-cover hover:scale-105 transition-transform duration-700",
-                                                            unoptimized: true
-                                                        }, void 0, false, {
-                                                            fileName: "[project]/components/HomeClient.tsx",
-                                                            lineNumber: 370,
-                                                            columnNumber: 45
-                                                        }, this),
-                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                            className: "absolute bottom-2 right-2 text-[10px] font-mono uppercase tracking-widest text-white bg-green-600/90 px-2 py-0.5",
-                                                            children: "Vitalité"
-                                                        }, void 0, false, {
-                                                            fileName: "[project]/components/HomeClient.tsx",
-                                                            lineNumber: 378,
-                                                            columnNumber: 45
-                                                        }, this)
-                                                    ]
-                                                }, void 0, true, {
-                                                    fileName: "[project]/components/HomeClient.tsx",
-                                                    lineNumber: 369,
-                                                    columnNumber: 41
-                                                }, this)
-                                            ]
-                                        }, void 0, true, {
-                                            fileName: "[project]/components/HomeClient.tsx",
-                                            lineNumber: 340,
-                                            columnNumber: 37
-                                        }, this)
-                                    }, void 0, false, {
-                                        fileName: "[project]/components/HomeClient.tsx",
-                                        lineNumber: 339,
-                                        columnNumber: 33
-                                    }, this)
-                                ]
-                            }, product.id, true, {
-                                fileName: "[project]/components/HomeClient.tsx",
-                                lineNumber: 305,
-                                columnNumber: 29
-                            }, this))
-                    }, void 0, false, {
-                        fileName: "[project]/components/HomeClient.tsx",
-                        lineNumber: 303,
-                        columnNumber: 21
-                    }, this)
-                }, void 0, false, {
-                    fileName: "[project]/components/HomeClient.tsx",
-                    lineNumber: 302,
-                    columnNumber: 17
+                    lineNumber: 370,
+                    columnNumber: 21
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("section", {
                     className: "py-8 bg-transparent border-t border-black/10",
@@ -1828,7 +1912,7 @@ function HomeClient() {
                                 children: "La santé par la science."
                             }, void 0, false, {
                                 fileName: "[project]/components/HomeClient.tsx",
-                                lineNumber: 391,
+                                lineNumber: 489,
                                 columnNumber: 25
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1836,7 +1920,7 @@ function HomeClient() {
                                 children: "Rejoignez des milliers d'ivoiriens qui ont choisi une approche naturelle et validée."
                             }, void 0, false, {
                                 fileName: "[project]/components/HomeClient.tsx",
-                                lineNumber: 394,
+                                lineNumber: 492,
                                 columnNumber: 25
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1849,12 +1933,12 @@ function HomeClient() {
                                             children: "Voir tous les produits"
                                         }, void 0, false, {
                                             fileName: "[project]/components/HomeClient.tsx",
-                                            lineNumber: 399,
+                                            lineNumber: 497,
                                             columnNumber: 33
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/components/HomeClient.tsx",
-                                        lineNumber: 398,
+                                        lineNumber: 496,
                                         columnNumber: 29
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -1863,39 +1947,39 @@ function HomeClient() {
                                         children: "Consulter un expert"
                                     }, void 0, false, {
                                         fileName: "[project]/components/HomeClient.tsx",
-                                        lineNumber: 403,
+                                        lineNumber: 501,
                                         columnNumber: 29
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/components/HomeClient.tsx",
-                                lineNumber: 397,
+                                lineNumber: 495,
                                 columnNumber: 25
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/components/HomeClient.tsx",
-                        lineNumber: 390,
+                        lineNumber: 488,
                         columnNumber: 21
                     }, this)
                 }, void 0, false, {
                     fileName: "[project]/components/HomeClient.tsx",
-                    lineNumber: 389,
+                    lineNumber: 487,
                     columnNumber: 17
                 }, this)
             ]
         }, void 0, true, {
             fileName: "[project]/components/HomeClient.tsx",
-            lineNumber: 112,
+            lineNumber: 221,
             columnNumber: 13
         }, this)
     }, void 0, false, {
         fileName: "[project]/components/HomeClient.tsx",
-        lineNumber: 111,
+        lineNumber: 220,
         columnNumber: 9
     }, this);
 }
-_s(HomeClient, "5LSH+8tMHAit3v4kGAtfMPUESKI=", false, function() {
+_s(HomeClient, "J89JxqdKHFS5JXdLW3y3jM3hy0U=", false, function() {
     return [
         __TURBOPACK__imported__module__$5b$project$5d2f$context$2f$UIContext$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useUI"]
     ];

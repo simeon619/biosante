@@ -9,7 +9,7 @@ export default class ProductsController {
         try {
             const products = await db.from('products')
                 .where('is_active', true)
-                .orderBy('name', 'asc')
+                .orderBy('display_order', 'asc')
 
             // Fetch testimonials for all products
             const testimonials = await db.from('audio_testimonials')
@@ -27,7 +27,9 @@ export default class ProductsController {
                     author: t.author,
                     location: t.location,
                     duration: t.duration,
-                    url: t.audio_url
+                    url: t.audio_url,
+                    text_content: t.text_content,
+                    author_image: t.author_image
                 })
             }
 
@@ -71,7 +73,9 @@ export default class ProductsController {
                     author: t.author,
                     location: t.location,
                     duration: t.duration,
-                    url: t.audio_url
+                    url: t.audio_url,
+                    text_content: t.text_content,
+                    author_image: t.author_image
                 }))
             }
 

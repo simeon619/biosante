@@ -1,10 +1,10 @@
 'use client';
 
 import React, { useEffect, useRef, useState } from 'react';
-import { MapPin, Phone, User, CheckCircle, Loader2, ArrowLeft, ArrowRight, Truck, Crosshair, Mail, Wallet, Banknote, Building2, Search, Info, ShieldCheck, Lock, Plus, Trash2, Home, Smartphone, MessageSquare } from 'lucide-react';
+import { MapPin, Phone, User, CheckCircle, Loader2, ArrowLeft, ArrowRight, Truck, Crosshair, Mail, Wallet, Banknote, Building2, Search, Info, ShieldCheck, Lock, Plus, Trash2, Home, Smartphone, MessageSquare, Sparkles, Zap } from 'lucide-react';
 import { CartItem, DeliveryEstimate } from '../types';
 import { api } from '../services/api';
-import { ShippingCompany, findCompaniesByCity, getAllDestinations, ABIDJAN_AREA, isInAbidjanArea } from '../data/shippingCompanies';
+import { ShippingCompany, ABIDJAN_AREA, isInAbidjanArea } from '../data/shippingCompanies';
 import { useRouter } from 'next/navigation';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
@@ -62,6 +62,7 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = (props) => {
     const [showSuggestions, setShowSuggestions] = useState(false);
     const [saveNewAddress, setSaveNewAddress] = useState(false);
     const [settings, setSettings] = useState<PublicSettings>(defaultSettings);
+    const [allDestinations, setAllDestinations] = useState<string[]>([]);
 
     // 3. All Effects
     useEffect(() => {
@@ -94,6 +95,17 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = (props) => {
         const loadSettings = async () => {
             const data = await getPublicSettings();
             setSettings(data);
+
+            // Load shipping destinations from API
+            try {
+                const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'https://api-biosante.sublymus.com'}/api/shipping/destinations`);
+                if (res.ok) {
+                    const { destinations } = await res.json();
+                    setAllDestinations(destinations || []);
+                }
+            } catch (e) {
+                console.error('Failed to load shipping destinations:', e);
+            }
 
             // Meta Pixel Tracking: InitiateCheckout
             if (data.fb_pixel_id && cart.length > 0) {
@@ -186,7 +198,6 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = (props) => {
     }, [isMounted, deliveryMode]);
 
     // 4. Calculations
-    const allDestinations = getAllDestinations();
     const subTotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
     const totalItems = cart.reduce((acc, item) => acc + item.quantity, 0);
 
@@ -261,13 +272,23 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = (props) => {
     }
 
     // 6. Event Handlers
-    const handleCitySelect = (city: string) => {
+    const handleCitySelect = async (city: string) => {
         setSelectedCity(city);
         setCitySearchQuery(city);
         setShowCitySuggestions(false);
-        const companies = findCompaniesByCity(city);
-        setAvailableCompanies(companies);
-        setSelectedCompany(companies.length > 0 ? companies[0] : null);
+        // Fetch companies that serve this city from API
+        try {
+            const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'https://api-biosante.sublymus.com'}/api/shipping/by-city/${encodeURIComponent(city)}`);
+            if (res.ok) {
+                const { companies } = await res.json();
+                setAvailableCompanies(companies || []);
+                setSelectedCompany(companies && companies.length > 0 ? companies[0] : null);
+            }
+        } catch (e) {
+            console.error('Failed to fetch companies for city:', e);
+            setAvailableCompanies([]);
+            setSelectedCompany(null);
+        }
     };
 
     const handleAddressChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -1117,83 +1138,111 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = (props) => {
 
                     {/* Order Summary Sidebar */}
                     <div className="lg:col-span-5 sticky top-28 space-y-6">
-                        <div className="bg-white/98 backdrop-blur-xl p-6 md:p-8 rounded-3xl border border-slate-200 shadow-sm overflow-hidden">
-                            <div className="flex items-center justify-between mb-6">
-                                <h3 className="text-xl font-bold tracking-tight text-slate-900">Récapitulatif</h3>
-                                <div className="bg-slate-50 border border-slate-100 text-slate-400 px-3 py-1 rounded-xl text-[10px] font-bold uppercase tracking-widest">{totalItems} Article{totalItems > 1 ? 's' : ''}</div>
+                        <div className="bg-white/98 backdrop-blur-xl p-8 rounded-[2.5rem] border border-slate-100 shadow-2xl shadow-slate-200/50 overflow-hidden relative group">
+                            {/* Decorative background element */}
+                            <div className="absolute -top-24 -right-24 w-48 h-48 bg-slate-50 rounded-full blur-3xl group-hover:bg-amber-50/50 transition-colors duration-1000"></div>
+
+                            <div className="relative flex items-center justify-between mb-8">
+                                <div>
+                                    <h3 className="text-2xl font-black tracking-tight text-slate-900 uppercase">Récapitulatif</h3>
+                                    <p className="text-[10px] font-black text-slate-300 uppercase tracking-[0.2em] mt-1">Étape finale du voyage</p>
+                                </div>
+                                <div className="bg-slate-900 text-white px-4 py-2 rounded-2xl text-[10px] font-black uppercase tracking-widest shadow-lg shadow-black/10">
+                                    {totalItems} Article{totalItems > 1 ? 's' : ''}
+                                </div>
                             </div>
 
-                            {/* Wave Promo Banner - Always visible when 2+ items */}
+                            {/* Wave Promo Banner - Premium version */}
                             {totalItems >= 2 && (
-                                <div className={`p-4 rounded-2xl mb-6 flex items-center gap-4 transition-all ${paymentMethod === 'wave'
-                                    ? 'bg-gradient-to-r from-[#1DC1EC] to-[#0BA8D0] text-white'
-                                    : 'bg-gradient-to-r from-[#1DC1EC]/10 to-[#1DC1EC]/5 border border-[#1DC1EC]/30'
+                                <div className={`relative p-5 rounded-3xl mb-8 flex items-center gap-5 transition-all duration-500 overflow-hidden group/wave ${paymentMethod === 'wave'
+                                    ? 'bg-gradient-to-br from-[#1DC1EC] to-[#0BA8D0] text-white shadow-xl shadow-[#1DC1EC]/30'
+                                    : 'bg-slate-50 border-2 border-slate-100 hover:border-[#1DC1EC]/30'
                                     }`}>
-                                    <img src="/logos/wave.webp" alt="Wave" className="w-12 h-12 object-contain" />
-                                    <div>
+                                    {paymentMethod === 'wave' && (
+                                        <div className="absolute inset-0 bg-[linear-gradient(45deg,rgba(255,255,255,0.1)_25%,transparent_25%,transparent_50%,rgba(255,255,255,0.1)_50%,rgba(255,255,255,0.1)_75%,transparent_75%,transparent)] bg-[length:20px_20px]"></div>
+                                    )}
+                                    <div className={`p-3 rounded-2xl transition-colors shrink-0 ${paymentMethod === 'wave' ? 'bg-white/20' : 'bg-white shadow-sm'}`}>
+                                        <img src="/logos/wave.webp" alt="Wave" className="w-8 h-8 object-contain" />
+                                    </div>
+                                    <div className="relative">
                                         {paymentMethod === 'wave' ? (
                                             <>
-                                                <p className="text-sm font-bold">🎉 Réduction Wave activée !</p>
-                                                <p className="text-xs opacity-80">-4% appliqué à votre commande</p>
+                                                <p className="text-sm font-black uppercase tracking-tight">Réduction Activée !</p>
+                                                <p className="text-[10px] font-bold opacity-90 uppercase tracking-widest">Vous économisez 4% sur cette commande</p>
                                             </>
                                         ) : (
                                             <>
-                                                <p className="text-sm font-bold text-slate-900">💰 Économisez 4% avec Wave</p>
-                                                <p className="text-xs text-[#1DC1EC] font-medium">Passez à Wave pour bénéficier de la réduction</p>
+                                                <p className="text-sm font-black text-slate-900 uppercase tracking-tight">💰 Économisez 4%</p>
+                                                <p className="text-[10px] text-[#1DC1EC] font-black uppercase tracking-widest">Passez à Wave pour débloquer</p>
                                             </>
                                         )}
                                     </div>
+                                    {paymentMethod === 'wave' && (
+                                        <Sparkles className="absolute right-4 top-1/2 -translate-y-1/2 w-6 h-6 text-white/40 fill-white/20" />
+                                    )}
                                 </div>
                             )}
 
                             <div className="space-y-6">
-                                <div className="space-y-4 max-h-[400px] overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-slate-200 scrollbar-track-transparent">
+                                <div className="space-y-4 max-h-[300px] overflow-y-auto pr-2 custom-scrollbar">
                                     {cart.map((item) => (
-                                        <div key={item.id} className="flex gap-4 group">
-                                            <div className="w-16 h-16 bg-slate-50 rounded-2xl border border-slate-100 flex-shrink-0 overflow-hidden relative">
-                                                <img src={item.image} alt={item.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
-                                                <div className="absolute top-1 right-1 bg-slate-900 text-white text-[9px] font-bold px-1.5 py-0.5 rounded-lg min-w-[20px] text-center">x{item.quantity}</div>
+                                        <div key={item.id} className="flex gap-5 group items-center p-3 hover:bg-slate-50 rounded-[1.5rem] transition-all">
+                                            <div className="w-16 h-16 bg-white rounded-2xl border-2 border-slate-50 flex-shrink-0 overflow-hidden relative shadow-sm group-hover:scale-105 transition-transform duration-500">
+                                                <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
+                                                <div className="absolute top-0 right-0 bg-slate-900 text-white text-[9px] font-black px-1.5 py-0.5 rounded-bl-xl shadow-md min-w-[24px] text-center">x{item.quantity}</div>
                                             </div>
-                                            <div className="min-w-0 flex flex-col justify-center">
-                                                <h4 className="text-sm font-bold text-slate-900 truncate tracking-tight">{item.name}</h4>
-                                                <p className="text-slate-400 text-xs font-medium">{formatCurrency(item.price * item.quantity)}</p>
+                                            <div className="min-w-0 flex-1">
+                                                <h4 className="text-sm font-black text-slate-900 truncate tracking-tight group-hover:text-blue-600 transition-colors uppercase">{item.name}</h4>
+                                                <p className="text-slate-400 text-[10px] font-black uppercase tracking-widest">{formatCurrency(item.price * item.quantity)}</p>
                                             </div>
                                         </div>
                                     ))}
                                 </div>
 
-                                <div className="pt-6 border-t border-slate-100 space-y-3">
-                                    <div className="flex justify-between text-sm">
-                                        <span className="text-slate-400 font-medium">Sous-total</span>
-                                        <span className="text-slate-900 font-bold">{formatCurrency(subTotal)}</span>
+                                <div className="relative pt-8 border-t border-slate-100 space-y-4">
+                                    <div className="flex justify-between text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 hover:text-slate-600 transition-colors">
+                                        <span>Sous-total</span>
+                                        <span className="text-slate-900 font-black">{formatCurrency(subTotal)}</span>
                                     </div>
 
-                                    <div className="flex justify-between text-sm">
-                                        <span className="text-slate-400 font-medium">Livraison</span>
-                                        <span className={deliveryFee === 0 ? "text-slate-900 font-bold" : "text-slate-900 font-bold"}>
-                                            {deliveryFee === 0 ? "Gratuit" : formatCurrency(deliveryFee)}
+                                    <div className="flex justify-between text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 hover:text-slate-600 transition-colors">
+                                        <div className="flex items-center gap-2">
+                                            <Truck className="w-3.5 h-3.5" />
+                                            <span>Livraison</span>
+                                        </div>
+                                        <span className={deliveryFee === 0 ? "text-green-600 font-black" : "text-slate-900 font-black"}>
+                                            {deliveryFee === 0 ? "OFFERTE" : formatCurrency(deliveryFee)}
                                         </span>
                                     </div>
 
                                     {waveDiscountAmount > 0 && (
-                                        <div className="flex justify-between text-sm bg-[#1DC1EC]/10 p-3 rounded-xl border border-dashed border-[#1DC1EC]/30">
+                                        <div className="flex justify-between text-[10px] font-black uppercase tracking-[0.1em] bg-blue-50/50 p-4 rounded-2xl border-2 border-dashed border-blue-100 group/discount transition-all hover:bg-blue-50">
                                             <div className="flex items-center gap-2">
-                                                <div className="w-5 h-5 bg-[#1DC1EC] rounded-full flex items-center justify-center text-white font-bold text-[8px]">W</div>
-                                                <span className="text-[#1DC1EC] font-bold">Bonus Wave (4%)</span>
+                                                <div className="w-6 h-6 bg-blue-600 rounded-full flex items-center justify-center text-white shadow-lg shadow-blue-200">
+                                                    <Zap className="w-3.5 h-3.5 fill-white" />
+                                                </div>
+                                                <span className="text-blue-900 font-black">Bonus Wave (-4%)</span>
                                             </div>
-                                            <span className="text-[#1DC1EC] font-bold">-{formatCurrency(Math.round(waveDiscountAmount / 10) * 10)}</span>
+                                            <span className="text-blue-600 text-sm font-black items-center flex">-{formatCurrency(Math.round(waveDiscountAmount / 10) * 10)}</span>
                                         </div>
                                     )}
 
+                                    <div className="pt-6 relative">
+                                        {/* Background accent for total */}
+                                        <div className="absolute inset-x-0 -bottom-4 top-2 bg-slate-50/50 rounded-3xl -z-10 group-hover:bg-slate-50 transition-colors"></div>
 
-                                    <div className="pt-6 mt-2">
-                                        <div className="flex flex-col gap-1">
-                                            <div className="flex justify-between items-end">
-                                                <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400 mb-1">Total Final</span>
-                                                <div className="flex items-baseline gap-1">
-                                                    <span className="text-3xl font-bold tracking-tighter text-slate-900">{formatCurrency(Math.round(total))}</span>
-                                                </div>
+                                        <div className="flex justify-between items-end px-2">
+                                            <div>
+                                                <h4 className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-2 px-1">Total à régler</h4>
+                                                <p className="text-4xl font-black text-slate-900 tracking-tighter leading-none">
+                                                    {formatCurrency(Math.round(total))}
+                                                </p>
                                             </div>
+                                            {isEligibleForFreeDelivery && (
+                                                <div className="bg-green-100 text-green-700 text-[9px] font-black px-3 py-1.5 rounded-full uppercase tracking-widest shadow-sm">
+                                                    Economie !
+                                                </div>
+                                            )}
                                         </div>
                                     </div>
                                 </div>

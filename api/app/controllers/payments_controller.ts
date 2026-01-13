@@ -117,7 +117,7 @@ export default class PaymentsController {
                 await db.table('payments')
                     .insert({
                         order_id: orderId,
-                        paytech_token: `WAVE-${orderId.slice(0, 8)}`,
+                        moneroo_payment_id: `WAVE-${orderId.slice(0, 8)}`,
                         amount: total,
                         currency: 'XOF',
                         status: 'pending',
@@ -158,7 +158,7 @@ export default class PaymentsController {
                 await db.table('payments')
                     .insert({
                         order_id: orderId,
-                        paytech_token: `MANUAL-${orderId.slice(0, 8)}`,
+                        moneroo_payment_id: `MANUAL-${orderId.slice(0, 8)}`,
                         amount: total,
                         currency: 'XOF',
                         status: 'pending',
@@ -218,7 +218,7 @@ export default class PaymentsController {
                     .where('id', orderId)
                     .first()
             } else {
-                const payment = await db.from('payments').where('paytech_token', paymentId).first()
+                const payment = await db.from('payments').where('moneroo_payment_id', paymentId).first()
                 if (payment) {
                     orderQueryResult = await db.from('orders')
                         .select('id', 'customer_name', 'total', 'status', 'manual_payment_status', 'transaction_ref', 'proof_image', 'items', 'payment_method')
@@ -361,20 +361,45 @@ export default class PaymentsController {
     /**
      * GET /api/admin/payments
      */
-    async listPayments({ response }: HttpContext) {
+    async listPayments({ request, response }: HttpContext) {
+        const { status, provider, search } = request.qs()
+
         try {
-            const payments = await db.from('payments')
+            let query = db.from('payments')
                 .join('orders', 'payments.order_id', 'orders.id')
                 .select(
                     'payments.*',
                     'orders.customer_name',
+                    'orders.customer_phone',
                     'orders.total as order_total',
-                    'orders.created_at as order_date'
+                    'orders.created_at as order_date',
+                    'orders.manual_payment_status',
+                    'orders.proof_image',
+                    'orders.transaction_ref'
                 )
-                .orderBy('payments.created_at', 'desc')
+
+            if (status && status !== 'all') {
+                query = query.where('payments.status', status)
+            }
+
+            if (provider && provider !== 'all') {
+                query = query.where('payments.payment_method', provider)
+            }
+
+            if (search) {
+                query = query.where((q) => {
+                    q.where('orders.customer_name', 'ilike', `%${search}%`)
+                        .orWhere('orders.customer_phone', 'ilike', `%${search}%`)
+                        .orWhere('payments.moneroo_payment_id', 'ilike', `%${search}%`)
+                        .orWhere('orders.transaction_ref', 'ilike', `%${search}%`)
+                })
+            }
+
+            const payments = await query.orderBy('payments.created_at', 'desc')
 
             return response.ok(payments)
         } catch (error: any) {
+            console.error('[Admin] listPayments error:', error)
             return response.internalServerError({ message: error.message })
         }
     }

@@ -7,7 +7,7 @@ export default class AdminProductsController {
      * Get all products
      */
     async index({ response }: HttpContext) {
-        const products = await db.from('products').orderBy('name', 'asc')
+        const products = await db.from('products').orderBy('display_order', 'asc')
         return response.ok({ products })
     }
 
@@ -24,7 +24,7 @@ export default class AdminProductsController {
      * Create product
      */
     async store({ request, response }: HttpContext) {
-        const fields = ['id', 'name', 'price', 'stock', 'description', 'is_active', 'image', 'tagline', 'category', 'benefits', 'ingredients_image', 'infographic_image', 'gallery']
+        const fields = ['id', 'name', 'price', 'stock', 'description', 'is_active', 'image', 'tagline', 'category', 'benefits', 'ingredients_image', 'infographic_image', 'gallery', 'theme_color', 'display_order']
         const data = request.only(fields)
 
         console.log(`[AdminProducts] Creating product: ${data.id}`, JSON.stringify(data, null, 2))
@@ -51,7 +51,7 @@ export default class AdminProductsController {
      * Update product
      */
     async update({ params, request, response }: HttpContext) {
-        const fields = ['name', 'price', 'stock', 'description', 'is_active', 'image', 'tagline', 'category', 'benefits', 'ingredients_image', 'infographic_image', 'gallery']
+        const fields = ['name', 'price', 'stock', 'description', 'is_active', 'image', 'tagline', 'category', 'benefits', 'ingredients_image', 'infographic_image', 'gallery', 'theme_color', 'display_order']
         const data = request.only(fields)
 
         console.log(`[AdminProducts] Updating product: ${params.id}`, JSON.stringify(data, null, 2))

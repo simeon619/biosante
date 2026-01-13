@@ -37,6 +37,12 @@ router.get('/api/media/*', [MediaController, 'serve'])
 const PublicSettingsController = () => import('#controllers/public_settings_controller')
 router.get('/api/settings/public', [PublicSettingsController, 'index'])
 
+// Public Shipping Companies routes (for checkout)
+const ShippingController = () => import('#controllers/shipping_controller')
+router.get('/api/shipping', [ShippingController, 'index'])
+router.get('/api/shipping/destinations', [ShippingController, 'destinations'])
+router.get('/api/shipping/by-city/:city', [ShippingController, 'byCity'])
+
 router.group(() => {
   router.post('/estimate', [DeliveriesController, 'estimate'])
   router.get('/search', [DeliveriesController, 'searchPlaces'])

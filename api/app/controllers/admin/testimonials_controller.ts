@@ -1,12 +1,17 @@
 import type { HttpContext } from '@adonisjs/core/http'
 import db from '@adonisjs/lucid/services/db'
 import { DateTime } from 'luxon'
-import app from '@adonisjs/core/services/app'
-import { cuid } from '@adonisjs/core/helpers'
-import { mkdir } from 'fs/promises'
-import path from 'path'
+import { randomUUID } from 'node:crypto'
+import fs from 'node:fs/promises'
+import StorageService from '#services/storage_service'
 
 export default class AdminTestimonialsController {
+    private storage: StorageService
+
+    constructor() {
+        this.storage = new StorageService()
+    }
+
     /**
      * Get all testimonials
      */
@@ -40,35 +45,59 @@ export default class AdminTestimonialsController {
     }
 
     /**
-     * Create new testimonial with audio upload
+     * Create new testimonial with audio/image upload to S3
      */
     async store({ request, response }: HttpContext) {
-        const { product_id, author, location, duration, is_active } = request.only([
-            'product_id', 'author', 'location', 'duration', 'is_active'
+        const { product_id, author, location, duration, is_active, text_content } = request.only([
+            'product_id', 'author', 'location', 'duration', 'is_active', 'text_content'
         ])
 
-        // Handle file upload
+        const baseUrl = process.env.BACKEND_URL || process.env.APP_URL || 'https://api-biosante.sublymus.com'
+
+        // Handle audio file upload
         const audioFile = request.file('audio', {
-            size: '10mb',
-            extnames: ['mp3', 'wav', 'ogg', 'm4a']
+            size: '20mb',
+            extnames: ['mp3', 'wav', 'ogg', 'm4a', 'webm']
         })
 
-        if (!audioFile) {
-            return response.badRequest({ error: 'Fichier audio requis' })
+        let audioUrl: string | null = null
+
+        if (audioFile && audioFile.isValid) {
+            try {
+                const fileBuffer = await fs.readFile(audioFile.tmpPath!)
+                const fileName = `${randomUUID()}.${audioFile.extname}`
+                const key = `testimonials/audio/${fileName}`
+                const contentType = audioFile.headers['content-type'] || `audio/${audioFile.extname}`
+
+                await this.storage.upload(key, fileBuffer, contentType)
+                audioUrl = `${baseUrl}/api/media/${key}`
+            } catch (error) {
+                console.error('[Testimonials] Audio upload error:', error)
+                return response.internalServerError({ error: 'Erreur upload audio' })
+            }
         }
 
-        // Create upload directory if not exists
-        const uploadDir = path.join(app.publicPath(), 'uploads', 'testimonials')
-        await mkdir(uploadDir, { recursive: true })
+        // Handle author image upload
+        const imageFile = request.file('author_image', {
+            size: '10mb',
+            extnames: ['jpg', 'jpeg', 'png', 'webp', 'gif']
+        })
 
-        // Generate unique filename
-        const filename = `${product_id}_${cuid()}.${audioFile.extname}`
+        let authorImageUrl: string | null = null
 
-        // Move file
-        await audioFile.move(uploadDir, { name: filename })
+        if (imageFile && imageFile.isValid) {
+            try {
+                const fileBuffer = await fs.readFile(imageFile.tmpPath!)
+                const fileName = `${randomUUID()}.${imageFile.extname}`
+                const key = `testimonials/images/${fileName}`
+                const contentType = imageFile.headers['content-type'] || `image/${imageFile.extname}`
 
-        if (audioFile.state !== 'moved') {
-            return response.badRequest({ error: 'Erreur lors du téléchargement' })
+                await this.storage.upload(key, fileBuffer, contentType)
+                authorImageUrl = `${baseUrl}/api/media/${key}`
+            } catch (error) {
+                console.error('[Testimonials] Image upload error:', error)
+                return response.internalServerError({ error: 'Erreur upload image' })
+            }
         }
 
         // Get max display order for this product
@@ -81,10 +110,12 @@ export default class AdminTestimonialsController {
             product_id,
             author,
             location,
-            audio_url: `/uploads/testimonials/${filename}`,
+            audio_url: audioUrl || '',
             duration: duration || '0:00',
             is_active: is_active !== false,
             display_order: (maxOrder?.max || 0) + 1,
+            text_content: text_content || null,
+            author_image: authorImageUrl || null,
             created_at: DateTime.now().toSQL(),
             updated_at: DateTime.now().toSQL()
         }).returning('*')
@@ -104,8 +135,10 @@ export default class AdminTestimonialsController {
             return response.notFound({ error: 'Témoignage non trouvé' })
         }
 
+        const baseUrl = process.env.BACKEND_URL || process.env.APP_URL || 'https://api-biosante.sublymus.com'
+
         const updates: Record<string, any> = {}
-        const fields = ['author', 'location', 'duration', 'is_active', 'display_order']
+        const fields = ['author', 'location', 'duration', 'is_active', 'display_order', 'text_content']
 
         for (const field of fields) {
             if (request.input(field) !== undefined) {
@@ -115,19 +148,41 @@ export default class AdminTestimonialsController {
 
         // Handle optional audio update
         const audioFile = request.file('audio', {
-            size: '10mb',
-            extnames: ['mp3', 'wav', 'ogg', 'm4a']
+            size: '20mb',
+            extnames: ['mp3', 'wav', 'ogg', 'm4a', 'webm']
         })
 
-        if (audioFile) {
-            const uploadDir = path.join(app.publicPath(), 'uploads', 'testimonials')
-            await mkdir(uploadDir, { recursive: true })
+        if (audioFile && audioFile.isValid) {
+            try {
+                const fileBuffer = await fs.readFile(audioFile.tmpPath!)
+                const fileName = `${randomUUID()}.${audioFile.extname}`
+                const key = `testimonials/audio/${fileName}`
+                const contentType = audioFile.headers['content-type'] || `audio/${audioFile.extname}`
 
-            const filename = `${testimonial.product_id}_${cuid()}.${audioFile.extname}`
-            await audioFile.move(uploadDir, { name: filename })
+                await this.storage.upload(key, fileBuffer, contentType)
+                updates.audio_url = `${baseUrl}/api/media/${key}`
+            } catch (error) {
+                console.error('[Testimonials] Audio update error:', error)
+            }
+        }
 
-            if (audioFile.state === 'moved') {
-                updates.audio_url = `/uploads/testimonials/${filename}`
+        // Handle optional image update
+        const imageFile = request.file('author_image', {
+            size: '10mb',
+            extnames: ['jpg', 'jpeg', 'png', 'webp', 'gif']
+        })
+
+        if (imageFile && imageFile.isValid) {
+            try {
+                const fileBuffer = await fs.readFile(imageFile.tmpPath!)
+                const fileName = `${randomUUID()}.${imageFile.extname}`
+                const key = `testimonials/images/${fileName}`
+                const contentType = imageFile.headers['content-type'] || `image/${imageFile.extname}`
+
+                await this.storage.upload(key, fileBuffer, contentType)
+                updates.author_image = `${baseUrl}/api/media/${key}`
+            } catch (error) {
+                console.error('[Testimonials] Image update error:', error)
             }
         }
 
@@ -154,11 +209,32 @@ export default class AdminTestimonialsController {
             return response.notFound({ error: 'Témoignage non trouvé' })
         }
 
+        // Delete files from S3 if they exist
+        if (testimonial.audio_url) {
+            const key = this.storage.extractKeyFromUrl(testimonial.audio_url)
+            if (key) {
+                try {
+                    await this.storage.delete(key)
+                } catch (error) {
+                    console.error('[Testimonials] Failed to delete audio:', error)
+                }
+            }
+        }
+
+        if (testimonial.author_image) {
+            const key = this.storage.extractKeyFromUrl(testimonial.author_image)
+            if (key) {
+                try {
+                    await this.storage.delete(key)
+                } catch (error) {
+                    console.error('[Testimonials] Failed to delete image:', error)
+                }
+            }
+        }
+
         await db.from('audio_testimonials')
             .where('id', params.id)
             .delete()
-
-        // TODO: Delete audio file from disk
 
         return response.ok({ success: true })
     }
