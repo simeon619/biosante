@@ -1,6 +1,8 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { products as staticProducts } from '@/data/products';
 import { ShieldCheck, Truck, Star, CheckCircle, Leaf, Activity, ArrowRight } from 'lucide-react';
 import { AudioPlayer } from '@/components/AudioPlayer';
 import Link from 'next/link';
@@ -118,58 +120,55 @@ const defaultColors = colorClasses.green;
 
 export function HomeClient() {
     const { setActiveColor } = useUI();
-    const [products, setProducts] = useState<any[]>([]);
-    const [loading, setLoading] = useState(true);
+
+    // Map static products to the shape expected by the component for initial render
+    const initialProducts = staticProducts.map(p => ({
+        ...p,
+        theme_color: p.themeColor || 'green', // Map themeColor to theme_color
+        is_active: p.inStock,
+        display_order: 0,
+        infographic_image: p.gallery?.[1], // Best guess mapping based on index
+        ingredients_image: undefined
+    }));
+
+    const { data: products = initialProducts, isLoading: loading } = useQuery({
+        queryKey: ['products'],
+        queryFn: async () => {
+            const response = await fetch(`${API_URL}/api/products`);
+            if (!response.ok) throw new Error('Failed to fetch products');
+            const { products: dbProducts } = await response.json();
+
+            // Products are already ordered by display_order from API
+            return dbProducts.map((dbp: any) => ({
+                id: dbp.id,
+                name: dbp.name,
+                price: dbp.price,
+                stock: dbp.stock,
+                inStock: dbp.stock > 0,
+                description: dbp.description || '',
+                is_active: dbp.is_active,
+                image: dbp.image || '/images/placeholder-product.png',
+                tagline: dbp.tagline || '',
+                category: dbp.category || '',
+                theme_color: dbp.theme_color || 'green',
+                display_order: dbp.display_order || 0,
+                ingredients_image: dbp.ingredients_image,
+                infographic_image: dbp.infographic_image,
+                gallery: dbp.gallery
+                    ? (typeof dbp.gallery === 'string' ? JSON.parse(dbp.gallery) : dbp.gallery)
+                    : [],
+                benefits: dbp.benefits
+                    ? (typeof dbp.benefits === 'string' ? JSON.parse(dbp.benefits) : dbp.benefits)
+                    : [],
+                testimonials: dbp.testimonials || []
+            }));
+        },
+        initialData: initialProducts,
+        staleTime: 1000 * 60 * 5, // 5 minutes
+    });
 
     // Dynamic refs for product sections
     const sectionRefs = useRef<Map<string, HTMLElement>>(new Map());
-
-    useEffect(() => {
-        const fetchProducts = async () => {
-            try {
-                const response = await fetch(`${API_URL}/api/products?t=${Date.now()}`, {
-                    cache: 'no-store',
-                    next: { revalidate: 0 }
-                });
-
-                if (response.ok) {
-                    const { products: dbProducts } = await response.json();
-                    // Products are already ordered by display_order from API
-                    const activeProducts = dbProducts.map((dbp: any) => ({
-                        id: dbp.id,
-                        name: dbp.name,
-                        price: dbp.price,
-                        stock: dbp.stock,
-                        inStock: dbp.stock > 0,
-                        description: dbp.description || '',
-                        is_active: dbp.is_active,
-                        image: dbp.image || '/images/placeholder-product.png',
-                        tagline: dbp.tagline || '',
-                        category: dbp.category || '',
-                        theme_color: dbp.theme_color || 'green',
-                        display_order: dbp.display_order || 0,
-                        ingredients_image: dbp.ingredients_image,
-                        infographic_image: dbp.infographic_image,
-                        gallery: dbp.gallery
-                            ? (typeof dbp.gallery === 'string' ? JSON.parse(dbp.gallery) : dbp.gallery)
-                            : [],
-                        benefits: dbp.benefits
-                            ? (typeof dbp.benefits === 'string' ? JSON.parse(dbp.benefits) : dbp.benefits)
-                            : [],
-                        testimonials: dbp.testimonials || []
-                    }));
-
-                    setProducts(activeProducts);
-                }
-            } catch (error) {
-                console.error('Failed to sync products:', error);
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchProducts();
-    }, []);
 
     // Intersection observer for color changes based on visible product
     useEffect(() => {
@@ -181,7 +180,7 @@ export function HomeClient() {
             entries.forEach((entry) => {
                 if (entry.isIntersecting) {
                     const productId = entry.target.getAttribute('data-product-id');
-                    const product = products.find(p => p.id === productId);
+                    const product = products.find((p: any) => p.id === productId);
                     if (product) {
                         setActiveColor(product.theme_color || 'neutral');
                     }
@@ -258,7 +257,7 @@ export function HomeClient() {
                 </section>
 
                 {/* Dynamic Product Sections */}
-                {products.map((product, index) => {
+                {products.map((product: any, index: any) => {
                     const colors = getColors(product.theme_color);
                     const isEven = index % 2 === 0;
 

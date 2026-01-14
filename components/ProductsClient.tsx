@@ -1,6 +1,7 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import { products } from '@/data/products';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -9,52 +10,41 @@ import { formatCurrency, API_URL } from '@/lib/utils';
 
 
 export function ProductsClient() {
-    const [dynamicProducts, setDynamicProducts] = useState(products);
+    const { data: dynamicProducts } = useQuery({
+        queryKey: ['products'],
+        queryFn: async () => {
+            const response = await fetch(`${API_URL}/api/products`);
+            if (!response.ok) throw new Error('Failed to fetch products');
+            const { products: dbProducts } = await response.json();
 
-    useEffect(() => {
-        const fetchProducts = async () => {
-            try {
-                // Add timestamp to force fresh fetch and explicitly disable caching
-                const response = await fetch(`${API_URL}/api/products?t=${Date.now()}`, {
-                    cache: 'no-store',
-                    next: { revalidate: 0 }
-                });
-
-                if (response.ok) {
-                    const { products: dbProducts } = await response.json();
-                    const activeProducts = dbProducts.map((dbp: any) => {
-                        const sp = products.find(p => p.id === dbp.id);
-                        return {
-                            ...sp,
-                            id: dbp.id,
-                            name: dbp.name,
-                            price: dbp.price,
-                            stock: dbp.stock,
-                            inStock: dbp.stock > 0,
-                            description: dbp.description || sp?.description || '',
-                            is_active: dbp.is_active,
-                            image: (dbp.image && dbp.image.length > 0) ? dbp.image : (sp?.image || ''),
-                            tagline: dbp.tagline || sp?.tagline || '',
-                            category: dbp.category || sp?.category || '',
-                            ingredients_image: dbp.ingredients_image || sp?.ingredients_image,
-                            infographic_image: dbp.infographic_image || sp?.infographic_image,
-                            gallery: dbp.gallery
-                                ? (typeof dbp.gallery === 'string' ? JSON.parse(dbp.gallery) : dbp.gallery)
-                                : (sp?.gallery || []),
-                            benefits: dbp.benefits
-                                ? (typeof dbp.benefits === 'string' ? JSON.parse(dbp.benefits) : dbp.benefits)
-                                : (sp?.benefits || [])
-                        };
-                    });
-
-                    setDynamicProducts(activeProducts);
-                }
-            } catch (error) {
-                console.error('Failed to sync products:', error);
-            }
-        };
-        fetchProducts();
-    }, []);
+            return dbProducts.map((dbp: any) => {
+                const sp = products.find(p => p.id === dbp.id);
+                return {
+                    ...sp,
+                    id: dbp.id,
+                    name: dbp.name,
+                    price: dbp.price,
+                    stock: dbp.stock,
+                    inStock: dbp.stock > 0,
+                    description: dbp.description || sp?.description || '',
+                    is_active: dbp.is_active,
+                    image: (dbp.image && dbp.image.length > 0) ? dbp.image : (sp?.image || ''),
+                    tagline: dbp.tagline || sp?.tagline || '',
+                    category: dbp.category || sp?.category || '',
+                    ingredients_image: dbp.ingredients_image || sp?.ingredients_image,
+                    infographic_image: dbp.infographic_image || sp?.infographic_image,
+                    gallery: dbp.gallery
+                        ? (typeof dbp.gallery === 'string' ? JSON.parse(dbp.gallery) : dbp.gallery)
+                        : (sp?.gallery || []),
+                    benefits: dbp.benefits
+                        ? (typeof dbp.benefits === 'string' ? JSON.parse(dbp.benefits) : dbp.benefits)
+                        : (sp?.benefits || [])
+                };
+            });
+        },
+        initialData: products,
+        staleTime: 1000 * 60 * 5, // 5 minutes
+    });
 
     return (
         <div className="bg-white min-h-screen text-black">
@@ -73,7 +63,7 @@ export function ProductsClient() {
             {/* Products Grid */}
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
                 <div className="grid grid-cols-1 gap-24">
-                    {dynamicProducts.map((product, index) => {
+                    {dynamicProducts.map((product: any, index: any) => {
                         // Dynamic Color Logic
                         const isBioActif = product.id === 'bioactif';
                         const accentColor = isBioActif ? 'text-red-600' : 'text-green-600';
@@ -115,7 +105,7 @@ export function ProductsClient() {
                                     </div>
 
                                     <div className={`flex flex-col gap-3 pt-6 ${index % 2 === 1 ? 'items-end' : ''}`}>
-                                        {product.benefits.map((benefit, idx) => (
+                                        {product.benefits.map((benefit: any, idx: any) => (
                                             <div key={idx} className="flex items-center gap-3 text-sm font-medium opacity-80 text-black">
                                                 {index % 2 === 0 && <span className={`w-1.5 h-1.5 ${bgAccent} rounded-full`}></span>}
                                                 {benefit}

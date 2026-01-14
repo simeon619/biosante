@@ -15,21 +15,28 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$re
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$upload$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Upload$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/upload.js [app-ssr] (ecmascript) <export default as Upload>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$trash$2d$2$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Trash2$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/trash-2.js [app-ssr] (ecmascript) <export default as Trash2>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$plus$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Plus$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/plus.js [app-ssr] (ecmascript) <export default as Plus>");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$image$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Image$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/image.js [app-ssr] (ecmascript) <export default as Image>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$image$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__ImageIcon$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/image.js [app-ssr] (ecmascript) <export default as ImageIcon>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$info$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Info$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/info.js [app-ssr] (ecmascript) <export default as Info>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$dollar$2d$sign$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__DollarSign$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/dollar-sign.js [app-ssr] (ecmascript) <export default as DollarSign>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$package$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Package$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/package.js [app-ssr] (ecmascript) <export default as Package>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$circle$2d$check$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__CheckCircle2$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/circle-check.js [app-ssr] (ecmascript) <export default as CheckCircle2>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$panels$2d$top$2d$left$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Layout$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/panels-top-left.js [app-ssr] (ecmascript) <export default as Layout>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$palette$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Palette$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/palette.js [app-ssr] (ecmascript) <export default as Palette>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$hash$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Hash$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/hash.js [app-ssr] (ecmascript) <export default as Hash>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$tanstack$2f$react$2d$query$2f$build$2f$modern$2f$useQuery$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/@tanstack/react-query/build/modern/useQuery.js [app-ssr] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$tanstack$2f$react$2d$query$2f$build$2f$modern$2f$useMutation$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/@tanstack/react-query/build/modern/useMutation.js [app-ssr] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$tanstack$2f$react$2d$query$2f$build$2f$modern$2f$QueryClientProvider$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/@tanstack/react-query/build/modern/QueryClientProvider.js [app-ssr] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$utils$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/lib/utils.ts [app-ssr] (ecmascript)");
 'use client';
+;
+;
 ;
 ;
 ;
 ;
 function ProductEditor({ productId, isNew }) {
     const router = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useRouter"])();
-    const [isLoading, setIsLoading] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(!isNew);
-    const [isSaving, setIsSaving] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(false);
+    const queryClient = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$tanstack$2f$react$2d$query$2f$build$2f$modern$2f$QueryClientProvider$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useQueryClient"])();
     const [activeSection, setActiveSection] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])('general');
     const [formData, setFormData] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])({
         id: '',
@@ -44,24 +51,24 @@ function ProductEditor({ productId, isNew }) {
         gallery: [],
         tagline: '',
         category: '',
-        benefits: ''
+        benefits: '',
+        theme_color: 'green',
+        display_order: 0
     });
     const [uploadingSlot, setUploadingSlot] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(null);
-    (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useEffect"])(()=>{
-        if (!isNew && productId) {
-            fetchProduct();
-        }
-    }, [
-        productId,
-        isNew
-    ]);
-    const fetchProduct = async ()=>{
-        try {
-            const response = await fetch(`http://localhost:3333/api/admin/products/${productId}`, {
+    // Query for product data
+    const { isLoading: isLoadingProduct } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$tanstack$2f$react$2d$query$2f$build$2f$modern$2f$useQuery$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useQuery"])({
+        queryKey: [
+            'admin',
+            'products',
+            productId
+        ],
+        queryFn: async ()=>{
+            const response = await fetch(`${__TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$utils$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["API_URL"]}/api/admin/products/${productId}`, {
                 cache: 'no-store'
             });
+            if (!response.ok) throw new Error('Failed to fetch product');
             const data = await response.json();
-            console.log('[ProductEditor] Fetched product data:', data.product);
             if (data.product) {
                 const p = data.product;
                 setFormData({
@@ -70,12 +77,12 @@ function ProductEditor({ productId, isNew }) {
                     gallery: Array.isArray(p.gallery) ? p.gallery : []
                 });
             }
-        } catch (error) {
-            console.error('Failed to fetch product:', error);
-        } finally{
-            setIsLoading(false);
-        }
-    };
+            return data.product;
+        },
+        enabled: !isNew && !!productId,
+        refetchOnWindowFocus: false
+    });
+    const isLoading = !isNew && isLoadingProduct;
     const handleFileUpload = async (e, slot)=>{
         const file = e.target.files?.[0];
         if (!file) {
@@ -87,7 +94,7 @@ function ProductEditor({ productId, isNew }) {
         const fd = new FormData();
         fd.append('image', file);
         try {
-            const response = await fetch('http://localhost:3333/api/admin/uploads/image', {
+            const response = await fetch(`${__TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$utils$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["API_URL"]}/api/admin/uploads/image`, {
                 method: 'POST',
                 body: fd
             });
@@ -127,16 +134,9 @@ function ProductEditor({ productId, isNew }) {
                 gallery: prev.gallery.filter((_, i)=>i !== index)
             }));
     };
-    const handleSubmit = async (e)=>{
-        e.preventDefault();
-        setIsSaving(true);
-        try {
-            const url = isNew ? 'http://localhost:3333/api/admin/products' : `http://localhost:3333/api/admin/products/${productId}`;
-            const payload = {
-                ...formData,
-                benefits: formData.benefits.split(',').map((b)=>b.trim()).filter((b)=>b !== '')
-            };
-            console.log('[ProductEditor] Sending payload:', payload);
+    const saveMutation = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$tanstack$2f$react$2d$query$2f$build$2f$modern$2f$useMutation$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useMutation"])({
+        mutationFn: async (payload)=>{
+            const url = isNew ? `${__TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$utils$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["API_URL"]}/api/admin/products` : `${__TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$utils$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["API_URL"]}/api/admin/products/${productId}`;
             const response = await fetch(url, {
                 method: isNew ? 'POST' : 'PATCH',
                 headers: {
@@ -144,21 +144,43 @@ function ProductEditor({ productId, isNew }) {
                 },
                 body: JSON.stringify(payload)
             });
-            if (response.ok) {
-                console.log('[ProductEditor] Save successful');
-                alert('Produit enregistré avec succès !');
-                router.push('/admin/products');
-                router.refresh();
-            } else {
+            if (!response.ok) {
                 const err = await response.json();
-                alert(err.error || 'Erreur lors de la sauvegarde');
+                throw new Error(err.error || 'Erreur lors de la sauvegarde');
             }
-        } catch (error) {
-            console.error('Save error:', error);
-            alert('Erreur réseau lors de la sauvegarde');
-        } finally{
-            setIsSaving(false);
+            return response.json();
+        },
+        onSuccess: ()=>{
+            queryClient.invalidateQueries({
+                queryKey: [
+                    'admin',
+                    'products'
+                ]
+            });
+            if (!isNew) {
+                queryClient.invalidateQueries({
+                    queryKey: [
+                        'admin',
+                        'products',
+                        productId
+                    ]
+                });
+            }
+            alert('Produit enregistré avec succès !');
+            router.push('/admin/products');
+            router.refresh();
+        },
+        onError: (error)=>{
+            alert(error.message);
         }
+    });
+    const handleSubmit = async (e)=>{
+        e.preventDefault();
+        const payload = {
+            ...formData,
+            benefits: formData.benefits.split(',').map((b)=>b.trim()).filter((b)=>b !== '')
+        };
+        saveMutation.mutate(payload);
     };
     if (isLoading) {
         return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -167,12 +189,12 @@ function ProductEditor({ productId, isNew }) {
                 className: "w-12 h-12 animate-spin text-black"
             }, void 0, false, {
                 fileName: "[project]/components/admin/ProductEditor.tsx",
-                lineNumber: 155,
+                lineNumber: 158,
                 columnNumber: 17
             }, this)
         }, void 0, false, {
             fileName: "[project]/components/admin/ProductEditor.tsx",
-            lineNumber: 154,
+            lineNumber: 157,
             columnNumber: 13
         }, this);
     }
@@ -185,7 +207,7 @@ function ProductEditor({ productId, isNew }) {
         {
             id: 'media',
             label: 'Photos & Médias',
-            icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$image$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Image$3e$__["Image"]
+            icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$image$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__ImageIcon$3e$__["ImageIcon"]
         },
         {
             id: 'pricing',
@@ -211,7 +233,7 @@ function ProductEditor({ productId, isNew }) {
                                     children: label
                                 }, void 0, false, {
                                     fileName: "[project]/components/admin/ProductEditor.tsx",
-                                    lineNumber: 171,
+                                    lineNumber: 174,
                                     columnNumber: 21
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -219,13 +241,13 @@ function ProductEditor({ productId, isNew }) {
                                     children: sublabel
                                 }, void 0, false, {
                                     fileName: "[project]/components/admin/ProductEditor.tsx",
-                                    lineNumber: 172,
+                                    lineNumber: 175,
                                     columnNumber: 21
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/components/admin/ProductEditor.tsx",
-                            lineNumber: 170,
+                            lineNumber: 173,
                             columnNumber: 17
                         }, this),
                         value && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -239,18 +261,18 @@ function ProductEditor({ productId, isNew }) {
                                 className: "w-4 h-4"
                             }, void 0, false, {
                                 fileName: "[project]/components/admin/ProductEditor.tsx",
-                                lineNumber: 180,
+                                lineNumber: 183,
                                 columnNumber: 25
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/components/admin/ProductEditor.tsx",
-                            lineNumber: 175,
+                            lineNumber: 178,
                             columnNumber: 21
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/components/admin/ProductEditor.tsx",
-                    lineNumber: 169,
+                    lineNumber: 172,
                     columnNumber: 13
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -261,7 +283,7 @@ function ProductEditor({ productId, isNew }) {
                         className: "w-full h-full object-contain"
                     }, void 0, false, {
                         fileName: "[project]/components/admin/ProductEditor.tsx",
-                        lineNumber: 187,
+                        lineNumber: 190,
                         columnNumber: 21
                     }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("label", {
                         className: "w-full h-full flex flex-col items-center justify-center cursor-pointer hover:bg-gray-100 transition-colors",
@@ -270,7 +292,7 @@ function ProductEditor({ productId, isNew }) {
                                 className: "w-8 h-8 animate-spin text-gray-400"
                             }, void 0, false, {
                                 fileName: "[project]/components/admin/ProductEditor.tsx",
-                                lineNumber: 191,
+                                lineNumber: 194,
                                 columnNumber: 29
                             }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Fragment"], {
                                 children: [
@@ -278,7 +300,7 @@ function ProductEditor({ productId, isNew }) {
                                         className: "w-8 h-8 text-gray-400 mb-2"
                                     }, void 0, false, {
                                         fileName: "[project]/components/admin/ProductEditor.tsx",
-                                        lineNumber: 194,
+                                        lineNumber: 197,
                                         columnNumber: 33
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -286,7 +308,7 @@ function ProductEditor({ productId, isNew }) {
                                         children: "Cliquez pour uploader"
                                     }, void 0, false, {
                                         fileName: "[project]/components/admin/ProductEditor.tsx",
-                                        lineNumber: 195,
+                                        lineNumber: 198,
                                         columnNumber: 33
                                     }, this)
                                 ]
@@ -299,24 +321,24 @@ function ProductEditor({ productId, isNew }) {
                                 disabled: !!uploadingSlot
                             }, void 0, false, {
                                 fileName: "[project]/components/admin/ProductEditor.tsx",
-                                lineNumber: 198,
+                                lineNumber: 201,
                                 columnNumber: 25
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/components/admin/ProductEditor.tsx",
-                        lineNumber: 189,
+                        lineNumber: 192,
                         columnNumber: 21
                     }, this)
                 }, void 0, false, {
                     fileName: "[project]/components/admin/ProductEditor.tsx",
-                    lineNumber: 185,
+                    lineNumber: 188,
                     columnNumber: 13
                 }, this)
             ]
         }, void 0, true, {
             fileName: "[project]/components/admin/ProductEditor.tsx",
-            lineNumber: 168,
+            lineNumber: 171,
             columnNumber: 9
         }, this);
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("form", {
@@ -337,12 +359,12 @@ function ProductEditor({ productId, isNew }) {
                                     className: "w-5 h-5"
                                 }, void 0, false, {
                                     fileName: "[project]/components/admin/ProductEditor.tsx",
-                                    lineNumber: 215,
+                                    lineNumber: 218,
                                     columnNumber: 25
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/components/admin/ProductEditor.tsx",
-                                lineNumber: 210,
+                                lineNumber: 213,
                                 columnNumber: 21
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -352,7 +374,7 @@ function ProductEditor({ productId, isNew }) {
                                         children: isNew ? 'Nouveau Produit' : `Modifier ${formData.name}`
                                     }, void 0, false, {
                                         fileName: "[project]/components/admin/ProductEditor.tsx",
-                                        lineNumber: 218,
+                                        lineNumber: 221,
                                         columnNumber: 25
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -363,57 +385,57 @@ function ProductEditor({ productId, isNew }) {
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/components/admin/ProductEditor.tsx",
-                                        lineNumber: 221,
+                                        lineNumber: 224,
                                         columnNumber: 25
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/components/admin/ProductEditor.tsx",
-                                lineNumber: 217,
+                                lineNumber: 220,
                                 columnNumber: 21
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/components/admin/ProductEditor.tsx",
-                        lineNumber: 209,
+                        lineNumber: 212,
                         columnNumber: 17
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                         className: "flex items-center gap-3",
                         children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
                             type: "submit",
-                            disabled: isSaving,
+                            disabled: saveMutation.isPending,
                             className: "flex items-center gap-2 bg-black text-white px-6 py-2.5 rounded-xl font-bold hover:bg-gray-800 transition-all shadow-lg shadow-black/10 disabled:opacity-50",
                             children: [
-                                isSaving ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$loader$2d$circle$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Loader2$3e$__["Loader2"], {
+                                saveMutation.isPending ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$loader$2d$circle$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Loader2$3e$__["Loader2"], {
                                     className: "w-5 h-5 animate-spin"
                                 }, void 0, false, {
                                     fileName: "[project]/components/admin/ProductEditor.tsx",
-                                    lineNumber: 230,
-                                    columnNumber: 37
+                                    lineNumber: 233,
+                                    columnNumber: 51
                                 }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$save$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Save$3e$__["Save"], {
                                     className: "w-5 h-5"
                                 }, void 0, false, {
                                     fileName: "[project]/components/admin/ProductEditor.tsx",
-                                    lineNumber: 230,
-                                    columnNumber: 84
+                                    lineNumber: 233,
+                                    columnNumber: 98
                                 }, this),
                                 isNew ? 'Créer le produit' : 'Enregistrer les modifications'
                             ]
                         }, void 0, true, {
                             fileName: "[project]/components/admin/ProductEditor.tsx",
-                            lineNumber: 225,
+                            lineNumber: 228,
                             columnNumber: 21
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/components/admin/ProductEditor.tsx",
-                        lineNumber: 224,
+                        lineNumber: 227,
                         columnNumber: 17
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/components/admin/ProductEditor.tsx",
-                lineNumber: 208,
+                lineNumber: 211,
                 columnNumber: 13
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -430,19 +452,19 @@ function ProductEditor({ productId, isNew }) {
                                         className: "w-5 h-5"
                                     }, void 0, false, {
                                         fileName: "[project]/components/admin/ProductEditor.tsx",
-                                        lineNumber: 249,
+                                        lineNumber: 252,
                                         columnNumber: 29
                                     }, this),
                                     s.label
                                 ]
                             }, s.id, true, {
                                 fileName: "[project]/components/admin/ProductEditor.tsx",
-                                lineNumber: 240,
+                                lineNumber: 243,
                                 columnNumber: 25
                             }, this))
                     }, void 0, false, {
                         fileName: "[project]/components/admin/ProductEditor.tsx",
-                        lineNumber: 238,
+                        lineNumber: 241,
                         columnNumber: 17
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -458,14 +480,14 @@ function ProductEditor({ productId, isNew }) {
                                                 className: "w-6 h-6 text-blue-500"
                                             }, void 0, false, {
                                                 fileName: "[project]/components/admin/ProductEditor.tsx",
-                                                lineNumber: 260,
+                                                lineNumber: 263,
                                                 columnNumber: 33
                                             }, this),
                                             "Informations de base"
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/components/admin/ProductEditor.tsx",
-                                        lineNumber: 259,
+                                        lineNumber: 262,
                                         columnNumber: 29
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -478,7 +500,7 @@ function ProductEditor({ productId, isNew }) {
                                                         children: "Identifiant Unique (Slug)"
                                                     }, void 0, false, {
                                                         fileName: "[project]/components/admin/ProductEditor.tsx",
-                                                        lineNumber: 266,
+                                                        lineNumber: 269,
                                                         columnNumber: 41
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -493,13 +515,13 @@ function ProductEditor({ productId, isNew }) {
                                                         required: true
                                                     }, void 0, false, {
                                                         fileName: "[project]/components/admin/ProductEditor.tsx",
-                                                        lineNumber: 267,
+                                                        lineNumber: 270,
                                                         columnNumber: 41
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/components/admin/ProductEditor.tsx",
-                                                lineNumber: 265,
+                                                lineNumber: 268,
                                                 columnNumber: 37
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -509,7 +531,7 @@ function ProductEditor({ productId, isNew }) {
                                                         children: "Nom du Produit"
                                                     }, void 0, false, {
                                                         fileName: "[project]/components/admin/ProductEditor.tsx",
-                                                        lineNumber: 278,
+                                                        lineNumber: 281,
                                                         columnNumber: 37
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -523,13 +545,13 @@ function ProductEditor({ productId, isNew }) {
                                                         required: true
                                                     }, void 0, false, {
                                                         fileName: "[project]/components/admin/ProductEditor.tsx",
-                                                        lineNumber: 279,
+                                                        lineNumber: 282,
                                                         columnNumber: 37
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/components/admin/ProductEditor.tsx",
-                                                lineNumber: 277,
+                                                lineNumber: 280,
                                                 columnNumber: 33
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -539,7 +561,7 @@ function ProductEditor({ productId, isNew }) {
                                                         children: "Description Commerciale"
                                                     }, void 0, false, {
                                                         fileName: "[project]/components/admin/ProductEditor.tsx",
-                                                        lineNumber: 288,
+                                                        lineNumber: 291,
                                                         columnNumber: 37
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("textarea", {
@@ -552,13 +574,13 @@ function ProductEditor({ productId, isNew }) {
                                                         required: true
                                                     }, void 0, false, {
                                                         fileName: "[project]/components/admin/ProductEditor.tsx",
-                                                        lineNumber: 289,
+                                                        lineNumber: 292,
                                                         columnNumber: 37
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/components/admin/ProductEditor.tsx",
-                                                lineNumber: 287,
+                                                lineNumber: 290,
                                                 columnNumber: 33
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -571,7 +593,7 @@ function ProductEditor({ productId, isNew }) {
                                                                 children: "Slogan"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/components/admin/ProductEditor.tsx",
-                                                                lineNumber: 298,
+                                                                lineNumber: 301,
                                                                 columnNumber: 41
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -585,13 +607,13 @@ function ProductEditor({ productId, isNew }) {
                                                                 placeholder: "ex: DIABÈTE • HYPERTENSION"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/components/admin/ProductEditor.tsx",
-                                                                lineNumber: 299,
+                                                                lineNumber: 302,
                                                                 columnNumber: 41
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/components/admin/ProductEditor.tsx",
-                                                        lineNumber: 297,
+                                                        lineNumber: 300,
                                                         columnNumber: 37
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -601,7 +623,7 @@ function ProductEditor({ productId, isNew }) {
                                                                 children: "Catégorie"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/components/admin/ProductEditor.tsx",
-                                                                lineNumber: 308,
+                                                                lineNumber: 311,
                                                                 columnNumber: 41
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -615,31 +637,198 @@ function ProductEditor({ productId, isNew }) {
                                                                 placeholder: "ex: HYPERTENSION"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/components/admin/ProductEditor.tsx",
-                                                                lineNumber: 309,
+                                                                lineNumber: 312,
                                                                 columnNumber: 41
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/components/admin/ProductEditor.tsx",
-                                                        lineNumber: 307,
+                                                        lineNumber: 310,
                                                         columnNumber: 37
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/components/admin/ProductEditor.tsx",
-                                                lineNumber: 296,
+                                                lineNumber: 299,
+                                                columnNumber: 33
+                                            }, this),
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                className: "grid grid-cols-2 gap-6",
+                                                children: [
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                        children: [
+                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("label", {
+                                                                className: "block text-sm font-bold text-gray-700 mb-2 flex items-center gap-2",
+                                                                children: [
+                                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$palette$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Palette$3e$__["Palette"], {
+                                                                        className: "w-4 h-4"
+                                                                    }, void 0, false, {
+                                                                        fileName: "[project]/components/admin/ProductEditor.tsx",
+                                                                        lineNumber: 326,
+                                                                        columnNumber: 45
+                                                                    }, this),
+                                                                    "Couleur du Thème"
+                                                                ]
+                                                            }, void 0, true, {
+                                                                fileName: "[project]/components/admin/ProductEditor.tsx",
+                                                                lineNumber: 325,
+                                                                columnNumber: 41
+                                                            }, this),
+                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("select", {
+                                                                value: formData.theme_color,
+                                                                onChange: (e)=>setFormData({
+                                                                        ...formData,
+                                                                        theme_color: e.target.value
+                                                                    }),
+                                                                className: "w-full px-5 py-3 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-black outline-none transition-all",
+                                                                children: [
+                                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
+                                                                        value: "red",
+                                                                        children: "🔴 Rouge"
+                                                                    }, void 0, false, {
+                                                                        fileName: "[project]/components/admin/ProductEditor.tsx",
+                                                                        lineNumber: 334,
+                                                                        columnNumber: 45
+                                                                    }, this),
+                                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
+                                                                        value: "green",
+                                                                        children: "🟢 Vert"
+                                                                    }, void 0, false, {
+                                                                        fileName: "[project]/components/admin/ProductEditor.tsx",
+                                                                        lineNumber: 335,
+                                                                        columnNumber: 45
+                                                                    }, this),
+                                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
+                                                                        value: "blue",
+                                                                        children: "🔵 Bleu"
+                                                                    }, void 0, false, {
+                                                                        fileName: "[project]/components/admin/ProductEditor.tsx",
+                                                                        lineNumber: 336,
+                                                                        columnNumber: 45
+                                                                    }, this),
+                                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
+                                                                        value: "yellow",
+                                                                        children: "🟡 Jaune"
+                                                                    }, void 0, false, {
+                                                                        fileName: "[project]/components/admin/ProductEditor.tsx",
+                                                                        lineNumber: 337,
+                                                                        columnNumber: 45
+                                                                    }, this),
+                                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
+                                                                        value: "orange",
+                                                                        children: "🟠 Orange"
+                                                                    }, void 0, false, {
+                                                                        fileName: "[project]/components/admin/ProductEditor.tsx",
+                                                                        lineNumber: 338,
+                                                                        columnNumber: 45
+                                                                    }, this),
+                                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
+                                                                        value: "purple",
+                                                                        children: "🟣 Violet"
+                                                                    }, void 0, false, {
+                                                                        fileName: "[project]/components/admin/ProductEditor.tsx",
+                                                                        lineNumber: 339,
+                                                                        columnNumber: 45
+                                                                    }, this),
+                                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
+                                                                        value: "pink",
+                                                                        children: "💗 Rose"
+                                                                    }, void 0, false, {
+                                                                        fileName: "[project]/components/admin/ProductEditor.tsx",
+                                                                        lineNumber: 340,
+                                                                        columnNumber: 45
+                                                                    }, this),
+                                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
+                                                                        value: "teal",
+                                                                        children: "🩵 Turquoise"
+                                                                    }, void 0, false, {
+                                                                        fileName: "[project]/components/admin/ProductEditor.tsx",
+                                                                        lineNumber: 341,
+                                                                        columnNumber: 45
+                                                                    }, this)
+                                                                ]
+                                                            }, void 0, true, {
+                                                                fileName: "[project]/components/admin/ProductEditor.tsx",
+                                                                lineNumber: 329,
+                                                                columnNumber: 41
+                                                            }, this),
+                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                                                className: "text-xs text-gray-500 mt-1",
+                                                                children: "Couleur des textes et bordures sur la page d'accueil"
+                                                            }, void 0, false, {
+                                                                fileName: "[project]/components/admin/ProductEditor.tsx",
+                                                                lineNumber: 343,
+                                                                columnNumber: 41
+                                                            }, this)
+                                                        ]
+                                                    }, void 0, true, {
+                                                        fileName: "[project]/components/admin/ProductEditor.tsx",
+                                                        lineNumber: 324,
+                                                        columnNumber: 37
+                                                    }, this),
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                        children: [
+                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("label", {
+                                                                className: "block text-sm font-bold text-gray-700 mb-2 flex items-center gap-2",
+                                                                children: [
+                                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$hash$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Hash$3e$__["Hash"], {
+                                                                        className: "w-4 h-4"
+                                                                    }, void 0, false, {
+                                                                        fileName: "[project]/components/admin/ProductEditor.tsx",
+                                                                        lineNumber: 347,
+                                                                        columnNumber: 45
+                                                                    }, this),
+                                                                    "Ordre d'Affichage"
+                                                                ]
+                                                            }, void 0, true, {
+                                                                fileName: "[project]/components/admin/ProductEditor.tsx",
+                                                                lineNumber: 346,
+                                                                columnNumber: 41
+                                                            }, this),
+                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
+                                                                type: "number",
+                                                                min: "0",
+                                                                value: formData.display_order,
+                                                                onChange: (e)=>setFormData({
+                                                                        ...formData,
+                                                                        display_order: parseInt(e.target.value) || 0
+                                                                    }),
+                                                                className: "w-full px-5 py-3 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-black outline-none transition-all"
+                                                            }, void 0, false, {
+                                                                fileName: "[project]/components/admin/ProductEditor.tsx",
+                                                                lineNumber: 350,
+                                                                columnNumber: 41
+                                                            }, this),
+                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                                                className: "text-xs text-gray-500 mt-1",
+                                                                children: "Plus petit = affiché en premier sur l'accueil"
+                                                            }, void 0, false, {
+                                                                fileName: "[project]/components/admin/ProductEditor.tsx",
+                                                                lineNumber: 357,
+                                                                columnNumber: 41
+                                                            }, this)
+                                                        ]
+                                                    }, void 0, true, {
+                                                        fileName: "[project]/components/admin/ProductEditor.tsx",
+                                                        lineNumber: 345,
+                                                        columnNumber: 37
+                                                    }, this)
+                                                ]
+                                            }, void 0, true, {
+                                                fileName: "[project]/components/admin/ProductEditor.tsx",
+                                                lineNumber: 323,
                                                 columnNumber: 33
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/components/admin/ProductEditor.tsx",
-                                        lineNumber: 263,
+                                        lineNumber: 266,
                                         columnNumber: 29
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/components/admin/ProductEditor.tsx",
-                                lineNumber: 258,
+                                lineNumber: 261,
                                 columnNumber: 25
                             }, this),
                             activeSection === 'media' && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -655,7 +844,7 @@ function ProductEditor({ productId, isNew }) {
                                                 value: formData.image
                                             }, void 0, false, {
                                                 fileName: "[project]/components/admin/ProductEditor.tsx",
-                                                lineNumber: 325,
+                                                lineNumber: 367,
                                                 columnNumber: 33
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(ImageSlot, {
@@ -665,7 +854,7 @@ function ProductEditor({ productId, isNew }) {
                                                 value: formData.ingredients_image
                                             }, void 0, false, {
                                                 fileName: "[project]/components/admin/ProductEditor.tsx",
-                                                lineNumber: 331,
+                                                lineNumber: 373,
                                                 columnNumber: 33
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(ImageSlot, {
@@ -675,13 +864,13 @@ function ProductEditor({ productId, isNew }) {
                                                 value: formData.infographic_image
                                             }, void 0, false, {
                                                 fileName: "[project]/components/admin/ProductEditor.tsx",
-                                                lineNumber: 337,
+                                                lineNumber: 379,
                                                 columnNumber: 33
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/components/admin/ProductEditor.tsx",
-                                        lineNumber: 324,
+                                        lineNumber: 366,
                                         columnNumber: 29
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -690,18 +879,18 @@ function ProductEditor({ productId, isNew }) {
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
                                                 className: "text-xl font-bold flex items-center gap-2",
                                                 children: [
-                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$image$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Image$3e$__["Image"], {
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$image$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__ImageIcon$3e$__["ImageIcon"], {
                                                         className: "w-6 h-6 text-purple-500"
                                                     }, void 0, false, {
                                                         fileName: "[project]/components/admin/ProductEditor.tsx",
-                                                        lineNumber: 347,
+                                                        lineNumber: 389,
                                                         columnNumber: 37
                                                     }, this),
                                                     "Galerie Lifestyle"
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/components/admin/ProductEditor.tsx",
-                                                lineNumber: 346,
+                                                lineNumber: 388,
                                                 columnNumber: 33
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -716,7 +905,7 @@ function ProductEditor({ productId, isNew }) {
                                                                     className: "w-full h-full object-cover"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/components/admin/ProductEditor.tsx",
-                                                                    lineNumber: 353,
+                                                                    lineNumber: 395,
                                                                     columnNumber: 45
                                                                 }, this),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -727,18 +916,18 @@ function ProductEditor({ productId, isNew }) {
                                                                         className: "w-4 h-4"
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/components/admin/ProductEditor.tsx",
-                                                                        lineNumber: 359,
+                                                                        lineNumber: 401,
                                                                         columnNumber: 49
                                                                     }, this)
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/components/admin/ProductEditor.tsx",
-                                                                    lineNumber: 354,
+                                                                    lineNumber: 396,
                                                                     columnNumber: 45
                                                                 }, this)
                                                             ]
                                                         }, idx, true, {
                                                             fileName: "[project]/components/admin/ProductEditor.tsx",
-                                                            lineNumber: 352,
+                                                            lineNumber: 394,
                                                             columnNumber: 41
                                                         }, this)),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("label", {
@@ -748,7 +937,7 @@ function ProductEditor({ productId, isNew }) {
                                                                 className: "w-6 h-6 animate-spin text-gray-400"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/components/admin/ProductEditor.tsx",
-                                                                lineNumber: 365,
+                                                                lineNumber: 407,
                                                                 columnNumber: 45
                                                             }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Fragment"], {
                                                                 children: [
@@ -756,7 +945,7 @@ function ProductEditor({ productId, isNew }) {
                                                                         className: "w-6 h-6 text-gray-400 mb-1"
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/components/admin/ProductEditor.tsx",
-                                                                        lineNumber: 368,
+                                                                        lineNumber: 410,
                                                                         columnNumber: 49
                                                                     }, this),
                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -764,7 +953,7 @@ function ProductEditor({ productId, isNew }) {
                                                                         children: "Ajouter"
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/components/admin/ProductEditor.tsx",
-                                                                        lineNumber: 369,
+                                                                        lineNumber: 411,
                                                                         columnNumber: 49
                                                                     }, this)
                                                                 ]
@@ -777,31 +966,31 @@ function ProductEditor({ productId, isNew }) {
                                                                 disabled: !!uploadingSlot
                                                             }, void 0, false, {
                                                                 fileName: "[project]/components/admin/ProductEditor.tsx",
-                                                                lineNumber: 372,
+                                                                lineNumber: 414,
                                                                 columnNumber: 41
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/components/admin/ProductEditor.tsx",
-                                                        lineNumber: 363,
+                                                        lineNumber: 405,
                                                         columnNumber: 37
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/components/admin/ProductEditor.tsx",
-                                                lineNumber: 350,
+                                                lineNumber: 392,
                                                 columnNumber: 33
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/components/admin/ProductEditor.tsx",
-                                        lineNumber: 345,
+                                        lineNumber: 387,
                                         columnNumber: 29
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/components/admin/ProductEditor.tsx",
-                                lineNumber: 323,
+                                lineNumber: 365,
                                 columnNumber: 25
                             }, this),
                             activeSection === 'pricing' && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -814,14 +1003,14 @@ function ProductEditor({ productId, isNew }) {
                                                 className: "w-6 h-6 text-green-500"
                                             }, void 0, false, {
                                                 fileName: "[project]/components/admin/ProductEditor.tsx",
-                                                lineNumber: 382,
+                                                lineNumber: 424,
                                                 columnNumber: 33
                                             }, this),
                                             "Inventaire & Prix"
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/components/admin/ProductEditor.tsx",
-                                        lineNumber: 381,
+                                        lineNumber: 423,
                                         columnNumber: 29
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -839,12 +1028,12 @@ function ProductEditor({ productId, isNew }) {
                                                                     className: "w-5 h-5"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/components/admin/ProductEditor.tsx",
-                                                                    lineNumber: 389,
+                                                                    lineNumber: 431,
                                                                     columnNumber: 45
                                                                 }, this)
                                                             }, void 0, false, {
                                                                 fileName: "[project]/components/admin/ProductEditor.tsx",
-                                                                lineNumber: 388,
+                                                                lineNumber: 430,
                                                                 columnNumber: 41
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("label", {
@@ -852,13 +1041,13 @@ function ProductEditor({ productId, isNew }) {
                                                                 children: "Prix de vente (FCFA)"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/components/admin/ProductEditor.tsx",
-                                                                lineNumber: 391,
+                                                                lineNumber: 433,
                                                                 columnNumber: 41
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/components/admin/ProductEditor.tsx",
-                                                        lineNumber: 387,
+                                                        lineNumber: 429,
                                                         columnNumber: 37
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -872,7 +1061,7 @@ function ProductEditor({ productId, isNew }) {
                                                         required: true
                                                     }, void 0, false, {
                                                         fileName: "[project]/components/admin/ProductEditor.tsx",
-                                                        lineNumber: 393,
+                                                        lineNumber: 435,
                                                         columnNumber: 37
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -880,13 +1069,13 @@ function ProductEditor({ productId, isNew }) {
                                                         children: "Prix affiché sur le site public."
                                                     }, void 0, false, {
                                                         fileName: "[project]/components/admin/ProductEditor.tsx",
-                                                        lineNumber: 400,
+                                                        lineNumber: 442,
                                                         columnNumber: 37
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/components/admin/ProductEditor.tsx",
-                                                lineNumber: 386,
+                                                lineNumber: 428,
                                                 columnNumber: 33
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -901,12 +1090,12 @@ function ProductEditor({ productId, isNew }) {
                                                                     className: "w-5 h-5"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/components/admin/ProductEditor.tsx",
-                                                                    lineNumber: 406,
+                                                                    lineNumber: 448,
                                                                     columnNumber: 45
                                                                 }, this)
                                                             }, void 0, false, {
                                                                 fileName: "[project]/components/admin/ProductEditor.tsx",
-                                                                lineNumber: 405,
+                                                                lineNumber: 447,
                                                                 columnNumber: 41
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("label", {
@@ -914,13 +1103,13 @@ function ProductEditor({ productId, isNew }) {
                                                                 children: "Stock disponible"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/components/admin/ProductEditor.tsx",
-                                                                lineNumber: 408,
+                                                                lineNumber: 450,
                                                                 columnNumber: 41
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/components/admin/ProductEditor.tsx",
-                                                        lineNumber: 404,
+                                                        lineNumber: 446,
                                                         columnNumber: 37
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -934,7 +1123,7 @@ function ProductEditor({ productId, isNew }) {
                                                         required: true
                                                     }, void 0, false, {
                                                         fileName: "[project]/components/admin/ProductEditor.tsx",
-                                                        lineNumber: 410,
+                                                        lineNumber: 452,
                                                         columnNumber: 37
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -942,19 +1131,19 @@ function ProductEditor({ productId, isNew }) {
                                                         children: 'Quantité restante avant "Indisponible".'
                                                     }, void 0, false, {
                                                         fileName: "[project]/components/admin/ProductEditor.tsx",
-                                                        lineNumber: 417,
+                                                        lineNumber: 459,
                                                         columnNumber: 37
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/components/admin/ProductEditor.tsx",
-                                                lineNumber: 403,
+                                                lineNumber: 445,
                                                 columnNumber: 33
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/components/admin/ProductEditor.tsx",
-                                        lineNumber: 385,
+                                        lineNumber: 427,
                                         columnNumber: 29
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -971,12 +1160,12 @@ function ProductEditor({ productId, isNew }) {
                                                                 className: "w-5 h-5"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/components/admin/ProductEditor.tsx",
-                                                                lineNumber: 425,
+                                                                lineNumber: 467,
                                                                 columnNumber: 45
                                                             }, this)
                                                         }, void 0, false, {
                                                             fileName: "[project]/components/admin/ProductEditor.tsx",
-                                                            lineNumber: 424,
+                                                            lineNumber: 466,
                                                             columnNumber: 41
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -986,7 +1175,7 @@ function ProductEditor({ productId, isNew }) {
                                                                     children: "Statut de Visibilité"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/components/admin/ProductEditor.tsx",
-                                                                    lineNumber: 428,
+                                                                    lineNumber: 470,
                                                                     columnNumber: 45
                                                                 }, this),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -994,19 +1183,19 @@ function ProductEditor({ productId, isNew }) {
                                                                     children: formData.is_active ? 'Visible sur le site' : 'Masqué pour les clients'
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/components/admin/ProductEditor.tsx",
-                                                                    lineNumber: 429,
+                                                                    lineNumber: 471,
                                                                     columnNumber: 45
                                                                 }, this)
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/components/admin/ProductEditor.tsx",
-                                                            lineNumber: 427,
+                                                            lineNumber: 469,
                                                             columnNumber: 41
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/components/admin/ProductEditor.tsx",
-                                                    lineNumber: 423,
+                                                    lineNumber: 465,
                                                     columnNumber: 37
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -1020,29 +1209,29 @@ function ProductEditor({ productId, isNew }) {
                                                         className: `absolute top-1 w-6 h-6 bg-white rounded-full transition-all ${formData.is_active ? 'right-1' : 'left-1'}`
                                                     }, void 0, false, {
                                                         fileName: "[project]/components/admin/ProductEditor.tsx",
-                                                        lineNumber: 437,
+                                                        lineNumber: 479,
                                                         columnNumber: 41
                                                     }, this)
                                                 }, void 0, false, {
                                                     fileName: "[project]/components/admin/ProductEditor.tsx",
-                                                    lineNumber: 432,
+                                                    lineNumber: 474,
                                                     columnNumber: 37
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/components/admin/ProductEditor.tsx",
-                                            lineNumber: 422,
+                                            lineNumber: 464,
                                             columnNumber: 33
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/components/admin/ProductEditor.tsx",
-                                        lineNumber: 421,
+                                        lineNumber: 463,
                                         columnNumber: 29
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/components/admin/ProductEditor.tsx",
-                                lineNumber: 380,
+                                lineNumber: 422,
                                 columnNumber: 25
                             }, this),
                             activeSection === 'content' && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1055,14 +1244,14 @@ function ProductEditor({ productId, isNew }) {
                                                 className: "w-6 h-6 text-orange-500"
                                             }, void 0, false, {
                                                 fileName: "[project]/components/admin/ProductEditor.tsx",
-                                                lineNumber: 447,
+                                                lineNumber: 489,
                                                 columnNumber: 33
                                             }, this),
                                             "Contenu Détaillé"
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/components/admin/ProductEditor.tsx",
-                                        lineNumber: 446,
+                                        lineNumber: 488,
                                         columnNumber: 29
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1072,7 +1261,7 @@ function ProductEditor({ productId, isNew }) {
                                                 children: "Liste des Bienfaits"
                                             }, void 0, false, {
                                                 fileName: "[project]/components/admin/ProductEditor.tsx",
-                                                lineNumber: 451,
+                                                lineNumber: 493,
                                                 columnNumber: 33
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("textarea", {
@@ -1085,7 +1274,7 @@ function ProductEditor({ productId, isNew }) {
                                                 placeholder: "Séparez les bienfaits par des virgules (ex: 100% Naturel, Énergie pure...)"
                                             }, void 0, false, {
                                                 fileName: "[project]/components/admin/ProductEditor.tsx",
-                                                lineNumber: 452,
+                                                lineNumber: 494,
                                                 columnNumber: 33
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1095,42 +1284,42 @@ function ProductEditor({ productId, isNew }) {
                                                         children: b.trim()
                                                     }, i, false, {
                                                         fileName: "[project]/components/admin/ProductEditor.tsx",
-                                                        lineNumber: 460,
+                                                        lineNumber: 502,
                                                         columnNumber: 41
                                                     }, this))
                                             }, void 0, false, {
                                                 fileName: "[project]/components/admin/ProductEditor.tsx",
-                                                lineNumber: 458,
+                                                lineNumber: 500,
                                                 columnNumber: 33
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/components/admin/ProductEditor.tsx",
-                                        lineNumber: 450,
+                                        lineNumber: 492,
                                         columnNumber: 29
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/components/admin/ProductEditor.tsx",
-                                lineNumber: 445,
+                                lineNumber: 487,
                                 columnNumber: 25
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/components/admin/ProductEditor.tsx",
-                        lineNumber: 256,
+                        lineNumber: 259,
                         columnNumber: 17
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/components/admin/ProductEditor.tsx",
-                lineNumber: 236,
+                lineNumber: 239,
                 columnNumber: 13
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/components/admin/ProductEditor.tsx",
-        lineNumber: 206,
+        lineNumber: 209,
         columnNumber: 9
     }, this);
 }
