@@ -385,7 +385,7 @@ export function HomeClient() {
 
                             {/* Products Testimonials Container */}
                             <div className="space-y-12 md:space-y-16">
-                                {products.map(product => {
+                                {products.map((product: any) => {
                                     const colors = getColors(product.theme_color);
                                     const testimonials = product.testimonials || [];
                                     const hasMany = testimonials.length > 4;
